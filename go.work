@@ -1,0 +1,6 @@
+go 1.18  // Use the appropriate Go version
+
+use (
+    ./codec
+    ./server
+)
