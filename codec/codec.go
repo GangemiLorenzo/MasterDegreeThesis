@@ -8,6 +8,7 @@ import (
 
 	server "codec/codec_server"
 	service "codec/codec_service"
+	contracts "codec/contracts_files_utils"
 	compiler "codec/solidity_compiler_utils"
 	solidity_parser "codec/solidity_parser"
 
@@ -26,19 +27,23 @@ func main() {
 		log.Fatal("SOLC_PATH is not set in .env file")
 	}
 
-	solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
+	contractFilesPath := os.Getenv("CONTRACT_FILES_PATH")
+	if contractFilesPath == "" {
+		log.Fatal("CONTRACT_FILES_PATH is not set in .env file")
+	}
 
-	contractFilePath := "./internal/contracts/01_data_types.sol"
-	contractCode, err := os.ReadFile(contractFilePath)
+	solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
+	contractUtils := contracts.NewContractUtils(contractFilesPath)
+
+	contractCode, err := contractUtils.GetCodeAsString(contracts.File01UdataUtypes)
 	if err != nil {
 		log.Fatalf("failed to read contract file: %v", err)
 	}
 
-	ast, err := solidityCompilerUtils.CheckValidityAndGenerateAST(string(contractCode))
+	err = solidityCompilerUtils.CheckValidity(contractCode)
 	if err != nil {
 		log.Fatalf("failed to generate AST: %v", err)
 	}
-	fmt.Println(ast)
 
 	port := os.Getenv("CODEC_PORT")
 	if port == "" {

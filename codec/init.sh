@@ -6,7 +6,8 @@ TARGET_DIR="./tools"
 
 mkdir -p $TARGET_DIR
 
-DOWNLOAD_URL="https://github.com/ethereum/solidity/releases/download/v$SOLC_VERSION/solc-static-linux"
+## TODO: Set the correct solc version for your platform
+DOWNLOAD_URL="https://github.com/ethereum/solidity/releases/download/v$SOLC_VERSION/solc-macos"
 
 COMPILER_PATH="$TARGET_DIR/solc"
 
