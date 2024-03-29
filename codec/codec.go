@@ -8,6 +8,7 @@ import (
 
 	server "codec/codec_server"
 	service "codec/codec_service"
+	compiler "codec/solidity_compiler_utils"
 	solidity_parser "codec/solidity_parser"
 
 	"github.com/joho/godotenv"
@@ -19,6 +20,25 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	solcPath := os.Getenv("SOLC_PATH")
+	if solcPath == "" {
+		log.Fatal("SOLC_PATH is not set in .env file")
+	}
+
+	solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
+
+	contractFilePath := "./internal/contracts/01_data_types.sol"
+	contractCode, err := os.ReadFile(contractFilePath)
+	if err != nil {
+		log.Fatalf("failed to read contract file: %v", err)
+	}
+
+	ast, err := solidityCompilerUtils.CheckValidityAndGenerateAST(string(contractCode))
+	if err != nil {
+		log.Fatalf("failed to generate AST: %v", err)
+	}
+	fmt.Println(ast)
 
 	port := os.Getenv("CODEC_PORT")
 	if port == "" {
