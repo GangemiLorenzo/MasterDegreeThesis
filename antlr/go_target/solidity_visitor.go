@@ -40,6 +40,12 @@ type SolidityVisitor interface {
 	// Visit a parse tree produced by SolidityParser#contractDefinition.
 	VisitContractDefinition(ctx *ContractDefinitionContext) interface{}
 
+	// Visit a parse tree produced by SolidityParser#interfaceDefinition.
+	VisitInterfaceDefinition(ctx *InterfaceDefinitionContext) interface{}
+
+	// Visit a parse tree produced by SolidityParser#interfacePart.
+	VisitInterfacePart(ctx *InterfacePartContext) interface{}
+
 	// Visit a parse tree produced by SolidityParser#inheritanceSpecifier.
 	VisitInheritanceSpecifier(ctx *InheritanceSpecifierContext) interface{}
 

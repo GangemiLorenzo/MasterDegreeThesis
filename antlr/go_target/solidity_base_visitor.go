@@ -51,6 +51,14 @@ func (v *BaseSolidityVisitor) VisitContractDefinition(ctx *ContractDefinitionCon
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseSolidityVisitor) VisitInterfaceDefinition(ctx *InterfaceDefinitionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseSolidityVisitor) VisitInterfacePart(ctx *InterfacePartContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseSolidityVisitor) VisitInheritanceSpecifier(ctx *InheritanceSpecifierContext) interface{} {
 	return v.VisitChildren(ctx)
 }

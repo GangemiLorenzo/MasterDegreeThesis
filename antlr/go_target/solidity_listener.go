@@ -40,6 +40,12 @@ type SolidityListener interface {
 	// EnterContractDefinition is called when entering the contractDefinition production.
 	EnterContractDefinition(c *ContractDefinitionContext)
 
+	// EnterInterfaceDefinition is called when entering the interfaceDefinition production.
+	EnterInterfaceDefinition(c *InterfaceDefinitionContext)
+
+	// EnterInterfacePart is called when entering the interfacePart production.
+	EnterInterfacePart(c *InterfacePartContext)
+
 	// EnterInheritanceSpecifier is called when entering the inheritanceSpecifier production.
 	EnterInheritanceSpecifier(c *InheritanceSpecifierContext)
 
@@ -342,6 +348,12 @@ type SolidityListener interface {
 
 	// ExitContractDefinition is called when exiting the contractDefinition production.
 	ExitContractDefinition(c *ContractDefinitionContext)
+
+	// ExitInterfaceDefinition is called when exiting the interfaceDefinition production.
+	ExitInterfaceDefinition(c *InterfaceDefinitionContext)
+
+	// ExitInterfacePart is called when exiting the interfacePart production.
+	ExitInterfacePart(c *InterfacePartContext)
 
 	// ExitInheritanceSpecifier is called when exiting the inheritanceSpecifier production.
 	ExitInheritanceSpecifier(c *InheritanceSpecifierContext)

@@ -86,6 +86,18 @@ func (s *BaseSolidityListener) EnterContractDefinition(ctx *ContractDefinitionCo
 // ExitContractDefinition is called when production contractDefinition is exited.
 func (s *BaseSolidityListener) ExitContractDefinition(ctx *ContractDefinitionContext) {}
 
+// EnterInterfaceDefinition is called when production interfaceDefinition is entered.
+func (s *BaseSolidityListener) EnterInterfaceDefinition(ctx *InterfaceDefinitionContext) {}
+
+// ExitInterfaceDefinition is called when production interfaceDefinition is exited.
+func (s *BaseSolidityListener) ExitInterfaceDefinition(ctx *InterfaceDefinitionContext) {}
+
+// EnterInterfacePart is called when production interfacePart is entered.
+func (s *BaseSolidityListener) EnterInterfacePart(ctx *InterfacePartContext) {}
+
+// ExitInterfacePart is called when production interfacePart is exited.
+func (s *BaseSolidityListener) ExitInterfacePart(ctx *InterfacePartContext) {}
+
 // EnterInheritanceSpecifier is called when production inheritanceSpecifier is entered.
 func (s *BaseSolidityListener) EnterInheritanceSpecifier(ctx *InheritanceSpecifierContext) {}
 

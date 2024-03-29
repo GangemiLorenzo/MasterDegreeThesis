@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	client "server/codec_client"
+	"server/codec_client"
+	"server/rest_server"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -16,7 +17,7 @@ import (
 )
 
 // createCodecClient initializes and returns a CodecClient.
-func createCodecClient(codecServiceAddress string) (client.CodecClient, error) {
+func createCodecClient(codecServiceAddress string) (codec_client.CodecClient, error) {
 	// Setting up a connection to the codec service.
 	conn, err := grpc.Dial(codecServiceAddress, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
@@ -24,7 +25,7 @@ func createCodecClient(codecServiceAddress string) (client.CodecClient, error) {
 	}
 
 	// Instantiates a new CodecClient.
-	return client.NewCodecClient(conn), nil
+	return codec_client.NewCodecClient(conn), nil
 }
 
 func getSmartContractCode() (*string, error) {
@@ -74,16 +75,23 @@ func main() {
 		log.Fatalf("Could not create codec client: %v", err)
 	}
 
+	port = os.Getenv("SERVER_PORT")
+	if port == "" {
+		log.Fatal("SERVER_PORT is not set in .env file")
+	}
+	restServer := rest_server.NewServer(port, codecClient)
+	restServer.Start()
+
 	// Example usage of the client.
 
-	smartContract, err := getSmartContractCode()
-	if err != nil {
-		log.Fatalf("Could not get smart contract code: %v", err)
-	}
+	// smartContract, err := getSmartContractCode()
+	// if err != nil {
+	// 	log.Fatalf("Could not get smart contract code: %v", err)
+	// }
 
-	encoded, err := codecClient.Encode(*smartContract)
-	if err != nil {
-		log.Fatalf("Could not encode: %v", err)
-	}
-	log.Printf("Encoded: %s", encoded)
+	// encoded, err := codecClient.Encode(*smartContract)
+	// if err != nil {
+	// 	log.Fatalf("Could not encode: %v", err)
+	// }
+	// log.Printf("Encoded: %s", encoded)
 }
