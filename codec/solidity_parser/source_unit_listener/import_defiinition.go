@@ -3,6 +3,7 @@ package source_unit_listener
 import (
 	parser "codec/solidity_parser/antlr_parser"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -27,17 +28,15 @@ func (s *SourceUnitListener) EnterImportDirective(ctx *parser.ImportDirectiveCon
 	}
 	s.SourceUnit.Imports = append(s.SourceUnit.Imports, importDeclaration)
 
-	fmt.Println("Enter Import Directive")
 }
 
 func (s *SourceUnitListener) ExitImportDirective(ctx *parser.ImportDirectiveContext) {
 	s.IsInImport = false
 
-	fmt.Println("Exit Import Directive")
 }
 
 func (s *SourceUnitListener) EnterImportPath(ctx *parser.ImportPathContext) {
-	fmt.Println("Enter Import Path")
+
 }
 
 func (s *SourceUnitListener) ExitImportPath(ctx *parser.ImportPathContext) {
@@ -45,7 +44,6 @@ func (s *SourceUnitListener) ExitImportPath(ctx *parser.ImportPathContext) {
 	lastImport := s.LastImport()
 	lastImport.Path = path
 
-	fmt.Println("Exit Import Path")
 }
 
 func (s *SourceUnitListener) EnterImportDeclaration(ctx *parser.ImportDeclarationContext) {
@@ -55,7 +53,6 @@ func (s *SourceUnitListener) EnterImportDeclaration(ctx *parser.ImportDeclaratio
 	lastImport := s.LastImport()
 	lastImport.Symbols = append(lastImport.Symbols, symbol)
 
-	fmt.Println("Enter Import Declaration")
 }
 
 func (s *SourceUnitListener) ExitImportDeclaration(ctx *parser.ImportDeclarationContext) {
@@ -69,5 +66,41 @@ func (s *SourceUnitListener) ExitImportDeclaration(ctx *parser.ImportDeclaration
 	symbol.Name = name
 	symbol.Alias = alias
 
-	fmt.Println("Exit Import Declaration")
 }
+
+func (id *ImportDefinition) GetCodeAsString() string {
+	var symbolStrings []string
+
+	for _, s := range id.Symbols {
+		symbolStrings = append(symbolStrings, s.GetCodeAsString())
+	}
+
+	combinedSymbols := strings.Join(symbolStrings, ", ")
+
+	if len(id.Symbols) > 0 {
+		return fmt.Sprintf(importTemplateWithSymbols, combinedSymbols, id.Path)
+	} else {
+		return fmt.Sprintf(simportTemplateWithoutSymbols, id.Path)
+	}
+
+}
+
+const (
+	importTemplateWithSymbols = `import {%s} from %s;
+	`
+	simportTemplateWithoutSymbols = `import from %s;
+	`
+)
+
+func (sd *SymbolDefinition) GetCodeAsString() string {
+	if sd.Alias != "" {
+		return fmt.Sprintf(symbolTemplateWithAlias, sd.Name, sd.Alias)
+	} else {
+		return fmt.Sprintf(symbolTemplateWithoutAlias, sd.Name)
+	}
+}
+
+const (
+	symbolTemplateWithAlias    = `%s as %s`
+	symbolTemplateWithoutAlias = `%s`
+)

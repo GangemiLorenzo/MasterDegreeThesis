@@ -3,6 +3,7 @@ package source_unit_listener
 import (
 	parser "codec/solidity_parser/antlr_parser"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -25,7 +26,7 @@ func (s *SourceUnitListener) EnterStructDefinition(ctx *parser.StructDefinitionC
 	} else {
 		s.SourceUnit.Structs = append(s.SourceUnit.Structs, structure)
 	}
-	fmt.Println("Enter Struct Definition")
+
 }
 
 func (s *SourceUnitListener) ExitStructDefinition(ctx *parser.StructDefinitionContext) {
@@ -34,5 +35,25 @@ func (s *SourceUnitListener) ExitStructDefinition(ctx *parser.StructDefinitionCo
 	lastStruct.Name = name
 
 	s.IsInStruct = false
-	fmt.Println("Exit Struct Definition")
+
 }
+
+func (sd *StructDefinition) GetCodeAsString() string {
+	var fieldStrings []string
+
+	for _, f := range sd.Fields {
+		fieldStrings = append(fieldStrings, f.GetCodeAsString())
+	}
+
+	combinedFields := strings.Join(fieldStrings, `
+		`)
+
+	return fmt.Sprintf(structTemplate, sd.Name, combinedFields)
+
+}
+
+const structTemplate = `struct %s {
+		%s
+	};
+
+	`

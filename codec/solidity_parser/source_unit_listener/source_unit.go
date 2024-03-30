@@ -20,7 +20,6 @@ type SourceUnit struct {
 }
 
 func (s *SourceUnitListener) EnterSourceUnit(ctx *parser.SourceUnitContext) {
-	fmt.Println("Enter source unit")
 
 	sourceUnit := &SourceUnit{
 		Id: uuid.NewString(),
@@ -29,5 +28,51 @@ func (s *SourceUnitListener) EnterSourceUnit(ctx *parser.SourceUnitContext) {
 }
 
 func (s *SourceUnitListener) ExitSourceUnit(ctx *parser.SourceUnitContext) {
-	fmt.Println("Exit source unit")
+
 }
+
+func (su *SourceUnit) GetCodeAsString() string {
+
+	var combinedPragma string
+	for _, p := range su.Pragmas {
+		combinedPragma += p.GetCodeAsString()
+	}
+
+	var combinedImports string
+	for _, i := range su.Imports {
+		combinedImports += i.GetCodeAsString()
+	}
+
+	var combinedEvents string
+	for _, e := range su.Events {
+		combinedEvents += e.GetCodeAsString()
+	}
+
+	var combinedStructs string
+	for _, s := range su.Structs {
+		combinedStructs += s.GetCodeAsString()
+	}
+
+	result := fmt.Sprintf(
+		template,
+		combinedPragma,
+		combinedImports,
+		combinedEvents,
+		combinedStructs,
+	)
+
+	return result
+}
+
+// Template used to reconstruct the code from the SourceUnit
+const template string = `
+		
+	%s
+
+	%s
+
+	%s
+
+	%s
+
+	`

@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -23,7 +22,7 @@ func (s *SourceUnitListener) EnterEnumDefinition(ctx *parser.EnumDefinitionConte
 	} else {
 		s.SourceUnit.Enums = append(s.SourceUnit.Enums, enum)
 	}
-	fmt.Println("Enter Enum Definition")
+
 }
 
 func (s *SourceUnitListener) ExitEnumDefinition(ctx *parser.EnumDefinitionContext) {
@@ -31,12 +30,11 @@ func (s *SourceUnitListener) ExitEnumDefinition(ctx *parser.EnumDefinitionContex
 	lastEnum := s.LastEnum()
 	lastEnum.Name = name
 
-	fmt.Println("Exit Enum Definition")
 }
 
 // EnterEnumValue is called when production enumValue is entered.
 func (s *SourceUnitListener) EnterEnumValue(ctx *parser.EnumValueContext) {
-	fmt.Println("Enter Enum Value")
+
 }
 
 // ExitEnumValue is called when production enumValue is exited.
@@ -44,5 +42,5 @@ func (s *SourceUnitListener) ExitEnumValue(ctx *parser.EnumValueContext) {
 	value := ctx.Identifier().GetText()
 	lastEnum := s.LastEnum()
 	lastEnum.Values = append(lastEnum.Values, value)
-	fmt.Println("Exit Enum Value")
+
 }

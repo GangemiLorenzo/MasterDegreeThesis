@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -31,17 +30,16 @@ func (s *SourceUnitListener) EnterFunctionDefinition(ctx *parser.FunctionDefinit
 		s.SourceUnit.Functions = append(s.SourceUnit.Functions, function)
 	}
 
-	fmt.Println("Enter Function Definitino")
 }
 
 func (s *SourceUnitListener) ExitFunctionDefinition(ctx *parser.FunctionDefinitionContext) {
 
 	s.IsInFunctionDefinition = false
-	fmt.Println("Exit Function Definition")
+
 }
 
 func (s *SourceUnitListener) EnterFunctionDescriptor(ctx *parser.FunctionDescriptorContext) {
-	fmt.Println("Enter Function Descriptor")
+
 }
 
 func (s *SourceUnitListener) ExitFunctionDescriptor(ctx *parser.FunctionDescriptorContext) {
@@ -58,5 +56,5 @@ func (s *SourceUnitListener) ExitFunctionDescriptor(ctx *parser.FunctionDescript
 
 	lastFunction := s.LastFunctionDefinition()
 	lastFunction.Name = name
-	fmt.Println("Exit Function Descriptor")
+
 }

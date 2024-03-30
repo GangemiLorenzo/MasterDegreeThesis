@@ -14,7 +14,6 @@ type PragmaDirective struct {
 }
 
 func (s *SourceUnitListener) EnterPragmaDirective(ctx *parser.PragmaDirectiveContext) {
-	fmt.Println("Enter pragma directive")
 
 	pragmaDirective := PragmaDirective{
 		Id: uuid.NewString(),
@@ -23,11 +22,11 @@ func (s *SourceUnitListener) EnterPragmaDirective(ctx *parser.PragmaDirectiveCon
 }
 
 func (s *SourceUnitListener) ExitPragmaDirective(ctx *parser.PragmaDirectiveContext) {
-	fmt.Println("Exit pragma directive")
+
 }
 
 func (s *SourceUnitListener) EnterPragmaName(ctx *parser.PragmaNameContext) {
-	fmt.Println("Enter Pragma Name")
+
 }
 
 func (s *SourceUnitListener) ExitPragmaName(ctx *parser.PragmaNameContext) {
@@ -35,16 +34,25 @@ func (s *SourceUnitListener) ExitPragmaName(ctx *parser.PragmaNameContext) {
 	lastPragma := s.LastPragmaDirective()
 	lastPragma.Name = ctx.GetText()
 
-	fmt.Println("Exit Pragma Name")
 }
 
 func (s *SourceUnitListener) EnterPragmaValue(ctx *parser.PragmaValueContext) {
-	fmt.Println("Enter Pragma Value")
+
 }
 
 func (s *SourceUnitListener) ExitPragmaValue(ctx *parser.PragmaValueContext) {
 	lastPragma := s.LastPragmaDirective()
 	lastPragma.Value = ctx.GetText()
 
-	fmt.Println("Exit Pragma Value")
 }
+
+func (pd *PragmaDirective) GetCodeAsString() string {
+
+	result := fmt.Sprintf(pragmaTemplate, pd.Name, pd.Value)
+
+	return result
+}
+
+// Template used to reconstruct the code from the PragmaDirective
+const pragmaTemplate string = `pragma %s %s;
+	`

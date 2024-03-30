@@ -9,7 +9,6 @@ import (
 	server "codec/codec_server"
 	service "codec/codec_service"
 	contracts "codec/contracts_files_utils"
-	compiler "codec/solidity_compiler_utils"
 	solidity_parser "codec/solidity_parser"
 
 	"github.com/joho/godotenv"
@@ -22,28 +21,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	solcPath := os.Getenv("SOLC_PATH")
-	if solcPath == "" {
-		log.Fatal("SOLC_PATH is not set in .env file")
-	}
-
-	contractFilesPath := os.Getenv("CONTRACT_FILES_PATH")
-	if contractFilesPath == "" {
-		log.Fatal("CONTRACT_FILES_PATH is not set in .env file")
-	}
-
-	solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
-	contractUtils := contracts.NewContractUtils(contractFilesPath)
-
-	contractCode, err := contractUtils.GetCodeAsString(contracts.File01UdataUtypes)
-	if err != nil {
-		log.Fatalf("failed to read contract file: %v", err)
-	}
-
-	err = solidityCompilerUtils.CheckValidity(contractCode)
-	if err != nil {
-		log.Fatalf("failed to generate AST: %v", err)
-	}
+	testSomeFunctionalities()
 
 	port := os.Getenv("CODEC_PORT")
 	if port == "" {
@@ -67,4 +45,43 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+}
+
+// testSomeFunctionalities is a function to test some functionalities
+func testSomeFunctionalities() {
+	solcPath := os.Getenv("SOLC_PATH")
+	if solcPath == "" {
+		log.Fatal("SOLC_PATH is not set in .env file")
+	}
+
+	contractFilesPath := os.Getenv("CONTRACT_FILES_PATH")
+	if contractFilesPath == "" {
+		log.Fatal("CONTRACT_FILES_PATH is not set in .env file")
+	}
+
+	//solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
+	contractUtils := contracts.NewContractUtils(contractFilesPath)
+
+	contractCode, err := contractUtils.GetCodeAsString(contracts.File01UdataUtypes)
+	if err != nil {
+		log.Fatalf("failed to read contract file: %v", err)
+	}
+
+	// err = solidityCompilerUtils.CheckValidity(contractCode)
+	// if err != nil {
+	// 	log.Fatalf("failed to check validity: %v", err)
+	// }
+
+	parser := solidity_parser.NewSolidityParser()
+	sourceUnit, err := parser.ParseSmartContract(contractCode)
+	if err != nil {
+		log.Fatalf("failed to parse smart contract: %v", err)
+	}
+
+	codeAgain, err := parser.GetCodeFromSourceUnit(*sourceUnit)
+	if err != nil {
+		log.Fatalf("failed to get code from source unit: %v", err)
+	}
+
+	fmt.Println(codeAgain)
 }

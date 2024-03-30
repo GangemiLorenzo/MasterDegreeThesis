@@ -3,6 +3,7 @@ package source_unit_listener
 import (
 	parser "codec/solidity_parser/antlr_parser"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +27,6 @@ func (s *SourceUnitListener) EnterEventDefinition(ctx *parser.EventDefinitionCon
 		s.SourceUnit.Events = append(s.SourceUnit.Events, event)
 	}
 
-	fmt.Println("Enter Event Definition")
 }
 
 func (s *SourceUnitListener) ExitEventDefinition(ctx *parser.EventDefinitionContext) {
@@ -36,5 +36,21 @@ func (s *SourceUnitListener) ExitEventDefinition(ctx *parser.EventDefinitionCont
 	lastEvent.Name = name
 
 	s.IsInEventDefinition = false
-	fmt.Println("Exit Event Definition")
+
 }
+
+func (ed *EventDefinition) GetCodeAsString() string {
+	var parameterStrings []string
+
+	for _, p := range ed.Parameters {
+		parameterStrings = append(parameterStrings, p.GetCodeAsString())
+	}
+
+	combinedParameters := strings.Join(parameterStrings, ", ")
+
+	return fmt.Sprintf(eventTemplate, ed.Name, combinedParameters)
+
+}
+
+const eventTemplate = `event %s(%s);
+	`

@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -20,7 +19,7 @@ func (s *SourceUnitListener) EnterModifierDefinition(ctx *parser.ModifierDefinit
 	}
 	lastContract := s.LastContract()
 	lastContract.Modifiers = append(lastContract.Modifiers, modifier)
-	fmt.Println("Enter Modifier Definition")
+
 }
 
 func (s *SourceUnitListener) ExitModifierDefinition(ctx *parser.ModifierDefinitionContext) {
@@ -30,11 +29,11 @@ func (s *SourceUnitListener) ExitModifierDefinition(ctx *parser.ModifierDefiniti
 	lastModifier.Name = name
 
 	s.IsInModifierDefinition = false
-	fmt.Println("Exit Modifier Definition")
+
 }
 
 func (s *SourceUnitListener) EnterModifierList(ctx *parser.ModifierListContext) {
-	fmt.Println("Enter Modifier List")
+
 }
 
 func (s *SourceUnitListener) ExitModifierList(ctx *parser.ModifierListContext) {
@@ -78,5 +77,4 @@ func (s *SourceUnitListener) ExitModifierList(ctx *parser.ModifierListContext) {
 		lastFunction.StateMutability = ctx.StateMutability(0).GetText()
 	}
 
-	fmt.Println("Exit Modifier List")
 }

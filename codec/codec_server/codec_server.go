@@ -11,10 +11,10 @@ import (
 
 type codecServer struct {
 	service.UnimplementedCodecServiceServer
-	parser solidity_parser.SolidityParserInterface
+	parser solidity_parser.ISolidityParser
 }
 
-func NewCodecServer(p solidity_parser.SolidityParserInterface) service.CodecServiceServer {
+func NewCodecServer(p solidity_parser.ISolidityParser) service.CodecServiceServer {
 	return &codecServer{
 		parser: p,
 	}

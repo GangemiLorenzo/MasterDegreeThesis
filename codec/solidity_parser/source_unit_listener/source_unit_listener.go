@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 )
 
 type SourceUnitListener struct {
@@ -27,7 +26,7 @@ func NewSourceUnitListener() *SourceUnitListener {
 }
 
 func (s *SourceUnitListener) EnterBlock(ctx *parser.BlockContext) {
-	fmt.Println("Enter Block")
+
 }
 
 func (s *SourceUnitListener) ExitBlock(ctx *parser.BlockContext) {
@@ -41,7 +40,6 @@ func (s *SourceUnitListener) ExitBlock(ctx *parser.BlockContext) {
 		lastModifier.Body = extractTextWithWhitespace(ctx, ctx.GetParser().GetTokenStream())
 	}
 
-	fmt.Println("Exit Block")
 }
 
 // This functions are ready to be used, but at this moment I don't need them
@@ -49,35 +47,35 @@ func (s *SourceUnitListener) ExitBlock(ctx *parser.BlockContext) {
 /*
 // EnterVersion is called when production version is entered.
 func (s *SourceUnitListener) EnterVersion(ctx *parser.VersionContext) {
-	fmt.Println("Enter Version")
+
 }
 
 // ExitVersion is called when production version is exited.
 func (s *SourceUnitListener) ExitVersion(ctx *parser.VersionContext) {
 	version := ctx.GetText()
-	fmt.Println("Exit Version: ", version)
+
 }
 
 // EnterVersionOperator is called when production versionOperator is entered.
 func (s *SourceUnitListener) EnterVersionOperator(ctx *parser.VersionOperatorContext) {
-	fmt.Println("Enter Version Operator")
+
 }
 
 // ExitVersionOperator is called when production versionOperator is exited.
 func (s *SourceUnitListener) ExitVersionOperator(ctx *parser.VersionOperatorContext) {
 	versionOperator := ctx.GetText()
-	fmt.Println("Exit Version Operator: ", versionOperator)
+
 }
 
 // EnterVersionConstraint is called when production versionConstraint is entered.
 func (s *SourceUnitListener) EnterVersionConstraint(ctx *parser.VersionConstraintContext) {
-	fmt.Println("Enter Version Constraint")
+
 }
 
 // ExitVersionConstraint is called when production versionConstraint is exited.
 func (s *SourceUnitListener) ExitVersionConstraint(ctx *parser.VersionConstraintContext) {
 	versionConstraint := ctx.GetText()
-	fmt.Println("Exit Version Constraint: ", versionConstraint)
+
 }
 
 
@@ -150,12 +148,12 @@ func (s *SourceUnitListener) ExitModifierInvocation(ctx *parser.ModifierInvocati
 
 // EnterParameterList is called when production parameterList is entered.
 func (s *SourceUnitListener) EnterParameterList(ctx *parser.ParameterListContext) {
-	fmt.Println("Enter Parameter List")
+
 }
 
 // ExitParameterList is called when production parameterList is exited.
 func (s *SourceUnitListener) ExitParameterList(ctx *parser.ParameterListContext) {
-	fmt.Println("Exit Parameter List")
+
 }
 
 // EnterEventParameterList is called when production eventParameterList is entered.
@@ -170,12 +168,12 @@ func (s *SourceUnitListener) ExitEventParameterList(ctx *parser.EventParameterLi
 
 // EnterFunctionTypeParameterList is called when production functionTypeParameterList is entered.
 func (s *SourceUnitListener) EnterFunctionTypeParameterList(ctx *parser.FunctionTypeParameterListContext) {
-	fmt.Println("Enter Function Type Parameter List")
+
 }
 
 // ExitFunctionTypeParameterList is called when production functionTypeParameterList is exited.
 func (s *SourceUnitListener) ExitFunctionTypeParameterList(ctx *parser.FunctionTypeParameterListContext) {
-	fmt.Println("Exit Function Type Parameter List")
+
 }
 
 // EnterFunctionTypeParameter is called when production functionTypeParameter is entered.

@@ -9,7 +9,7 @@ import (
 	antlr "github.com/antlr4-go/antlr/v4"
 )
 
-type SolidityParserInterface interface {
+type ISolidityParser interface {
 	ParseSmartContract(sourceCode string) (*listener.SourceUnit, error)
 	GetCodeFromSourceUnit(sourceUnit listener.SourceUnit) (string, error)
 }
@@ -17,7 +17,7 @@ type SolidityParserInterface interface {
 type SolidityParser struct {
 }
 
-func NewSolidityParser() SolidityParserInterface {
+func NewSolidityParser() ISolidityParser {
 	return &SolidityParser{}
 }
 
@@ -49,5 +49,6 @@ func (p *SolidityParser) ParseSmartContract(sourceCode string) (*listener.Source
 }
 
 func (p *SolidityParser) GetCodeFromSourceUnit(sourceUnit listener.SourceUnit) (string, error) {
-	return "", nil
+
+	return sourceUnit.GetCodeAsString(), nil
 }

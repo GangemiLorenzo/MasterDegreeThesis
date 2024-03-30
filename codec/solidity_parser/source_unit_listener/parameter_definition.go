@@ -8,20 +8,21 @@ import (
 )
 
 type ParameterDefinition struct {
-	Id      string `json:"id"`
-	Name    string `json:"name"`
-	Type    string `json:"type"`
-	Storage string `json:"storage"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	Type      string `json:"type"`
+	Storage   string `json:"storage"`
+	IsIndexed bool   `json:"isIndexed"`
 }
 
 func (s *SourceUnitListener) EnterReturnParameters(ctx *parser.ReturnParametersContext) {
 	s.IsInReturnParameter = true
-	fmt.Println("Enter Return Parameters")
+
 }
 
 func (s *SourceUnitListener) ExitReturnParameters(ctx *parser.ReturnParametersContext) {
 	s.IsInReturnParameter = false
-	fmt.Println("Exit Return Parameters")
+
 }
 
 // EnterParameter is called when production parameter is entered.
@@ -43,7 +44,6 @@ func (s *SourceUnitListener) EnterParameter(ctx *parser.ParameterContext) {
 	}
 	lastFunction.Parameters = append(lastFunction.Parameters, parameter)
 
-	fmt.Println("Enter Parameter")
 }
 
 // ExitParameter is called when production parameter is exited.
@@ -76,7 +76,6 @@ func (s *SourceUnitListener) ExitParameter(ctx *parser.ParameterContext) {
 	lastParameter.Type = typeStr
 	lastParameter.Storage = storage
 
-	fmt.Println("Exit Parameter")
 }
 
 func (s *SourceUnitListener) EnterEventParameter(ctx *parser.EventParameterContext) {
@@ -86,7 +85,6 @@ func (s *SourceUnitListener) EnterEventParameter(ctx *parser.EventParameterConte
 	lastEvent := s.LastEventDefinition()
 	lastEvent.Parameters = append(lastEvent.Parameters, parameter)
 
-	fmt.Println("Enter Event Parameter")
 }
 
 func (s *SourceUnitListener) ExitEventParameter(ctx *parser.EventParameterContext) {
@@ -103,5 +101,23 @@ func (s *SourceUnitListener) ExitEventParameter(ctx *parser.EventParameterContex
 
 	lastParameter.Name = name
 	lastParameter.Type = typeStr
-	fmt.Println("Exit Event Parameter")
+
+	if s.IsInEventDefinition {
+		isIndexed := ctx.IndexedKeyword() != nil
+		lastParameter.IsIndexed = isIndexed
+	}
 }
+
+func (pd *ParameterDefinition) GetCodeAsString() string {
+	if pd.IsIndexed {
+		return fmt.Sprintf(parameterTemplateIndexed, pd.Type, pd.Storage, pd.Name)
+	} else {
+		return fmt.Sprintf(parameterTemplate, pd.Type, pd.Storage, pd.Name)
+	}
+
+}
+
+const (
+	parameterTemplate        = `%s %s %s`
+	parameterTemplateIndexed = `%s indexed %s %s`
+)

@@ -3,6 +3,7 @@ package source_unit_listener
 import (
 	parser "codec/solidity_parser/antlr_parser"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -24,7 +25,6 @@ func (s *SourceUnitListener) EnterStateVariableDeclaration(ctx *parser.StateVari
 	lastContract := s.LastContract()
 	lastContract.Variables = append(lastContract.Variables, stateVariable)
 
-	fmt.Println("Enter State Variable Declaration")
 }
 
 func (s *SourceUnitListener) ExitStateVariableDeclaration(ctx *parser.StateVariableDeclarationContext) {
@@ -84,7 +84,6 @@ func (s *SourceUnitListener) ExitStateVariableDeclaration(ctx *parser.StateVaria
 	lastStateVariable.Visibility = variable.Visibility
 	lastStateVariable.Modifiers = variable.Modifiers
 
-	fmt.Printf("Exited State Variable Declaration: %+v\n", variable)
 }
 
 func (s *SourceUnitListener) EnterVariableDeclaration(ctx *parser.VariableDeclarationContext) {
@@ -95,7 +94,7 @@ func (s *SourceUnitListener) EnterVariableDeclaration(ctx *parser.VariableDeclar
 		lastStruct := s.LastStruct()
 		lastStruct.Fields = append(lastStruct.Fields, variable)
 	}
-	fmt.Println("Enter Variable Declaration")
+
 }
 
 func (s *SourceUnitListener) ExitVariableDeclaration(ctx *parser.VariableDeclarationContext) {
@@ -108,13 +107,12 @@ func (s *SourceUnitListener) ExitVariableDeclaration(ctx *parser.VariableDeclara
 		lastField.Type = typeStr
 	}
 
-	fmt.Println("Exit Variable Declaration")
 }
 
 func (s *SourceUnitListener) EnterMapping(ctx *parser.MappingContext) {
 	lastVariable := s.LastStateVariable()
 	lastVariable.Type = "mapping"
-	fmt.Println("Enter Mapping")
+
 }
 
 func (s *SourceUnitListener) ExitMapping(ctx *parser.MappingContext) {
@@ -125,5 +123,17 @@ func (s *SourceUnitListener) ExitMapping(ctx *parser.MappingContext) {
 	lastVariable.MappingFrom = from
 	lastVariable.MappingTo = to
 
-	fmt.Println("Exit Mapping")
 }
+
+func (vd *VariableDefinition) GetCodeAsString() string {
+
+	combinedModifiers := strings.Join(vd.Modifiers, " ")
+
+	return fmt.Sprintf(variableTemplate, vd.Type, combinedModifiers, vd.Name)
+
+}
+
+const (
+	variableTemplate          = `%s %s %s;`
+	variableTemplateWithValue = `%s %s %s = %s;`
+)

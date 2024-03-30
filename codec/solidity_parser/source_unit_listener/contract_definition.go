@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -37,7 +36,6 @@ func (s *SourceUnitListener) EnterContractDefinition(ctx *parser.ContractDefinit
 	}
 	s.SourceUnit.Contracts = append(s.SourceUnit.Contracts, contract)
 
-	fmt.Println("Enter Contract Definition")
 }
 
 // ExitContractDefinition is called when production contractDefinition is exited.
@@ -54,17 +52,17 @@ func (s *SourceUnitListener) ExitContractDefinition(ctx *parser.ContractDefiniti
 	}
 
 	s.IsInContract = false
-	fmt.Println("Exit Contract Definition")
+
 }
 
 // // EnterContractPart is called when production contractPart is entered.
 // func (s *SourceUnitListener) EnterContractPart(ctx *parser.ContractPartContext) {
-// 	fmt.Println("Enter Contract Part")
+//
 // }
 
 // // ExitContractPart is called when production contractPart is exited.
 // func (s *SourceUnitListener) ExitContractPart(ctx *parser.ContractPartContext) {
-// 	fmt.Println("Exit Contract Part")
+//
 // }
 
 func (s *SourceUnitListener) EnterInheritanceSpecifier(ctx *parser.InheritanceSpecifierContext) {
@@ -73,7 +71,7 @@ func (s *SourceUnitListener) EnterInheritanceSpecifier(ctx *parser.InheritanceSp
 	}
 	lastContract := s.LastContract()
 	lastContract.Inheritance = append(lastContract.Inheritance, inheritance)
-	fmt.Println("Enter Inheritance Specifier")
+
 }
 
 func (s *SourceUnitListener) ExitInheritanceSpecifier(ctx *parser.InheritanceSpecifierContext) {
@@ -83,5 +81,5 @@ func (s *SourceUnitListener) ExitInheritanceSpecifier(ctx *parser.InheritanceSpe
 	lastInheritance := s.LastInheritance()
 	lastInheritance.Name = name
 	lastInheritance.Body = body
-	fmt.Println("Exit Inheritance Specifier")
+
 }

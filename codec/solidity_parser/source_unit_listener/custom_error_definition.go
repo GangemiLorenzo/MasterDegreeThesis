@@ -2,7 +2,6 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
-	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +25,6 @@ func (s *SourceUnitListener) EnterCustomErrorDefinition(ctx *parser.CustomErrorD
 		s.SourceUnit.CustomErrors = append(s.SourceUnit.CustomErrors, customError)
 	}
 
-	fmt.Println("Enter Custom Error Definition")
 }
 
 func (s *SourceUnitListener) ExitCustomErrorDefinition(ctx *parser.CustomErrorDefinitionContext) {
@@ -36,5 +34,4 @@ func (s *SourceUnitListener) ExitCustomErrorDefinition(ctx *parser.CustomErrorDe
 
 	s.IsInCustomError = false
 
-	fmt.Println("Exit Custom Error Definition")
 }
