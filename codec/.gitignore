@@ -19,4 +19,5 @@ go.work
 
 .env
 tools/solc
-internal/contracts/files
+internal/contracts/files/
+__debug_bin*
