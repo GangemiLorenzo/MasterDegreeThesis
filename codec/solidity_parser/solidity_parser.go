@@ -10,8 +10,8 @@ import (
 )
 
 type SolidityParserInterface interface {
-	GetParseTree(sourceCode string) (string, error)
 	ParseSmartContract(sourceCode string) (*listener.SourceUnit, error)
+	GetCodeFromSourceUnit(sourceUnit listener.SourceUnit) (string, error)
 }
 
 type SolidityParser struct {
@@ -19,26 +19,6 @@ type SolidityParser struct {
 
 func NewSolidityParser() SolidityParserInterface {
 	return &SolidityParser{}
-}
-
-func (p *SolidityParser) GetParseTree(sourceCode string) (string, error) {
-	inputStream := antlr.NewInputStream(sourceCode)
-	lexer := parser.NewSolidityLexer(inputStream)
-	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-	solidityParser := parser.NewSolidityParser(stream)
-
-	// Add the custom error listener
-	errorListener := NewErrorListener()
-	solidityParser.RemoveErrorListeners()
-	solidityParser.AddErrorListener(errorListener)
-
-	parseTree := solidityParser.SourceUnit()
-
-	if errorListener.HasErrors() {
-		return "", fmt.Errorf("parsing errors: %v", errorListener.Errors())
-	}
-
-	return parseTree.ToStringTree(nil, solidityParser), nil
 }
 
 func (p *SolidityParser) ParseSmartContract(sourceCode string) (*listener.SourceUnit, error) {
@@ -66,4 +46,8 @@ func (p *SolidityParser) ParseSmartContract(sourceCode string) (*listener.Source
 	res := sourceUnitListener.SourceUnit
 
 	return res, nil
+}
+
+func (p *SolidityParser) GetCodeFromSourceUnit(sourceUnit listener.SourceUnit) (string, error) {
+	return "", nil
 }
