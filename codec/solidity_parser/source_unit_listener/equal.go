@@ -38,7 +38,7 @@ func (c ContractDefinition) Equals(other ContractDefinition) bool {
 }
 
 func (i InheritanceDefinition) Equals(other InheritanceDefinition) bool {
-	return i.Name == other.Name && i.Body == other.Body
+	return i.Name == other.Name
 }
 
 func (v VariableDefinition) Equals(other VariableDefinition) bool {

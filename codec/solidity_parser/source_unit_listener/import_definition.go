@@ -88,7 +88,7 @@ func (id *ImportDefinition) GetCodeAsString() string {
 const (
 	importTemplateWithSymbols = `import {%s} from %s;
 	`
-	simportTemplateWithoutSymbols = `import from %s;
+	simportTemplateWithoutSymbols = `import %s;
 	`
 )
 

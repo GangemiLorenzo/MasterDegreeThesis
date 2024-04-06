@@ -54,6 +54,6 @@ func (sd *StructDefinition) GetCodeAsString() string {
 
 const structTemplate = `struct %s {
 		%s
-	};
+	}
 
 	`

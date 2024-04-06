@@ -2,14 +2,16 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
+	"fmt"
 
 	"github.com/google/uuid"
 )
 
 type ModifierDefinition struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-	Body string `json:"body"`
+	Id         string                `json:"id"`
+	Name       string                `json:"name"`
+	Body       string                `json:"body"`
+	Parameters []ParameterDefinition `json:"parameters"`
 }
 
 func (s *SourceUnitListener) EnterModifierDefinition(ctx *parser.ModifierDefinitionContext) {
@@ -59,6 +61,9 @@ func (s *SourceUnitListener) ExitModifierList(ctx *parser.ModifierListContext) {
 			modifiers = append(modifiers, mod.GetText())
 		}
 	}
+	if ctx.GetText() == "payable" {
+		modifiers = append(modifiers, "payable")
+	}
 	if len(ctx.AllOverrideSpecifier()) > 0 {
 		modifiers = append(modifiers, "override")
 	}
@@ -72,9 +77,15 @@ func (s *SourceUnitListener) ExitModifierList(ctx *parser.ModifierListContext) {
 		}
 	}
 
-	// Check for state mutability
-	if len(ctx.AllStateMutability()) > 0 {
-		lastFunction.StateMutability = ctx.StateMutability(0).GetText()
-	}
+}
+
+func (md *ModifierDefinition) GetCodeAsString() string {
+
+	return fmt.Sprintf(modifierTemplate, md.Name, "", md.Body)
 
 }
+
+const modifierTemplate = `modifier %s(%s) 
+	%s
+
+	`

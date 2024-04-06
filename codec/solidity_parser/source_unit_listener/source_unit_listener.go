@@ -15,6 +15,9 @@ type SourceUnitListener struct {
 	IsInStruct             bool
 	IsInImport             bool
 	IsInCustomError        bool
+	IsInInheritance        bool
+	IsInStateVariable      bool
+	IsInTypeName           bool
 }
 
 func NewSourceUnitListener() *SourceUnitListener {
@@ -41,6 +44,37 @@ func (s *SourceUnitListener) ExitBlock(ctx *parser.BlockContext) {
 	}
 
 }
+
+// EnterTypeName is called when production typeName is entered.
+func (s *SourceUnitListener) EnterTypeName(ctx *parser.TypeNameContext) {
+	s.IsInTypeName = true
+}
+
+// ExitTypeName is called when production typeName is exited.
+func (s *SourceUnitListener) ExitTypeName(ctx *parser.TypeNameContext) {
+	s.IsInTypeName = false
+
+}
+
+// // EnterExpressionStatement is called when production expressionStatement is entered.
+// func (s *SourceUnitListener) EnterExpressionStatement(ctx *parser.ExpressionStatementContext) {
+// 	fmt.Println("here")
+// }
+
+// // ExitExpressionStatement is called when production expressionStatement is exited.
+// func (s *SourceUnitListener) ExitExpressionStatement(ctx *parser.ExpressionStatementContext) {
+// 	fmt.Println(ctx.GetText())
+// }
+
+// // EnterFunctionTypeName is called when production functionTypeName is entered.
+// func (s *SourceUnitListener) EnterFunctionTypeName(ctx *parser.FunctionTypeNameContext) {
+// 	fmt.Println("here")
+// }
+
+// // ExitFunctionTypeName is called when production functionTypeName is exited.
+// func (s *SourceUnitListener) ExitFunctionTypeName(ctx *parser.FunctionTypeNameContext) {
+// 	fmt.Println("here")
+// }
 
 // This functions are ready to be used, but at this moment I don't need them
 
@@ -186,11 +220,6 @@ func (s *SourceUnitListener) ExitFunctionTypeParameter(ctx *parser.FunctionTypeP
 	fmt.Println("here")
 }
 
-// EnterTypeName is called when production typeName is entered.
-func (s *SourceUnitListener) EnterTypeName(ctx *parser.TypeNameContext) { fmt.Println("here") }
-
-// ExitTypeName is called when production typeName is exited.
-func (s *SourceUnitListener) ExitTypeName(ctx *parser.TypeNameContext) { fmt.Println("here") }
 
 // EnterUserDefinedTypeName is called when production userDefinedTypeName is entered.
 func (s *SourceUnitListener) EnterUserDefinedTypeName(ctx *parser.UserDefinedTypeNameContext) {
@@ -226,15 +255,7 @@ func (s *SourceUnitListener) ExitMappingValueName(ctx *parser.MappingValueNameCo
 	fmt.Println("here")
 }
 
-// EnterFunctionTypeName is called when production functionTypeName is entered.
-func (s *SourceUnitListener) EnterFunctionTypeName(ctx *parser.FunctionTypeNameContext) {
-	fmt.Println("here")
-}
 
-// ExitFunctionTypeName is called when production functionTypeName is exited.
-func (s *SourceUnitListener) ExitFunctionTypeName(ctx *parser.FunctionTypeNameContext) {
-	fmt.Println("here")
-}
 
 // EnterStorageLocation is called when production storageLocation is entered.
 func (s *SourceUnitListener) EnterStorageLocation(ctx *parser.StorageLocationContext) {
@@ -246,15 +267,6 @@ func (s *SourceUnitListener) ExitStorageLocation(ctx *parser.StorageLocationCont
 	fmt.Println("here")
 }
 
-// EnterStateMutability is called when production stateMutability is entered.
-func (s *SourceUnitListener) EnterStateMutability(ctx *parser.StateMutabilityContext) {
-	fmt.Println("here")
-}
-
-// ExitStateMutability is called when production stateMutability is exited.
-func (s *SourceUnitListener) ExitStateMutability(ctx *parser.StateMutabilityContext) {
-	fmt.Println("here")
-}
 
 // EnterStatement is called when production statement is entered.
 func (s *SourceUnitListener) EnterStatement(ctx *parser.StatementContext) { fmt.Println("here") }
@@ -262,15 +274,6 @@ func (s *SourceUnitListener) EnterStatement(ctx *parser.StatementContext) { fmt.
 // ExitStatement is called when production statement is exited.
 func (s *SourceUnitListener) ExitStatement(ctx *parser.StatementContext) { fmt.Println("here") }
 
-// EnterExpressionStatement is called when production expressionStatement is entered.
-func (s *SourceUnitListener) EnterExpressionStatement(ctx *parser.ExpressionStatementContext) {
-	fmt.Println("here")
-}
-
-// ExitExpressionStatement is called when production expressionStatement is exited.
-func (s *SourceUnitListener) ExitExpressionStatement(ctx *parser.ExpressionStatementContext) {
-	fmt.Println("here")
-}
 
 // EnterIfStatement is called when production ifStatement is entered.
 func (s *SourceUnitListener) EnterIfStatement(ctx *parser.IfStatementContext) { fmt.Println("here") }
@@ -440,11 +443,6 @@ func (s *SourceUnitListener) ExitElementaryTypeName(ctx *parser.ElementaryTypeNa
 	fmt.Println("here")
 }
 
-// EnterExpression is called when production expression is entered.
-func (s *SourceUnitListener) EnterExpression(ctx *parser.ExpressionContext) { fmt.Println("here") }
-
-// ExitExpression is called when production expression is exited.
-func (s *SourceUnitListener) ExitExpression(ctx *parser.ExpressionContext) { fmt.Println("here") }
 
 // EnterPrimaryExpression is called when production primaryExpression is entered.
 func (s *SourceUnitListener) EnterPrimaryExpression(ctx *parser.PrimaryExpressionContext) {

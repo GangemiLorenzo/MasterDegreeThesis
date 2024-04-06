@@ -62,7 +62,7 @@ func testSomeFunctionalities() {
 	//solidityCompilerUtils := compiler.NewSolidityCompilerUtils(solcPath)
 	contractUtils := contracts.NewContractUtils(contractFilesPath)
 
-	contractCode, err := contractUtils.GetCodeAsString(contracts.File01UdataUtypes)
+	contractCode, err := contractUtils.GetCodeAsString(contracts.File24Uinterface)
 	if err != nil {
 		log.Fatalf("failed to read contract file: %v", err)
 	}

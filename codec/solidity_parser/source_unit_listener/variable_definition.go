@@ -16,9 +16,12 @@ type VariableDefinition struct {
 	Modifiers   []string `json:"modifiers"`
 	MappingFrom string   `json:"mappingFrom"`
 	MappingTo   string   `json:"mappingTo"`
+	Value       string   `json:"value"`
 }
 
 func (s *SourceUnitListener) EnterStateVariableDeclaration(ctx *parser.StateVariableDeclarationContext) {
+	s.IsInStateVariable = true
+
 	stateVariable := VariableDefinition{
 		Id: uuid.NewString(),
 	}
@@ -84,9 +87,12 @@ func (s *SourceUnitListener) ExitStateVariableDeclaration(ctx *parser.StateVaria
 	lastStateVariable.Visibility = variable.Visibility
 	lastStateVariable.Modifiers = variable.Modifiers
 
+	s.IsInStateVariable = false
+
 }
 
 func (s *SourceUnitListener) EnterVariableDeclaration(ctx *parser.VariableDeclarationContext) {
+
 	variable := VariableDefinition{
 		Id: uuid.NewString(),
 	}
@@ -128,6 +134,15 @@ func (s *SourceUnitListener) ExitMapping(ctx *parser.MappingContext) {
 func (vd *VariableDefinition) GetCodeAsString() string {
 
 	combinedModifiers := strings.Join(vd.Modifiers, " ")
+
+	if vd.Value != "" {
+		return fmt.Sprintf(variableTemplateWithValue,
+			vd.Type,
+			combinedModifiers,
+			vd.Name,
+			vd.Value,
+		)
+	}
 
 	return fmt.Sprintf(variableTemplate, vd.Type, combinedModifiers, vd.Name)
 

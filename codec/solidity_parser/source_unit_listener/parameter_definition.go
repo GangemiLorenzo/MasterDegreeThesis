@@ -13,6 +13,7 @@ type ParameterDefinition struct {
 	Type      string `json:"type"`
 	Storage   string `json:"storage"`
 	IsIndexed bool   `json:"isIndexed"`
+	IsPayable bool   `json:"payable"`
 }
 
 func (s *SourceUnitListener) EnterReturnParameters(ctx *parser.ReturnParametersContext) {
@@ -37,11 +38,18 @@ func (s *SourceUnitListener) EnterParameter(ctx *parser.ParameterContext) {
 		return
 	}
 
+	if s.IsInModifierDefinition {
+		lastModifier := s.LastModifierDefinition()
+		lastModifier.Parameters = append(lastModifier.Parameters, parameter)
+		return
+	}
+
 	lastFunction := s.LastFunctionDefinition()
 	if s.IsInReturnParameter {
 		lastFunction.Returns = append(lastFunction.Returns, parameter)
 		return
 	}
+
 	lastFunction.Parameters = append(lastFunction.Parameters, parameter)
 
 }
@@ -50,6 +58,11 @@ func (s *SourceUnitListener) EnterParameter(ctx *parser.ParameterContext) {
 func (s *SourceUnitListener) ExitParameter(ctx *parser.ParameterContext) {
 
 	typeStr := ctx.TypeName().GetText()
+	payable := false
+	if typeStr == "addresspayable" {
+		payable = true
+		typeStr = "address"
+	}
 
 	var name string
 	if ctx.Identifier() == nil {
@@ -68,12 +81,15 @@ func (s *SourceUnitListener) ExitParameter(ctx *parser.ParameterContext) {
 		lastParameter = s.LastReturn()
 	} else if s.IsInCustomError {
 		lastParameter = s.LastCustomErrorParameter()
+	} else if s.IsInModifierDefinition {
+		lastParameter = s.LastModifierParameter()
 	} else {
 		lastParameter = s.LastFunctionParameter()
 	}
 
 	lastParameter.Name = name
 	lastParameter.Type = typeStr
+	lastParameter.IsPayable = payable
 	lastParameter.Storage = storage
 
 }
@@ -88,7 +104,13 @@ func (s *SourceUnitListener) EnterEventParameter(ctx *parser.EventParameterConte
 }
 
 func (s *SourceUnitListener) ExitEventParameter(ctx *parser.EventParameterContext) {
+
 	typeStr := ctx.TypeName().GetText()
+	payable := false
+	if typeStr == "addresspayable" {
+		payable = true
+		typeStr = "address"
+	}
 
 	var name string
 	if ctx.Identifier() == nil {
@@ -101,6 +123,7 @@ func (s *SourceUnitListener) ExitEventParameter(ctx *parser.EventParameterContex
 
 	lastParameter.Name = name
 	lastParameter.Type = typeStr
+	lastParameter.IsPayable = payable
 
 	if s.IsInEventDefinition {
 		isIndexed := ctx.IndexedKeyword() != nil
@@ -109,15 +132,18 @@ func (s *SourceUnitListener) ExitEventParameter(ctx *parser.EventParameterContex
 }
 
 func (pd *ParameterDefinition) GetCodeAsString() string {
+	indexed := ""
+	payable := ""
 	if pd.IsIndexed {
-		return fmt.Sprintf(parameterTemplateIndexed, pd.Type, pd.Storage, pd.Name)
-	} else {
-		return fmt.Sprintf(parameterTemplate, pd.Type, pd.Storage, pd.Name)
+		indexed = "indexed"
+	}
+	if pd.IsPayable {
+		payable = "payable"
 	}
 
+	return fmt.Sprintf(parameterTemplate, pd.Type, indexed, payable, pd.Storage, pd.Name)
 }
 
 const (
-	parameterTemplate        = `%s %s %s`
-	parameterTemplateIndexed = `%s indexed %s %s`
+	parameterTemplate = `%s %s %s %s %s`
 )

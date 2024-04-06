@@ -2,6 +2,8 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
+	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -32,15 +34,27 @@ func (s *SourceUnitListener) ExitEnumDefinition(ctx *parser.EnumDefinitionContex
 
 }
 
-// EnterEnumValue is called when production enumValue is entered.
 func (s *SourceUnitListener) EnterEnumValue(ctx *parser.EnumValueContext) {
 
 }
 
-// ExitEnumValue is called when production enumValue is exited.
 func (s *SourceUnitListener) ExitEnumValue(ctx *parser.EnumValueContext) {
 	value := ctx.Identifier().GetText()
 	lastEnum := s.LastEnum()
 	lastEnum.Values = append(lastEnum.Values, value)
 
 }
+
+func (ed *EnumDefinition) GetCodeAsString() string {
+	combinedValues := strings.Join(ed.Values, `,
+		`)
+
+	return fmt.Sprintf(enumTemplate, ed.Name, combinedValues)
+
+}
+
+const enumTemplate = `enum %s {
+		%s
+	}
+
+	`

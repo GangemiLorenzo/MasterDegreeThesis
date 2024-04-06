@@ -53,12 +53,30 @@ func (su *SourceUnit) GetCodeAsString() string {
 		combinedStructs += s.GetCodeAsString()
 	}
 
+	var combinedEnums string
+	for _, e := range su.Enums {
+		combinedEnums += e.GetCodeAsString()
+	}
+
+	var combinedContracts string
+	for _, c := range su.Contracts {
+		combinedContracts += c.GetCodeAsString()
+	}
+
+	var combinedFunctions string
+	for _, f := range su.Functions {
+		combinedFunctions += f.GetCodeAsString()
+	}
+
 	result := fmt.Sprintf(
 		template,
 		combinedPragma,
 		combinedImports,
 		combinedEvents,
 		combinedStructs,
+		combinedEnums,
+		combinedContracts,
+		combinedFunctions,
 	)
 
 	return result
@@ -66,13 +84,12 @@ func (su *SourceUnit) GetCodeAsString() string {
 
 // Template used to reconstruct the code from the SourceUnit
 const template string = `
-		
 	%s
-
 	%s
-
 	%s
-
+	%s
+	%s
+	%s
 	%s
 
 	`

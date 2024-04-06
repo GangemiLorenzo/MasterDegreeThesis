@@ -2,6 +2,8 @@ package source_unit_listener
 
 import (
 	parser "codec/solidity_parser/antlr_parser"
+	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -22,9 +24,9 @@ type ContractDefinition struct {
 }
 
 type InheritanceDefinition struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-	Body string `json:"body"`
+	Id     string   `json:"id"`
+	Name   string   `json:"name"`
+	Values []string `json:"values"`
 }
 
 // EnterContractDefinition is called when production contractDefinition is entered.
@@ -66,6 +68,8 @@ func (s *SourceUnitListener) ExitContractDefinition(ctx *parser.ContractDefiniti
 // }
 
 func (s *SourceUnitListener) EnterInheritanceSpecifier(ctx *parser.InheritanceSpecifierContext) {
+	s.IsInInheritance = true
+
 	inheritance := InheritanceDefinition{
 		Id: uuid.NewString(),
 	}
@@ -76,10 +80,147 @@ func (s *SourceUnitListener) EnterInheritanceSpecifier(ctx *parser.InheritanceSp
 
 func (s *SourceUnitListener) ExitInheritanceSpecifier(ctx *parser.InheritanceSpecifierContext) {
 	name := ctx.UserDefinedTypeName().GetText()
-	body := ctx.GetText()
 
 	lastInheritance := s.LastInheritance()
 	lastInheritance.Name = name
-	lastInheritance.Body = body
+
+	s.IsInInheritance = false
+}
+
+func (s *SourceUnitListener) EnterExpression(ctx *parser.ExpressionContext) {
 
 }
+
+func (s *SourceUnitListener) ExitExpression(ctx *parser.ExpressionContext) {
+
+	expression := extractTextWithWhitespace(ctx, ctx.GetParser().GetTokenStream())
+
+	if s.IsInTypeName {
+		return
+	}
+
+	if s.IsInInheritance {
+		lastInheritance := s.LastInheritance()
+		lastInheritance.Values = append(lastInheritance.Values, expression)
+	}
+
+	if s.IsInStateVariable {
+		lastVariable := s.LastStateVariable()
+		lastVariable.Value = expression
+	}
+}
+
+func (cd *ContractDefinition) GetCodeAsString() string {
+
+	var typeString string
+	if cd.IsInterface {
+		typeString = "interface"
+	} else if cd.IsLibrary {
+		typeString = "library"
+	} else {
+		typeString = "contract"
+	}
+
+	var inheritanceStrings []string
+	for _, i := range cd.Inheritance {
+		inheritanceStrings = append(inheritanceStrings, i.GetCodeAsString())
+	}
+	combinedInheritance := strings.Join(inheritanceStrings, `, `)
+
+	var variableStrings []string
+	for _, v := range cd.Variables {
+		variableStrings = append(variableStrings, v.GetCodeAsString())
+	}
+	combinedVariables := strings.Join(variableStrings, `
+		`)
+
+	var combinedEvents string
+	for _, e := range cd.Events {
+		combinedEvents += e.GetCodeAsString() + `	`
+	}
+
+	var combinedModifiers string
+	for _, m := range cd.Modifiers {
+		combinedModifiers += m.GetCodeAsString() + `	`
+	}
+
+	var combinedStructs string
+	for _, s := range cd.Structs {
+		combinedStructs += s.GetCodeAsString() + `	`
+	}
+
+	var combinedEnums string
+	for _, e := range cd.Enums {
+		combinedEnums += e.GetCodeAsString() + `	`
+	}
+
+	var combinedFunctions string
+	for _, f := range cd.Functions {
+		combinedFunctions += f.GetCodeAsString() + `	`
+	}
+
+	if len(cd.Inheritance) > 0 {
+		return fmt.Sprintf(contractTemplateWithInheritance,
+			typeString,
+			cd.Name,
+			combinedInheritance,
+			combinedVariables,
+			combinedEvents,
+			combinedModifiers,
+			combinedStructs,
+			combinedEnums,
+			combinedFunctions,
+		)
+	}
+
+	return fmt.Sprintf(contractTemplate,
+		typeString,
+		cd.Name,
+		combinedVariables,
+		combinedEvents,
+		combinedModifiers,
+		combinedStructs,
+		combinedEnums,
+		combinedFunctions,
+	)
+
+}
+
+const (
+	contractTemplate = `%s %s {
+		%s
+		%s
+		%s
+		%s
+		%s
+		%s
+	}
+	
+	`
+
+	contractTemplateWithInheritance = `%s %s is %s {
+		%s
+		%s
+		%s
+		%s
+		%s
+		%s
+	}
+
+	`
+)
+
+func (id *InheritanceDefinition) GetCodeAsString() string {
+
+	if len(id.Values) == 0 {
+		return fmt.Sprintf(inheritanceDefinition, id.Name)
+	}
+
+	combinedValues := strings.Join(id.Values, ", ")
+	return fmt.Sprintf(inheritanceDefinitionWithValues, id.Name, combinedValues)
+}
+
+const (
+	inheritanceDefinition           = `%s`
+	inheritanceDefinitionWithValues = `%s(%s)`
+)

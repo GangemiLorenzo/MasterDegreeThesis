@@ -13,7 +13,10 @@ func extractTextWithWhitespace(ctx antlr.ParserRuleContext, tokens antlr.TokenSt
 		var textBuilder strings.Builder
 		for i := start.GetTokenIndex(); i <= stop.GetTokenIndex(); i++ {
 			token := tokens.Get(i)
-			textBuilder.WriteString(token.GetText() + " ")
+			text := token.GetText()
+			if !strings.HasPrefix(text, "//") && !strings.HasPrefix(text, "/*") {
+				textBuilder.WriteString(text + " ")
+			}
 		}
 		return textBuilder.String()
 	}
@@ -110,6 +113,13 @@ func (s *SourceUnitListener) LastModifierDefinition() *ModifierDefinition {
 		return nil
 	}
 	return &s.LastContract().Modifiers[len(s.LastContract().Modifiers)-1]
+}
+
+func (s *SourceUnitListener) LastModifierParameter() *ParameterDefinition {
+	if len(s.LastModifierDefinition().Parameters) == 0 {
+		return nil
+	}
+	return &s.LastModifierDefinition().Parameters[len(s.LastModifierDefinition().Parameters)-1]
 }
 
 func (s *SourceUnitListener) LastFunctionParameter() *ParameterDefinition {
