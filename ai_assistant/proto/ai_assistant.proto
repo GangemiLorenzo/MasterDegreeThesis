@@ -6,7 +6,7 @@ package ai_assistant;
 // Adjust the path according to your module path and desired package structure.
 option go_package = "ai_assistant_service/;ai_assistant_service";
 
-service AiAssistant {
+service AiAssistantService {
   rpc Comment(CommentRequest) returns (CommentResponse);
 }
 

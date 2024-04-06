@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	service "server/codec_service"
+	service "codec/codec_service"
 
 	"google.golang.org/grpc"
 )

@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// AiAssistantClient is the client API for AiAssistant service.
+// AiAssistantServiceClient is the client API for AiAssistantService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AiAssistantClient interface {
+type AiAssistantServiceClient interface {
 	Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error)
 }
 
-type aiAssistantClient struct {
+type aiAssistantServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAiAssistantClient(cc grpc.ClientConnInterface) AiAssistantClient {
-	return &aiAssistantClient{cc}
+func NewAiAssistantServiceClient(cc grpc.ClientConnInterface) AiAssistantServiceClient {
+	return &aiAssistantServiceClient{cc}
 }
 
-func (c *aiAssistantClient) Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error) {
+func (c *aiAssistantServiceClient) Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error) {
 	out := new(CommentResponse)
-	err := c.cc.Invoke(ctx, "/ai_assistant.AiAssistant/Comment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ai_assistant.AiAssistantService/Comment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AiAssistantServer is the server API for AiAssistant service.
-// All implementations must embed UnimplementedAiAssistantServer
+// AiAssistantServiceServer is the server API for AiAssistantService service.
+// All implementations must embed UnimplementedAiAssistantServiceServer
 // for forward compatibility
-type AiAssistantServer interface {
+type AiAssistantServiceServer interface {
 	Comment(context.Context, *CommentRequest) (*CommentResponse, error)
-	mustEmbedUnimplementedAiAssistantServer()
+	mustEmbedUnimplementedAiAssistantServiceServer()
 }
 
-// UnimplementedAiAssistantServer must be embedded to have forward compatible implementations.
-type UnimplementedAiAssistantServer struct {
+// UnimplementedAiAssistantServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedAiAssistantServiceServer struct {
 }
 
-func (UnimplementedAiAssistantServer) Comment(context.Context, *CommentRequest) (*CommentResponse, error) {
+func (UnimplementedAiAssistantServiceServer) Comment(context.Context, *CommentRequest) (*CommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Comment not implemented")
 }
-func (UnimplementedAiAssistantServer) mustEmbedUnimplementedAiAssistantServer() {}
+func (UnimplementedAiAssistantServiceServer) mustEmbedUnimplementedAiAssistantServiceServer() {}
 
-// UnsafeAiAssistantServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AiAssistantServer will
+// UnsafeAiAssistantServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AiAssistantServiceServer will
 // result in compilation errors.
-type UnsafeAiAssistantServer interface {
-	mustEmbedUnimplementedAiAssistantServer()
+type UnsafeAiAssistantServiceServer interface {
+	mustEmbedUnimplementedAiAssistantServiceServer()
 }
 
-func RegisterAiAssistantServer(s grpc.ServiceRegistrar, srv AiAssistantServer) {
-	s.RegisterService(&AiAssistant_ServiceDesc, srv)
+func RegisterAiAssistantServiceServer(s grpc.ServiceRegistrar, srv AiAssistantServiceServer) {
+	s.RegisterService(&AiAssistantService_ServiceDesc, srv)
 }
 
-func _AiAssistant_Comment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AiAssistantService_Comment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CommentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AiAssistantServer).Comment(ctx, in)
+		return srv.(AiAssistantServiceServer).Comment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ai_assistant.AiAssistant/Comment",
+		FullMethod: "/ai_assistant.AiAssistantService/Comment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AiAssistantServer).Comment(ctx, req.(*CommentRequest))
+		return srv.(AiAssistantServiceServer).Comment(ctx, req.(*CommentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AiAssistant_ServiceDesc is the grpc.ServiceDesc for AiAssistant service.
+// AiAssistantService_ServiceDesc is the grpc.ServiceDesc for AiAssistantService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AiAssistant_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ai_assistant.AiAssistant",
-	HandlerType: (*AiAssistantServer)(nil),
+var AiAssistantService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ai_assistant.AiAssistantService",
+	HandlerType: (*AiAssistantServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Comment",
-			Handler:    _AiAssistant_Comment_Handler,
+			Handler:    _AiAssistantService_Comment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
