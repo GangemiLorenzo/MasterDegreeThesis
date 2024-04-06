@@ -23,10 +23,9 @@ func main() {
 
 	testSomeFunctionalities()
 
-	port := os.Getenv("CODEC_PORT")
+	port := os.Getenv("GRPC_PORT")
 	if port == "" {
-		log.Fatal("CODEC_PORT is not set in .env file")
-
+		log.Fatal("GRPC_PORT is not set in .env file")
 	}
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
