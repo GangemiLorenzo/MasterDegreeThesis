@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      swagger_dart_code_generator:
+        options:
+          input_folder: lib/api/schema
+          output_folder: lib/api/gen
+          override_to_string: true
+          override_equals_and_hashcode: true
+          separate_models: true

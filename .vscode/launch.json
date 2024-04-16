@@ -22,7 +22,6 @@
       "name": "Launch Editor",
       "type": "dart",
       "request": "launch",
-      "flutterMode": "debug",
       "program": "${workspaceFolder}/editor/lib/main.dart"
     }
   ]

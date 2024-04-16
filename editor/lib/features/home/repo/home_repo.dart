@@ -1,11 +1,11 @@
-import 'package:editor/service/rest_client.dart';
+import 'package:editor/service/rest_service.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class HomeRepo {
   HomeRepo({
-    required this.restClient,
+    required this.restService,
   });
 
-  final RestClient restClient;
+  final RestService restService;
 }

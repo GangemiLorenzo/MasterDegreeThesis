@@ -1,0 +1,59 @@
+openapi: 3.1.0
+info:
+  title: Smart Contract Processing API
+  description: API for uploading a file, processing it asynchronously, and receiving progress updates and result
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /upload:
+    post:
+      summary: Upload a file for processing
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: File successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  taskId:
+                    type: string
+                    description: Identifier for the uploaded task
+  /tasks/{taskId}:
+    get:
+      summary: Get the status of a processing task
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          description: Identifier of the task to get status for
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Task status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Current status of the task
+                  result:
+                    type: object
+                    description: Result of the processing task (dynamic structure)
+                  progress:
+                    type: integer
+                    description: Percentage of completion of the task

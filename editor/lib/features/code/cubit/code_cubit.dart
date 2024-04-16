@@ -1,4 +1,6 @@
-import 'package:editor/features/home/repo/home_repo.dart';
+import 'dart:io';
+
+import 'package:editor/features/code/repo/code_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -14,5 +16,35 @@ class CodeCubit extends Cubit<CodeState> {
           const CodeState.initial(),
         );
 
-  final HomeRepo repo;
+  final CodeRepo repo;
+
+  void openSmartContract() async {
+    if (state is! _Initial) {
+      return;
+    }
+    final currentState = state as _Initial;
+
+    emit(
+      currentState.copyWith(
+        isLoading: true,
+      ),
+    );
+
+    final file = await repo.openSmartContract();
+    if (file == null) {
+      emit(
+        currentState.copyWith(
+          isLoading: false,
+        ),
+      );
+      return;
+    }
+
+    emit(
+      currentState.copyWith(
+        isLoading: false,
+        file: file,
+      ),
+    );
+  }
 }
