@@ -1,5 +1,6 @@
 import 'package:editor/app/router/local_router.dart';
 import 'package:editor/app/state/global_settings/cubit/global_setting_cubit.dart';
+import 'package:editor/app/state/secure_settings/cubit/secure_settings_cubit.dart';
 import 'package:editor/app/theme/theme.dart';
 import 'package:editor/foundation/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +25,13 @@ class PixabayBrowserMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Pixabay Browser',
+      title: 'Editor',
       theme: LocalTheme.lightTheme,
       darkTheme: LocalTheme.darkTheme,
       themeMode: context.select<GlobalSettingCubit, ThemeMode>(
         (cubit) => cubit.state.themeMode,
       ),
-      routerConfig: localRoutingConfig,
+      routerConfig: router,
     );
   }
 }
@@ -51,9 +52,12 @@ class BaseCubitProvider extends StatelessWidget {
         BlocProvider<GlobalSettingCubit>(
           create: (_) => getIt.get<GlobalSettingCubit>(),
         ),
+        BlocProvider<SecureSettingsCubit>(
+          create: (_) => getIt.get<SecureSettingsCubit>(),
+        ),
       ],
       child: Builder(
-        builder: (context) => child,
+        builder: (_) => child,
       ),
     );
   }

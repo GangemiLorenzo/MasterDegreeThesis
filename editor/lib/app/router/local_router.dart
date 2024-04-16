@@ -7,8 +7,8 @@ import 'package:go_router/go_router.dart';
 //         ? authenticatedRoutingConfig
 //         : notLoggedRoutingConfig;
 
-final localRoutingConfig = GoRouter(
-  initialLocation: '/',
+final router = GoRouter(
+  initialLocation: '/code',
   routes: [
     homeRoute,
   ],

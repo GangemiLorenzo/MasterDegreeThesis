@@ -1,23 +1,44 @@
-import 'package:editor/app/theme/color_schemes.dart';
+import 'package:editor/app/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 /// Local theme, define here custom widget themes
 class LocalTheme {
+  static ThemeData get _lightThemeData => ThemeData.light();
+  static ThemeData get _darkThemeData => ThemeData.dark();
+
   static ThemeData get lightTheme {
     return ThemeData(
       colorScheme: lightColorScheme,
-      cardTheme: ThemeData.light().cardTheme.copyWith(
-            surfaceTintColor: lightColorScheme.surface,
+      cardTheme: _lightThemeData.cardTheme.copyWith(
+        surfaceTintColor: lightColorScheme.surfaceTint,
+      ),
+      iconButtonTheme: const IconButtonThemeData(
+        style: ButtonStyle(
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: borderRadius8,
+            ),
           ),
+        ),
+      ),
     );
   }
 
   static ThemeData get darkTheme {
     return ThemeData(
       colorScheme: darkColorScheme,
-      cardTheme: ThemeData.dark().cardTheme.copyWith(
-            surfaceTintColor: darkColorScheme.surface,
+      cardTheme: _darkThemeData.cardTheme.copyWith(
+        surfaceTintColor: darkColorScheme.surfaceTint,
+      ),
+      iconButtonTheme: const IconButtonThemeData(
+        style: ButtonStyle(
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: borderRadius8,
+            ),
           ),
+        ),
+      ),
     );
   }
 }

@@ -17,38 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$GlobalSettingState {
   ThemeMode get themeMode => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ThemeMode themeMode) base,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ThemeMode themeMode)? base,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ThemeMode themeMode)? base,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Loaded value) base,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loaded value)? base,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loaded value)? base,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GlobalSettingStateCopyWith<GlobalSettingState> get copyWith =>
@@ -89,22 +57,22 @@ class _$GlobalSettingStateCopyWithImpl<$Res, $Val extends GlobalSettingState>
 }
 
 /// @nodoc
-abstract class _$$LoadedImplCopyWith<$Res>
+abstract class _$$GlobalSettingStateImplCopyWith<$Res>
     implements $GlobalSettingStateCopyWith<$Res> {
-  factory _$$LoadedImplCopyWith(
-          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
-      __$$LoadedImplCopyWithImpl<$Res>;
+  factory _$$GlobalSettingStateImplCopyWith(_$GlobalSettingStateImpl value,
+          $Res Function(_$GlobalSettingStateImpl) then) =
+      __$$GlobalSettingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ThemeMode themeMode});
 }
 
 /// @nodoc
-class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$GlobalSettingStateCopyWithImpl<$Res, _$LoadedImpl>
-    implements _$$LoadedImplCopyWith<$Res> {
-  __$$LoadedImplCopyWithImpl(
-      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+class __$$GlobalSettingStateImplCopyWithImpl<$Res>
+    extends _$GlobalSettingStateCopyWithImpl<$Res, _$GlobalSettingStateImpl>
+    implements _$$GlobalSettingStateImplCopyWith<$Res> {
+  __$$GlobalSettingStateImplCopyWithImpl(_$GlobalSettingStateImpl _value,
+      $Res Function(_$GlobalSettingStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -112,7 +80,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
   $Res call({
     Object? themeMode = null,
   }) {
-    return _then(_$LoadedImpl(
+    return _then(_$GlobalSettingStateImpl(
       themeMode: null == themeMode
           ? _value.themeMode
           : themeMode // ignore: cast_nullable_to_non_nullable
@@ -123,22 +91,22 @@ class __$$LoadedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required this.themeMode});
+class _$GlobalSettingStateImpl implements _GlobalSettingState {
+  const _$GlobalSettingStateImpl({required this.themeMode});
 
   @override
   final ThemeMode themeMode;
 
   @override
   String toString() {
-    return 'GlobalSettingState.base(themeMode: $themeMode)';
+    return 'GlobalSettingState(themeMode: $themeMode)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadedImpl &&
+            other is _$GlobalSettingStateImpl &&
             (identical(other.themeMode, themeMode) ||
                 other.themeMode == themeMode));
   }
@@ -149,73 +117,19 @@ class _$LoadedImpl implements _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
-      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(ThemeMode themeMode) base,
-  }) {
-    return base(themeMode);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ThemeMode themeMode)? base,
-  }) {
-    return base?.call(themeMode);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ThemeMode themeMode)? base,
-    required TResult orElse(),
-  }) {
-    if (base != null) {
-      return base(themeMode);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Loaded value) base,
-  }) {
-    return base(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loaded value)? base,
-  }) {
-    return base?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loaded value)? base,
-    required TResult orElse(),
-  }) {
-    if (base != null) {
-      return base(this);
-    }
-    return orElse();
-  }
+  _$$GlobalSettingStateImplCopyWith<_$GlobalSettingStateImpl> get copyWith =>
+      __$$GlobalSettingStateImplCopyWithImpl<_$GlobalSettingStateImpl>(
+          this, _$identity);
 }
 
-abstract class _Loaded implements GlobalSettingState {
-  const factory _Loaded({required final ThemeMode themeMode}) = _$LoadedImpl;
+abstract class _GlobalSettingState implements GlobalSettingState {
+  const factory _GlobalSettingState({required final ThemeMode themeMode}) =
+      _$GlobalSettingStateImpl;
 
   @override
   ThemeMode get themeMode;
   @override
   @JsonKey(ignore: true)
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+  _$$GlobalSettingStateImplCopyWith<_$GlobalSettingStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

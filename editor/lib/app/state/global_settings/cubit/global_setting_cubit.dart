@@ -13,7 +13,7 @@ class GlobalSettingCubit extends Cubit<GlobalSettingState> {
   GlobalSettingCubit({
     required this.repo,
   }) : super(
-          GlobalSettingState.base(
+          GlobalSettingState(
             themeMode: repo.getThemeMode(),
           ),
         );
@@ -25,5 +25,11 @@ class GlobalSettingCubit extends Cubit<GlobalSettingState> {
     final themeMode = repo.nextThemeMode(currentThemeMode: state.themeMode);
     emit(state.copyWith(themeMode: themeMode));
     repo.storeThemeMode(themeMode: themeMode);
+  }
+
+  /// Sets the theme to the given mode
+  void setTheme(ThemeMode mode) {
+    emit(state.copyWith(themeMode: mode));
+    repo.storeThemeMode(themeMode: mode);
   }
 }
