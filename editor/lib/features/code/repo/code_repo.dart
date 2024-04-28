@@ -23,4 +23,16 @@ class CodeRepo {
     }
     return File(platformFile.path!);
   }
+
+  Future<String> uploadFile(File file) async {
+    final fileBytes = await file.readAsBytes();
+
+    final response = await restService.client.uploadPost(file: fileBytes);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to upload file');
+    }
+
+    return response.body!.taskId;
+  }
 }

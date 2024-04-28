@@ -4,7 +4,7 @@ info:
   description: API for uploading a file, processing it asynchronously, and receiving progress updates and result
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
 paths:
   /upload:
     post:
@@ -26,6 +26,8 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - taskId
                 properties:
                   taskId:
                     type: string
@@ -47,7 +49,14 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - id
+                  - status
+                  - progress
                 properties:
+                  id:
+                    type: string
+                    description: Identifier of the task
                   status:
                     type: string
                     description: Current status of the task

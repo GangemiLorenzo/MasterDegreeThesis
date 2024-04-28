@@ -20,7 +20,7 @@ Map<String, dynamic> _$UploadPost$RequestBodyToJson(
 
 UploadPost$Response _$UploadPost$ResponseFromJson(Map<String, dynamic> json) =>
     UploadPost$Response(
-      taskId: json['taskId'] as String?,
+      taskId: json['taskId'] as String,
     );
 
 Map<String, dynamic> _$UploadPost$ResponseToJson(
@@ -32,14 +32,16 @@ Map<String, dynamic> _$UploadPost$ResponseToJson(
 TasksTaskIdGet$Response _$TasksTaskIdGet$ResponseFromJson(
         Map<String, dynamic> json) =>
     TasksTaskIdGet$Response(
-      status: json['status'] as String?,
+      id: json['id'] as String,
+      status: json['status'] as String,
       result: json['result'],
-      progress: json['progress'] as int?,
+      progress: json['progress'] as int,
     );
 
 Map<String, dynamic> _$TasksTaskIdGet$ResponseToJson(
         TasksTaskIdGet$Response instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'status': instance.status,
       'result': instance.result,
       'progress': instance.progress,

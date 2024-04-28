@@ -2,14 +2,14 @@ setup:
 	@flutter pub get && \
 	$(MAKE) build_runner
 
-build_runner:
-	@dart run build_runner build --delete-conflicting-outputs
-
 build_runner_watch:
 	@dart run build_runner watch --delete-conflicting-outputs
 
 build_runner_clean:
 	@dart run build_runner clean
+
+build_runner: build_runner_clean
+	@dart run build_runner build --delete-conflicting-outputs
 
 test-unit:
 	@flutter test

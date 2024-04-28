@@ -79,7 +79,10 @@ func main() {
 	if port == "" {
 		log.Fatal("SERVER_PORT is not set in .env file")
 	}
-	restServer := rest_server.NewServer(port, codecClient)
+
+	tasks := make(map[string]*rest_server.Task)
+
+	restServer := rest_server.NewServer(port, codecClient, tasks)
 	restServer.Start()
 
 	// Example usage of the client.

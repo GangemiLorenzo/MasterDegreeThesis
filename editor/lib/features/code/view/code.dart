@@ -19,10 +19,41 @@ class CodePageBuilder extends StatelessWidget {
             return state.map(
               initial: (state) => FileInputContent(
                 isLoading: state.isLoading,
+                file: state.file,
               ),
+              processing: (state) => ProcessingPage(
+                taskId: state.taskId,
+              ),
+              loaded: (state) => const CodePage(),
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class ProcessingPage extends StatelessWidget {
+  final String taskId;
+
+  const ProcessingPage({
+    required this.taskId,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(taskId),
+          verticalSpace16,
+          const SizedBox(
+            width: 200,
+            child: LinearProgressIndicator(),
+          ),
+        ],
       ),
     );
   }

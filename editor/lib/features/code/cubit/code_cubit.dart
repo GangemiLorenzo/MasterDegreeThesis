@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:editor/features/code/repo/code_repo.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -46,5 +47,41 @@ class CodeCubit extends Cubit<CodeState> {
         file: file,
       ),
     );
+  }
+
+  void submitFile() async {
+    if (state is! _Initial) {
+      return;
+    }
+
+    final currentState = state as _Initial;
+
+    if (currentState.file == null) {
+      return;
+    }
+
+    try {
+      emit(
+        currentState.copyWith(
+          isLoading: true,
+        ),
+      );
+
+      final taskId = await repo.uploadFile(currentState.file!);
+
+      emit(
+        CodeState.processing(
+          file: currentState.file!,
+          taskId: taskId,
+        ),
+      );
+    } catch (e) {
+      debugPrint(' Failed to upload file: $e');
+      emit(
+        currentState.copyWith(
+          isLoading: false,
+        ),
+      );
+    }
   }
 }

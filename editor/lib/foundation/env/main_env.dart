@@ -12,4 +12,8 @@ final class MainEnv implements Env, AppEnvFields {
   @override
   @EnviedField(varName: 'BASE_URL')
   final String baseUrl = _MainEnv.baseUrl;
+
+  @override
+  @EnviedField(varName: 'API_PATH')
+  final String apiPath = _MainEnv.apiPath;
 }

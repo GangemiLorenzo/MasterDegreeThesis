@@ -10,9 +10,10 @@ abstract class RegisterModule {
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
   @singleton
-  ApiClient get client => ApiClient.create(
-        baseUrl: Uri(
-          path: Env().baseUrl,
-        ),
-      );
+  ApiClient get client {
+    final uri = Uri.http(Env().baseUrl, Env().apiPath);
+    return ApiClient.create(
+      baseUrl: uri,
+    );
+  }
 }

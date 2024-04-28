@@ -2,87 +2,106 @@ package rest_server
 
 import (
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
+	"os"
 	"server/codec_client"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
 type Server struct {
 	Port        string
 	CodecClient codec_client.CodecClient
+	TaskMap     map[string]*Task
 }
 
-func NewServer(port string, codecClient codec_client.CodecClient) *Server {
+func NewServer(port string, codecClient codec_client.CodecClient, tasks map[string]*Task) *Server {
 	return &Server{
 		Port:        port,
 		CodecClient: codecClient,
+		TaskMap:     tasks,
 	}
 }
 
 func (s *Server) Start() {
 	router := mux.NewRouter()
-	router.HandleFunc("/api/file", s.FileHandler).Methods("POST")
+	router.HandleFunc("/api/upload", s.FileHandler).Methods("POST")
+	// Use a middleware to log all requests
+	router.Use(loggingMiddleware)
 	log.Printf("Server starting on port %s", s.Port)
 	log.Fatal(http.ListenAndServe(":"+s.Port, router))
 }
 
-type FileRequest struct {
-	FileURL string `json:"fileUrl"`
-}
-
-type ApiResponse struct {
-	Data  map[string]interface{} `json:"data"`
-	Error string                 `json:"error"`
-}
-
 func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
-	var request FileRequest
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+	err := r.ParseMultipartForm(10 << 20) // 10 MB limit
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	log.Printf("Received file URL: %s", request.FileURL)
+	fileContent := r.MultipartForm.Value["file"][0]
 
-	response, err := http.Get(request.FileURL)
+	task, err := generateTask(fileContent)
 	if err != nil {
-		response := ApiResponse{Error: "Something went wrong"}
-		json.NewEncoder(w).Encode(response)
+		http.Error(w, "Failed to write file data", http.StatusInternalServerError)
 		return
 	}
-	defer response.Body.Close()
 
-	if response.StatusCode != http.StatusOK {
-		if err != nil {
-			response := ApiResponse{Error: "Something went wrong"}
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
+	s.TaskMap[task.ID] = task
 
-	content, err := io.ReadAll(response.Body)
+	// Respond with the taskId
+	response := map[string]string{"taskId": task.ID}
+	json.NewEncoder(w).Encode(response)
+
+	// Start processing the task
+	encoded, err := s.CodecClient.Encode(task.ContractCode)
 	if err != nil {
-		response := ApiResponse{Error: "Something went wrong"}
-		json.NewEncoder(w).Encode(response)
-		return
-
-	}
-
-	fileContent := string(content)
-
-	encoded, err := s.CodecClient.Encode(fileContent)
-	if err != nil {
-		response := ApiResponse{Error: "Something went wrong"}
-		json.NewEncoder(w).Encode(response)
+		http.Error(w, "Failed to encode", http.StatusInternalServerError)
 		return
 	}
 
 	var jsonMap map[string]interface{}
 	json.Unmarshal([]byte(encoded), &jsonMap)
-	result := ApiResponse{Data: jsonMap}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(result)
+
+	task.Result = jsonMap
+	task.Progress = 100
+	task.Status = Completed
+
+}
+
+func generateTask(fileContent string) (*Task, error) {
+	uuid := uuid.NewString()
+
+	f, err := os.Create("tasks/" + uuid)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	_, err = f.WriteString(fileContent)
+	if err != nil {
+		return nil, err
+	}
+
+	task := &Task{
+		ID:           uuid,
+		ContractCode: fileContent,
+		Status:       Processing,
+		Result:       nil,
+		Progress:     0,
+	}
+
+	return task, nil
+}
+
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Log the request method and path
+		log.Printf("%s %s", r.Method, r.RequestURI)
+
+		// Call the next handler
+		next.ServeHTTP(w, r)
+	})
 }

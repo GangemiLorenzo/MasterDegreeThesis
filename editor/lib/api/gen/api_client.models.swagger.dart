@@ -52,7 +52,7 @@ extension $UploadPost$RequestBodyExtension on UploadPost$RequestBody {
 @JsonSerializable(explicitToJson: true)
 class UploadPost$Response {
   const UploadPost$Response({
-    this.taskId,
+    required this.taskId,
   });
 
   factory UploadPost$Response.fromJson(Map<String, dynamic> json) =>
@@ -62,7 +62,7 @@ class UploadPost$Response {
   Map<String, dynamic> toJson() => _$UploadPost$ResponseToJson(this);
 
   @JsonKey(name: 'taskId')
-  final String? taskId;
+  final String taskId;
   static const fromJsonFactory = _$UploadPost$ResponseFromJson;
 
   @override
@@ -86,7 +86,7 @@ extension $UploadPost$ResponseExtension on UploadPost$Response {
     return UploadPost$Response(taskId: taskId ?? this.taskId);
   }
 
-  UploadPost$Response copyWithWrapped({Wrapped<String?>? taskId}) {
+  UploadPost$Response copyWithWrapped({Wrapped<String>? taskId}) {
     return UploadPost$Response(
         taskId: (taskId != null ? taskId.value : this.taskId));
   }
@@ -95,9 +95,10 @@ extension $UploadPost$ResponseExtension on UploadPost$Response {
 @JsonSerializable(explicitToJson: true)
 class TasksTaskIdGet$Response {
   const TasksTaskIdGet$Response({
-    this.status,
+    required this.id,
+    required this.status,
     this.result,
-    this.progress,
+    required this.progress,
   });
 
   factory TasksTaskIdGet$Response.fromJson(Map<String, dynamic> json) =>
@@ -106,18 +107,22 @@ class TasksTaskIdGet$Response {
   static const toJsonFactory = _$TasksTaskIdGet$ResponseToJson;
   Map<String, dynamic> toJson() => _$TasksTaskIdGet$ResponseToJson(this);
 
+  @JsonKey(name: 'id')
+  final String id;
   @JsonKey(name: 'status')
-  final String? status;
+  final String status;
   @JsonKey(name: 'result')
   final Object? result;
   @JsonKey(name: 'progress')
-  final int? progress;
+  final int progress;
   static const fromJsonFactory = _$TasksTaskIdGet$ResponseFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other is TasksTaskIdGet$Response &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.status, status) ||
                 const DeepCollectionEquality().equals(other.status, status)) &&
             (identical(other.result, result) ||
@@ -132,6 +137,7 @@ class TasksTaskIdGet$Response {
 
   @override
   int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(status) ^
       const DeepCollectionEquality().hash(result) ^
       const DeepCollectionEquality().hash(progress) ^
@@ -140,18 +146,21 @@ class TasksTaskIdGet$Response {
 
 extension $TasksTaskIdGet$ResponseExtension on TasksTaskIdGet$Response {
   TasksTaskIdGet$Response copyWith(
-      {String? status, Object? result, int? progress}) {
+      {String? id, String? status, Object? result, int? progress}) {
     return TasksTaskIdGet$Response(
+        id: id ?? this.id,
         status: status ?? this.status,
         result: result ?? this.result,
         progress: progress ?? this.progress);
   }
 
   TasksTaskIdGet$Response copyWithWrapped(
-      {Wrapped<String?>? status,
+      {Wrapped<String>? id,
+      Wrapped<String>? status,
       Wrapped<Object?>? result,
-      Wrapped<int?>? progress}) {
+      Wrapped<int>? progress}) {
     return TasksTaskIdGet$Response(
+        id: (id != null ? id.value : this.id),
         status: (status != null ? status.value : this.status),
         result: (result != null ? result.value : this.result),
         progress: (progress != null ? progress.value : this.progress));
