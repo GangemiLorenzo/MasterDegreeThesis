@@ -10,7 +10,8 @@ import (
 )
 
 type AuditorClient interface {
-	Audit(data string) (string, error)
+	Audit(data string, code string) ([]*service.Vulnerability, error)
+	ConvertVulnerabilities(vulnerabilities []*service.Vulnerability) map[string]interface{}
 }
 
 type auditorClient struct {
@@ -23,13 +24,28 @@ func NewAuditorClient(cc *grpc.ClientConn) AuditorClient {
 	}
 }
 
-func (c *auditorClient) Audit(data string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+func (c *auditorClient) Audit(data string, code string) ([]*service.Vulnerability, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
-	resp, err := c.client.Audit(ctx, &service.AuditRequest{Data: data})
+	resp, err := c.client.Audit(ctx, &service.AuditRequest{Data: data, Code: code})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return resp.Result, nil
+	return resp.Vulnerabilities, nil
+
+}
+
+func (c *auditorClient) ConvertVulnerabilities(vulnerabilities []*service.Vulnerability) map[string]interface{} {
+	vulns := make([]map[string]interface{}, len(vulnerabilities))
+	for i, v := range vulnerabilities {
+		vulns[i] = map[string]interface{}{
+			"Check":       v.Check,
+			"Description": v.Description,
+			"Severity":    v.Severity,
+		}
+	}
+	return map[string]interface{}{
+		"vulnerabilities": vulns,
+	}
 }

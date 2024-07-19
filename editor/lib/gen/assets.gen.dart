@@ -9,4 +9,9 @@
 
 class Assets {
   Assets._();
+
+  static const String mockResponse = 'assets/mock_response.json';
+
+  /// List of all assets
+  static List<String> get values => [mockResponse];
 }

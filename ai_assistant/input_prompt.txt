@@ -1,0 +1,13 @@
+Solidity Code:
+
+```solidity
+<<SOLIDITY_CODE>>
+```
+
+JSON Structure:
+
+```json
+<<JSON_STRUCTURE>>
+```
+
+Please generate descriptions for each element in the JSON structure and call the function set_description_by_id with the appropriate parameters.

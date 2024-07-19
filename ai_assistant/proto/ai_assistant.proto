@@ -8,12 +8,23 @@ option go_package = "ai_assistant_service/;ai_assistant_service";
 
 service AiAssistantService {
   rpc Comment(CommentRequest) returns (CommentResponse);
+  rpc Link(LinkRequest) returns (LinkResponse);
 }
 
 message CommentRequest {
-  string data = 1;
+  string sourceUnit = 1;
+  string code = 2;
 }
 
 message CommentResponse {
+  string result = 1;
+}
+
+message LinkRequest {
+  string sourceUnit = 1;
+  string code = 2;
+}
+
+message LinkResponse {
   string result = 1;
 }

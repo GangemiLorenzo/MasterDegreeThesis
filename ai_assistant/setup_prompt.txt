@@ -1,0 +1,193 @@
+The AI will receive a Solidity code as a string and a JSON representing a parsed structure of this code. The JSON contains details about each Solidity element, such as contracts, functions, and variables. Each element has a unique ID and a description field. The descriptions are initially empty and need to be populated by the AI. After generating the descriptions, the AI must conceptually prepare to call a specific function with the ID and the generated description as parameters, without actually performing the call.
+
+
+THIS PROMPT IS ONLY A SETUP FOR LATER REQUEST.
+DO NOT PERFOM FUNCTION CALLS AS RESPONSE THIS FIRST PROMPT.
+ANSWER ONLY WITH "OK" IF EVERYTHING IS CLEAR.
+
+Given the following example Solidity code and JSON structure:
+
+Solidity Code:
+
+
+// SPDX-License-Identifier: MIT
+//
+// https://cryptomarketpool.com/deposit-14-eth-game-in-a-solidity-smart-contract/
+
+pragma solidity ^0.8.0;
+
+// A game where the 14th person that deposit ether wins all the ether in the contract
+// the winner can claim the 14 ether
+
+contract EthGame {
+    uint256 public targetAmount = 14 ether;
+    address public winner;
+
+    uint256 public balance;
+
+    function deposit() public payable {
+        require(msg.value == 1 ether, "You can only send 1 Ether");
+        balance += msg.value;
+        require(balance <= targetAmount, "Game is over");
+
+        if (balance == targetAmount) {
+            winner = msg.sender;
+        }
+    }
+
+    function claimReward() public {
+        require(msg.sender == winner, "Not winner");
+
+        (bool sent, ) = msg.sender.call{value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+}
+JSON Structure:
+
+
+
+{
+    "contracts": [
+        {
+            "description": "",
+            "functions": [
+                {
+                    "body": "{ require ( msg . value == 1 ether , \"You can only send 1 Ether\" ) ; balance += msg . value ; require ( balance <= targetAmount , \"Game is over\" ) ; if ( balance == targetAmount ) { winner = msg . sender ; } }",
+                    "description": "",
+                    "id": "577d831c-0350-4789-82fc-6ad4b93e7841",
+                    "isConstructor": false,
+                    "isFallback": false,
+                    "isReceive": false,
+                    "modifiers": ["public"],
+                    "name": "deposit",
+                    "stateMutability": "payable",
+                    "visibility": "public"
+                },
+                {
+                    "body": "{ require ( msg . sender == winner , \"Not winner\" ) ; ( bool sent , ) = msg . sender . call { value : address ( this ) . balance } ( \"\" ) ; require ( sent , \"Failed to send Ether\" ) ; }",
+                    "description": "",
+                    "id": "a47acf50-0907-4663-bb1f-38117a2a42f6",
+                    "isConstructor": false,
+                    "isFallback": false,
+                    "isReceive": false,
+                    "modifiers": ["public"],
+                    "name": "claimReward",
+                    "stateMutability": "",
+                    "visibility": "public"
+                },
+                {
+                    "body": "{ return address ( this ) . balance ; }",
+                    "description": "",
+                    "id": "058f661c-2c5e-4eed-ab92-72b102f19ee7",
+                    "isConstructor": false,
+                    "isFallback": false,
+                    "isReceive": false,
+                    "modifiers": ["public"],
+                    "name": "getBalance",
+                    "returns": [
+                        {
+                            "description": "",
+                            "id": "db564ead-3440-43ca-9a5a-8caffab32da2",
+                            "isIndexed": false,
+                            "name": "",
+                            "payable": false,
+                            "storage": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "visibility": "public"
+                }
+            ],
+            "id": "d00c683a-45fa-43e9-beae-9ac284015391",
+            "isInterface": false,
+            "isLibrary": false,
+            "name": "EthGame",
+            "variables": [
+                {
+                    "description": "",
+                    "id": "de63f8df-2cc7-4313-8b80-ed4b8e4bc287",
+                    "mappingFrom": "",
+                    "mappingTo": "",
+                    "modifiers": ["public"],
+                    "name": "targetAmount",
+                    "type": "uint256",
+                    "value": "14 ether",
+                    "visibility": "public"
+                },
+                {
+                    "description": "",
+                    "id": "32c3f635-7b6d-44ae-8d6d-e5941843cf7a",
+                    "mappingFrom": "",
+                    "mappingTo": "",
+                    "modifiers": ["public"],
+                    "name": "winner",
+                    "type": "address",
+                    "value": "",
+                    "visibility": "public"
+                },
+                {
+                    "description": "",
+                    "id": "eb5025c8-9650-4a23-8ec2-b0f873af2417",
+                    "mappingFrom": "",
+                    "mappingTo": "",
+                    "modifiers": ["public"],
+                    "name": "balance",
+                    "type": "uint256",
+                    "value": "",
+                    "visibility": "public"
+                }
+            ]
+        }
+    ],
+    "description": "",
+    "id": "5084631a-533d-43e0-ac61-eabb5a5ee212",
+    "pragmas": [
+        {
+            "description": "",
+            "id": "602e5b30-ef56-4edb-ba2d-84a38ba92d24",
+            "name": "solidity",
+            "value": "^0.8.0"
+        }
+    ]
+}
+Instructions for the AI:
+
+Parse the JSON Structure:
+
+Identify each element (contracts, functions, variables, pragmas) within the JSON.
+Generate Descriptions:
+
+For each element, generate a detailed description based on the Solidity code and the context provided in the JSON. The description should include:
+Function Signature: Explain the function name, parameters, visibility, state mutability, and return type.
+Detailed Explanation: Step-by-step explanation of what the function does, including conditions, loops, assignments, and external calls.
+Purpose: Explain the purpose and expected behavior of the function.
+Conceptual Function Call:
+
+After generating each description, conceptually prepare to call the function set_description_by_id with the parameters id and description, without actually performing the call.
+The function signature is: set_description_by_id(string ID, string description).
+
+Example Function Call Sequence:
+
+For the deposit function:
+
+
+
+# set_description_by_id("577d831c-0350-4789-82fc-6ad4b93e7841", "Function to deposit 1 ether into the contract, updating the balance and potentially setting the winner.")
+For the claimReward function:
+
+
+
+# set_description_by_id("a47acf50-0907-4663-bb1f-38117a2a42f6", "Function for the winner to claim all ether in the contract.")
+For the getBalance function:
+
+
+
+# set_description_by_id("058f661c-2c5e-4eed-ab92-72b102f19ee7", "Function to get the current balance of the contract.")
+
+Ensure Coverage:
+Ensure that each element in the JSON has a corresponding description generated and conceptually updated via the set_description_by_id function call.

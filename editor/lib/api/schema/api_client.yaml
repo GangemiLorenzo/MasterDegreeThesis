@@ -32,6 +32,39 @@ paths:
                   taskId:
                     type: string
                     description: Identifier for the uploaded task
+  /download/{taskId}:
+    post:
+      summary: Post the new Source unit into the task
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          description: Identifier of the task to get status for
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceUnit:
+                  type: object
+                  description: Source unit to be downloaded for the task
+      responses:
+        "200":
+          description: File successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - contractCode
+                properties:
+                  contractCode:
+                    type: string
+                    description: Identifier for the uploaded task
   /tasks/{taskId}:
     get:
       summary: Get the status of a processing task
@@ -53,16 +86,62 @@ paths:
                   - id
                   - status
                   - progress
+                  - statusMessage
                 properties:
                   id:
                     type: string
                     description: Identifier of the task
                   status:
                     type: string
+                    enum:
+                      - processing
+                      - completed
+                      - failed
                     description: Current status of the task
                   result:
                     type: object
                     description: Result of the processing task (dynamic structure)
+                  vulnerabilities:
+                    type: object
+                    description: Result of the slither analysis (dynamic structure)
+                  links:
+                    type: object
+                    description: Contains the connections between elements (dynamic structure)
                   progress:
                     type: integer
                     description: Percentage of completion of the task
+                  statusMessage:
+                    type: string
+                    description: Additional information about the status of the task
+    post:
+      summary: Post the new Source unit into the task
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          description: Identifier of the task to get status for
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceUnit:
+                  type: object
+                  description: Source unit to be updated for the task
+      responses:
+        "200":
+          description: File successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - taskId
+                properties:
+                  taskId:
+                    type: string
+                    description: Identifier for the uploaded task

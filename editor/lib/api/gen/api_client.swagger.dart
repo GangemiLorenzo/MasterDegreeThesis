@@ -12,6 +12,8 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show MultipartFile;
 import 'package:chopper/chopper.dart' as chopper;
+import 'api_client.enums.swagger.dart' as enums;
+export 'api_client.enums.swagger.dart';
 export 'api_client.models.swagger.dart';
 
 part 'api_client.swagger.chopper.dart';
@@ -63,6 +65,29 @@ abstract class ApiClient extends ChopperService {
   Future<chopper.Response<UploadPost$Response>> _uploadPost(
       {@PartFile() List<int>? file});
 
+  ///Post the new Source unit into the task
+  ///@param taskId Identifier of the task to get status for
+  Future<chopper.Response<DownloadTaskIdPost$Response>> downloadTaskIdPost({
+    required String? taskId,
+    required DownloadTaskIdPost$RequestBody? body,
+  }) {
+    generatedMapping.putIfAbsent(DownloadTaskIdPost$Response,
+        () => DownloadTaskIdPost$Response.fromJsonFactory);
+
+    return _downloadTaskIdPost(taskId: taskId, body: body);
+  }
+
+  ///Post the new Source unit into the task
+  ///@param taskId Identifier of the task to get status for
+  @Post(
+    path: '/download/{taskId}',
+    optionalBody: true,
+  )
+  Future<chopper.Response<DownloadTaskIdPost$Response>> _downloadTaskIdPost({
+    @Path('taskId') required String? taskId,
+    @Body() required DownloadTaskIdPost$RequestBody? body,
+  });
+
   ///Get the status of a processing task
   ///@param taskId Identifier of the task to get status for
   Future<chopper.Response<TasksTaskIdGet$Response>> tasksTaskIdGet(
@@ -78,6 +103,29 @@ abstract class ApiClient extends ChopperService {
   @Get(path: '/tasks/{taskId}')
   Future<chopper.Response<TasksTaskIdGet$Response>> _tasksTaskIdGet(
       {@Path('taskId') required String? taskId});
+
+  ///Post the new Source unit into the task
+  ///@param taskId Identifier of the task to get status for
+  Future<chopper.Response<TasksTaskIdPost$Response>> tasksTaskIdPost({
+    required String? taskId,
+    required TasksTaskIdPost$RequestBody? body,
+  }) {
+    generatedMapping.putIfAbsent(TasksTaskIdPost$Response,
+        () => TasksTaskIdPost$Response.fromJsonFactory);
+
+    return _tasksTaskIdPost(taskId: taskId, body: body);
+  }
+
+  ///Post the new Source unit into the task
+  ///@param taskId Identifier of the task to get status for
+  @Post(
+    path: '/tasks/{taskId}',
+    optionalBody: true,
+  )
+  Future<chopper.Response<TasksTaskIdPost$Response>> _tasksTaskIdPost({
+    @Path('taskId') required String? taskId,
+    @Body() required TasksTaskIdPost$RequestBody? body,
+  });
 }
 
 typedef $JsonFactory<T> = T Function(Map<String, dynamic> json);

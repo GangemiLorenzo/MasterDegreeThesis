@@ -1,0 +1,537 @@
+{
+    "id": "33aa3204-4c1c-42ca-8c99-f16cb0a234e1",
+    "links": [
+        {
+            "action": "set",
+            "description": "The constructor sets the priceFeed and owner when the contract is deployed.",
+            "end": "bade375a-c28a-4125-b63c-6b652e092cc5",
+            "start": "c2f81963-b61a-4e99-b7a0-6e03ad90492a"
+        },
+        {
+            "action": "set",
+            "description": "The fund function adds the value sent by the sender to the amount funded for the sender.",
+            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+            "start": "033c1eb1-efaa-4475-bd8a-9b362dd511a4"
+        },
+        {
+            "action": "set",
+            "description": "The withdraw function empties the amount funded for all funders and transfers the balance to the owner.",
+            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
+            "start": "bade375a-c28a-4125-b63c-6b652e092cc5"
+        },
+        {
+            "action": "set",
+            "description": "The cheaperWithdraw function is similar to withdraw but uses a memory array for funders.",
+            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
+            "start": "a0d16ee4-f58b-4540-844b-973690f710c8"
+        },
+        {
+            "action": "return",
+            "description": "The getAddressToAmountFunded function returns the amount funded by a specific address.",
+            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+            "start": "887b931c-3085-4bf9-bf59-c52e286f51b9"
+        },
+        {
+            "action": "return",
+            "description": "The getVersion function returns the version of the price feed.",
+            "end": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
+            "start": "4a8c9df0-3590-43ae-870d-00e48aaf00f2"
+        },
+        {
+            "action": "return",
+            "description": "The getFunder function returns the funder at a specific index.",
+            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
+            "start": "bd01fd22-a5ea-4788-9f91-2524355b3ba6"
+        },
+        {
+            "action": "return",
+            "description": "The getOwner function returns the owner address.",
+            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
+            "start": "a277378e-282f-4092-a606-32bdf10502be"
+        },
+        {
+            "action": "return",
+            "description": "The getPriceFeed function returns the price feed interface.",
+            "end": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
+            "start": "ee9c3a38-2442-4884-82dd-b0432785171c"
+        },
+        {
+            "action": "set",
+            "description": "The getPrice function fetches the latest round data from the price feed.",
+            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+            "start": "35f3f2e9-caa8-458a-9e74-d66dd812e229"
+        },
+        {
+            "action": "set",
+            "description": "The getConversionRate function calculates the conversion rate between the ETH amount and USD using the price feed.",
+            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+            "start": "e6c01f9d-5112-4623-85d2-c9f76136383e"
+        }
+    ],
+    "progress": 100,
+    "result": {
+        "contracts": [
+            {
+                "description": "",
+                "enums": null,
+                "errors": null,
+                "events": null,
+                "functions": [
+                    {
+                        "body": "{ s_priceFeed = AggregatorV3Interface ( priceFeed ) ; i_owner = msg . sender ; } ",
+                        "description": "Constructor to initialize the contract by setting the price feed and the owner.",
+                        "id": "c2f81963-b61a-4e99-b7a0-6e03ad90492a",
+                        "isConstructor": true,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": null,
+                        "name": "",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "a377223e-b874-40f2-a8b1-78c09ae98df2",
+                                "isIndexed": false,
+                                "name": "priceFeed",
+                                "payable": false,
+                                "storage": "",
+                                "type": "address"
+                            }
+                        ],
+                        "returns": null,
+                        "stateMutability": "",
+                        "visibility": ""
+                    },
+                    {
+                        "body": "{ require ( msg . value . getConversionRate ( s_priceFeed ) \u003e= MINIMUM_USD , \"You need to spend more ETH!\" ) ; s_addressToAmountFunded [ msg . sender ] += msg . value ; s_funders . push ( msg . sender ) ; } ",
+                        "description": "Function for funders to deposit ETH, ensuring the amount meets the minimum USD threshold.",
+                        "id": "033c1eb1-efaa-4475-bd8a-9b362dd511a4",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "fund",
+                        "parameters": null,
+                        "returns": null,
+                        "stateMutability": "payable",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ for ( uint256 funderIndex = 0 ; funderIndex \u003c s_funders . length ; funderIndex ++ ) { address funder = s_funders [ funderIndex ] ; s_addressToAmountFunded [ funder ] = 0 ; } s_funders = new address [ ] ( 0 ) ; ( bool success , ) = i_owner . call { value : address ( this ) . balance } ( \"\" ) ; require ( success ) ; } ",
+                        "description": "Function for the owner to withdraw all funds from the contract, resetting all funder balances.",
+                        "id": "bade375a-c28a-4125-b63c-6b652e092cc5",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public",
+                            "onlyOwner"
+                        ],
+                        "name": "withdraw",
+                        "parameters": null,
+                        "returns": null,
+                        "stateMutability": "",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ address [ ] memory funders = s_funders ; for ( uint256 funderIndex = 0 ; funderIndex \u003c funders . length ; funderIndex ++ ) { address funder = funders [ funderIndex ] ; s_addressToAmountFunded [ funder ] = 0 ; } s_funders = new address [ ] ( 0 ) ; ( bool success , ) = i_owner . call { value : address ( this ) . balance } ( \"\" ) ; require ( success ) ; } ",
+                        "description": "Function for the owner to withdraw all funds from the contract more efficiently without utilizing the funder array.",
+                        "id": "a0d16ee4-f58b-4540-844b-973690f710c8",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public",
+                            "onlyOwner"
+                        ],
+                        "name": "cheaperWithdraw",
+                        "parameters": null,
+                        "returns": null,
+                        "stateMutability": "",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ return s_addressToAmountFunded [ fundingAddress ] ; } ",
+                        "description": "Function to retrieve the amount funded by a specific address.",
+                        "id": "887b931c-3085-4bf9-bf59-c52e286f51b9",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "getAddressToAmountFunded",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "a524a34f-95e6-4fd0-9c4e-bcc616d2564d",
+                                "isIndexed": false,
+                                "name": "fundingAddress",
+                                "payable": false,
+                                "storage": "",
+                                "type": "address"
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "8f86fae6-3410-4445-9516-3d19a59760fd",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ return s_priceFeed . version ( ) ; } ",
+                        "description": "Function to get the version of the price feed contract.",
+                        "id": "4a8c9df0-3590-43ae-870d-00e48aaf00f2",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "getVersion",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "51e6a92a-f1f6-4a61-a12c-deafbc1b7147",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ return s_funders [ index ] ; } ",
+                        "description": "Function to retrieve the funder's address based on the index in the funder array.",
+                        "id": "bd01fd22-a5ea-4788-9f91-2524355b3ba6",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "getFunder",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "5ee64fbe-3113-43f4-9bfc-cd2a17b35cd1",
+                                "isIndexed": false,
+                                "name": "index",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "b7f11df4-fa63-4e82-abf2-e589b7266991",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ return i_owner ; } ",
+                        "description": "Function to get the owner's address.",
+                        "id": "a277378e-282f-4092-a606-32bdf10502be",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "getOwner",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "c4004e63-d475-4a97-aace-f12905de0756",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "address"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "body": "{ return s_priceFeed ; } ",
+                        "description": "Function to get the price feed contract instance.",
+                        "id": "ee9c3a38-2442-4884-82dd-b0432785171c",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "public"
+                        ],
+                        "name": "getPriceFeed",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "bc79aa6c-9ecf-4d84-9aa9-f481fc418785",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "AggregatorV3Interface"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    }
+                ],
+                "id": "8ce09065-6f57-4fb6-8532-0eae07c1f484",
+                "inheritance": null,
+                "isInterface": false,
+                "isLibrary": false,
+                "modifiers": [
+                    {
+                        "body": "{ if ( msg . sender != i_owner ) revert FundMe__NotOwner ( ) ; _ ; } ",
+                        "description": "",
+                        "id": "8d45844e-fca2-400f-bb62-807b3c072d81",
+                        "name": "onlyOwner",
+                        "parameters": null
+                    }
+                ],
+                "name": "FundMe",
+                "structs": null,
+                "variables": [
+                    {
+                        "description": "",
+                        "id": "65d1627e-ba53-465a-8860-d7bfcb042a97",
+                        "mappingFrom": "",
+                        "mappingTo": "",
+                        "modifiers": [
+                            "public",
+                            "constant"
+                        ],
+                        "name": "MINIMUM_USD",
+                        "type": "uint256",
+                        "value": "5 * 10 ** 18 ",
+                        "visibility": "public"
+                    },
+                    {
+                        "description": "",
+                        "id": "86f75164-afa6-46e2-a4f5-830e09c6e9d2",
+                        "mappingFrom": "",
+                        "mappingTo": "",
+                        "modifiers": [
+                            "private",
+                            "immutable"
+                        ],
+                        "name": "i_owner",
+                        "type": "address",
+                        "value": "",
+                        "visibility": "private"
+                    },
+                    {
+                        "description": "",
+                        "id": "616952a3-b72c-49b6-a643-5f411a013da8",
+                        "mappingFrom": "",
+                        "mappingTo": "",
+                        "modifiers": [
+                            "private"
+                        ],
+                        "name": "s_funders",
+                        "type": "address[]",
+                        "value": "",
+                        "visibility": "private"
+                    },
+                    {
+                        "description": "",
+                        "id": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+                        "mappingFrom": "address",
+                        "mappingTo": "uint256",
+                        "modifiers": [
+                            "private"
+                        ],
+                        "name": "s_addressToAmountFunded",
+                        "type": "mapping(address=\u003euint256)",
+                        "value": "",
+                        "visibility": "private"
+                    },
+                    {
+                        "description": "",
+                        "id": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
+                        "mappingFrom": "",
+                        "mappingTo": "",
+                        "modifiers": [
+                            "private"
+                        ],
+                        "name": "s_priceFeed",
+                        "type": "AggregatorV3Interface",
+                        "value": "",
+                        "visibility": "private"
+                    }
+                ]
+            },
+            {
+                "description": "",
+                "enums": null,
+                "errors": null,
+                "events": null,
+                "functions": [
+                    {
+                        "body": "{ ( , int256 answer , , , ) = priceFeed . latestRoundData ( ) ; return uint256 ( answer * 10000000000 ) ; } ",
+                        "description": "Internal function to retrieve the latest price from the price feed contract.",
+                        "id": "35f3f2e9-caa8-458a-9e74-d66dd812e229",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "internal"
+                        ],
+                        "name": "getPrice",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "d4e3c47d-efe6-4082-b7e4-3630612f271f",
+                                "isIndexed": false,
+                                "name": "priceFeed",
+                                "payable": false,
+                                "storage": "",
+                                "type": "AggregatorV3Interface"
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "0f9bfe14-a3c0-467b-8e11-3fa54bd4063e",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "internal"
+                    },
+                    {
+                        "body": "{ uint256 ethPrice = getPrice ( priceFeed ) ; uint256 ethAmountInUsd = ( ethPrice * ethAmount ) / 1000000000000000000 ; return ethAmountInUsd ; } ",
+                        "description": "Internal function to calculate the USD amount based on the ETH amount and the price feed.",
+                        "id": "e6c01f9d-5112-4623-85d2-c9f76136383e",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "internal"
+                        ],
+                        "name": "getConversionRate",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "e929134a-e49a-483a-9203-69850872d48c",
+                                "isIndexed": false,
+                                "name": "ethAmount",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "description": "",
+                                "id": "85b04196-7457-41b8-b4eb-d470e4c16b3a",
+                                "isIndexed": false,
+                                "name": "priceFeed",
+                                "payable": false,
+                                "storage": "",
+                                "type": "AggregatorV3Interface"
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "65e0152d-4eb5-4ccc-90e4-c93533c8d880",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": "internal"
+                    }
+                ],
+                "id": "6c21da16-7e33-4a00-8b10-7e68dd64ec7d",
+                "inheritance": null,
+                "isInterface": false,
+                "isLibrary": true,
+                "modifiers": null,
+                "name": "PriceConverter",
+                "structs": null,
+                "variables": null
+            }
+        ],
+        "description": "",
+        "enums": null,
+        "errors": [
+            {
+                "description": "",
+                "id": "28f60eba-cef7-44a8-88e6-45613a753a27",
+                "name": "FundMe__NotOwner",
+                "parameters": null
+            }
+        ],
+        "events": null,
+        "functions": null,
+        "id": "a5d10e89-02e4-47e5-b9fb-29e5b9c4c894",
+        "imports": [
+            {
+                "description": "",
+                "id": "d83a0f99-8ab5-4985-9917-40f55b1e33ff",
+                "path": "\"@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol\"",
+                "symbols": [
+                    {
+                        "alias": "",
+                        "description": "",
+                        "id": "61c1853d-bdf3-4cfe-a20a-e5e956b0d417",
+                        "name": "AggregatorV3Interface"
+                    }
+                ]
+            }
+        ],
+        "pragmas": [
+            {
+                "description": "",
+                "id": "9efb60d8-2216-4696-af5e-a1ef45e8146b",
+                "name": "solidity",
+                "value": "^0.8.19"
+            }
+        ],
+        "structs": null
+    },
+    "status": "completed",
+    "statusMessage": "Task completed",
+    "vulnerabilities": {
+        "vulnerabilities": [
+            {
+                "Check": "solc-version",
+                "Description": "Version constraint ^0.8.0 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)\n\t- FullInlinerNonExpressionSplitArgumentEvaluationOrder\n\t- MissingSideEffectsOnSelectorAccess\n\t- AbiReencodingHeadOverflowWithStaticArrayCleanup\n\t- DirtyBytesArrayToStorage\n\t- DataLocationChangeInInternalOverride\n\t- NestedCalldataArrayAbiReencodingSizeValidation\n\t- SignedImmutables\n\t- ABIDecodeTwoDimensionalArrayMemory\n\t- KeccakCaching.\n It is used by:\n\t- ../../../../../../var/folders/87/fpjrvwkn4g1227j5cxz70kz80000gp/T/solidity_code_2458241668.sol#5\n",
+                "Severity": "Informational"
+            }
+        ]
+    }
+}

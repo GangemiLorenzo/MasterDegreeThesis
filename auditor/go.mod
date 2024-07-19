@@ -1,6 +1,6 @@
 module auditor
 
-go 1.20
+go 1.22.3
 
 require (
 	github.com/joho/godotenv v1.5.1 // indirect

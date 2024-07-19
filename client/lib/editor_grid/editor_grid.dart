@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:client/editor_grid/renderer_grid.dart';
+import 'package:flutter/material.dart';
 
 class EditorGrid extends StatefulWidget {
   final List<Widget> children;
@@ -60,7 +60,7 @@ class _EditorGridState extends State<EditorGrid> {
       child: Container(
         color: Colors.transparent,
         child: ConnectionProvider(
-          connections: const [],
+          connections: [LinkPair(startId: 1, endId: 4)],
           child: RendererGrid(
             zoomFactor: zoomFactor,
             dragOffset: dragOffset,

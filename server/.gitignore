@@ -19,3 +19,5 @@ go.work
 
 .env
 __debug_bin*
+
+/tasks

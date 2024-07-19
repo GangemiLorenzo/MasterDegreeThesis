@@ -8,12 +8,11 @@ import (
 
 // SolidityCompilerUtils provides utility functions for Solidity compilation and AST generation.
 type SolidityCompilerUtils struct {
-	CompilerPath string
 }
 
 // NewSolidityCompilerUtils creates a new instance of SolidityCompilerUtils with the provided compiler path.
-func NewSolidityCompilerUtils(compilerPath string) *SolidityCompilerUtils {
-	return &SolidityCompilerUtils{CompilerPath: compilerPath}
+func NewSolidityCompilerUtils() *SolidityCompilerUtils {
+	return &SolidityCompilerUtils{}
 }
 
 // CheckValidity runs the Solidity compiler to check code validity
@@ -30,7 +29,7 @@ func (scu *SolidityCompilerUtils) CheckValidity(code string) error {
 	}
 	tempFile.Close()
 
-	cmd := exec.Command(scu.CompilerPath, tempFile.Name())
+	cmd := exec.Command("solc", tempFile.Name())
 	_, err = cmd.Output()
 	if err != nil {
 		return fmt.Errorf("solidity code cannot be compiled: %v", err)

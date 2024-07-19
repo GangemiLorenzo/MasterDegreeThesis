@@ -37,6 +37,23 @@ final class _$ApiClient extends ApiClient {
   }
 
   @override
+  Future<Response<DownloadTaskIdPost$Response>> _downloadTaskIdPost({
+    required String? taskId,
+    required DownloadTaskIdPost$RequestBody? body,
+  }) {
+    final Uri $url = Uri.parse('/download/${taskId}');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<DownloadTaskIdPost$Response,
+        DownloadTaskIdPost$Response>($request);
+  }
+
+  @override
   Future<Response<TasksTaskIdGet$Response>> _tasksTaskIdGet(
       {required String? taskId}) {
     final Uri $url = Uri.parse('/tasks/${taskId}');
@@ -47,5 +64,22 @@ final class _$ApiClient extends ApiClient {
     );
     return client
         .send<TasksTaskIdGet$Response, TasksTaskIdGet$Response>($request);
+  }
+
+  @override
+  Future<Response<TasksTaskIdPost$Response>> _tasksTaskIdPost({
+    required String? taskId,
+    required TasksTaskIdPost$RequestBody? body,
+  }) {
+    final Uri $url = Uri.parse('/tasks/${taskId}');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client
+        .send<TasksTaskIdPost$Response, TasksTaskIdPost$Response>($request);
   }
 }

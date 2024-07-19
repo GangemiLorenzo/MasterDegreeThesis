@@ -1,4 +1,4 @@
-package auditor_client
+package ai_assistant_client
 
 import (
 	"context"
@@ -10,7 +10,8 @@ import (
 )
 
 type AiAssistantClient interface {
-	Comment(data string) (string, error)
+	ComputeComments(sourceUnitJson string, code string) (string, error)
+	ComputeLinks(sourceUnitJson string, code string) (string, error)
 }
 
 type aiAssistantClient struct {
@@ -23,11 +24,22 @@ func NewAiAssistantClient(cc *grpc.ClientConn) AiAssistantClient {
 	}
 }
 
-func (c *aiAssistantClient) Comment(data string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+func (c *aiAssistantClient) ComputeComments(sourceUnitJson string, code string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	resp, err := c.client.Comment(ctx, &service.CommentRequest{Data: data})
+	resp, err := c.client.Comment(ctx, &service.CommentRequest{SourceUnit: sourceUnitJson, Code: code})
+	if err != nil {
+		return "", err
+	}
+	return resp.Result, nil
+}
+
+func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	resp, err := c.client.Link(ctx, &service.LinkRequest{SourceUnit: sourceUnitJson, Code: code})
 	if err != nil {
 		return "", err
 	}

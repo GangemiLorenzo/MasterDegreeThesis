@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	service "codec/codec_service"
-	"codec/solidity_parser"
+	"solidity_parser"
 )
 
 type codecServer struct {
@@ -34,13 +34,67 @@ func (s *codecServer) Encode(ctx context.Context, req *service.EncodeRequest) (*
 		return nil, fmt.Errorf("error marshalling contract: %v", err)
 	}
 
-	fmt.Println(string(sourceUnitJson))
+	cleanedJson, err := CleanNullProperties(sourceUnitJson)
+	if err != nil {
+		return nil, fmt.Errorf("error cleaning null properties: %v", err)
+	}
 
-	return &service.EncodeResponse{Result: string(sourceUnitJson)}, nil
+	return &service.EncodeResponse{Result: string(cleanedJson)}, nil
 }
 
 // Decode implements the logic for the Decode RPC.
 func (s *codecServer) Decode(ctx context.Context, req *service.DecodeRequest) (*service.DecodeResponse, error) {
 	println("Decode called")
+
+	data := []byte(req.Data)
+	_, err := CleanNullProperties(data)
+	if err != nil {
+		return nil, fmt.Errorf("error cleaning null properties: %v", err)
+	}
+
 	return &service.DecodeResponse{Result: "Decoded data"}, nil
+}
+
+func CleanNullProperties(jsonData []byte) ([]byte, error) {
+	var data interface{}
+
+	// Unmarshal JSON into a generic interface
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		return nil, err
+	}
+
+	// Traverse the JSON data and remove properties with null values
+	cleanData := removeNullProperties(data)
+
+	// Marshal the cleaned data back into JSON
+	cleanedJSON, err := json.Marshal(cleanData)
+	if err != nil {
+		return nil, err
+	}
+
+	return cleanedJSON, nil
+}
+
+func removeNullProperties(data interface{}) interface{} {
+	switch v := data.(type) {
+	case map[string]interface{}:
+		// Iterate over map keys and recursively remove null properties
+		for key, value := range v {
+			if value == nil {
+				delete(v, key)
+			} else {
+				v[key] = removeNullProperties(value)
+			}
+		}
+		return v
+	case []interface{}:
+		// Iterate over array elements and recursively remove null properties
+		for i := 0; i < len(v); i++ {
+			v[i] = removeNullProperties(v[i])
+		}
+		return v
+	default:
+		// Base case: return the original value
+		return v
+	}
 }

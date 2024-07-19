@@ -23,6 +23,38 @@
       "type": "dart",
       "request": "launch",
       "program": "${workspaceFolder}/editor/lib/main.dart"
+    },
+    {
+      "name": "Launch Auditor",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/auditor/auditor.go"
+    },
+    {
+      "name": "Launch Assistant",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/ai_assistant/assistant.go"
+    },
+    {
+      "name": "Launch client",
+      "type": "dart",
+      "request": "launch",
+      "program": "${workspaceFolder}/client/lib/main.dart"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Launch services",
+      "configurations": [
+        "Launch Codec",
+        "Launch Auditor",
+        "Launch Server",
+        "Launch Assistant"
+      ],
+      "stopAll": true
     }
-  ]
+  ],
 }

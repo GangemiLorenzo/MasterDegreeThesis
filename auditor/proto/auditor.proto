@@ -12,8 +12,15 @@ service AuditorService {
 
 message AuditRequest {
   string data = 1;
+  string code = 2;
+}
+
+message Vulnerability {
+  string check = 1;
+  string description = 2;
+  string severity = 3;
 }
 
 message AuditResponse {
-  string result = 1;
+  repeated Vulnerability vulnerabilities = 1;
 }

@@ -1,11 +1,14 @@
 package rest_server
 
 type Task struct {
-	ID           string                 `json:"id"`
-	Status       TaskStatus             `json:"status"`
-	ContractCode string                 `json:"contractCode"`
-	Result       map[string]interface{} `json:"result"`
-	Progress     int                    `json:"progress"`
+	ID              string                 `json:"id"`
+	Status          TaskStatus             `json:"status"`
+	StatusMessage   string                 `json:"statusMessage"`
+	ContractCode    string                 `json:"contractCode"`
+	Result          map[string]interface{} `json:"result"`
+	Links           map[string]interface{} `json:"links"`
+	Vulnerabilities map[string]interface{} `json:"vulnerabilities"`
+	Progress        int                    `json:"progress"`
 }
 
 type TaskStatus string

@@ -10,11 +10,15 @@ class CodeState with _$CodeState {
   const factory CodeState.processing({
     required File file,
     required String taskId,
+    required int progress,
+    required String message,
   }) = _Processing;
 
   const factory CodeState.loaded({
     required File file,
+    required Task task,
     @Default(false) bool isLoading,
-    // Here goes the request result
+    String? selectedItem,
+    @Default(false) bool justSavedFile,
   }) = _Loaded;
 }
