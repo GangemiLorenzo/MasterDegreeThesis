@@ -1,0 +1,11 @@
+go 1.22.3
+
+use ./codec
+
+use ./server
+
+use ./ai_assistant
+
+use ./auditor
+
+use ./solidity_parser
