@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Editor",
+      "type": "dart",
+      "request": "launch",
+      "program": "${workspaceFolder}/editor/lib/main.dart"
+    },
+    {
       "name": "Launch Codec",
       "type": "go",
       "request": "launch",
@@ -19,12 +25,6 @@
       "program": "${workspaceFolder}/server/server.go"
     },
     {
-      "name": "Launch Editor",
-      "type": "dart",
-      "request": "launch",
-      "program": "${workspaceFolder}/editor/lib/main.dart"
-    },
-    {
       "name": "Launch Auditor",
       "type": "go",
       "request": "launch",
@@ -37,13 +37,7 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/ai_assistant/assistant.go"
-    },
-    {
-      "name": "Launch client",
-      "type": "dart",
-      "request": "launch",
-      "program": "${workspaceFolder}/client/lib/main.dart"
-    },
+    }
   ],
   "compounds": [
     {
