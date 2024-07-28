@@ -17,66 +17,68 @@ Through this APIs the client can:
 - Request an encoding request
 - Request updates due to local editing
 
-#### Authentication and DB
+#### Keeping the state
 
-Ideally if we consider proving some authentication and database features too, then the endpoints will also provide:
+Database and Authentication are not implemented in the system.
+The Main Server takes care of keeping the current state by a local storage of tasks, which are rapresented by a unique ID.
 
-- Authentication
-- Saving
-- Loading
+### Codec service
 
-This implementation could open the road for sharing functionalities.
-
-### Codec microservice
-
-The Codec will be a Golang microservice.
-It will be running a GRPC server, ready to receive requests from the Main Server.
+The Codec is Golang microservice.
+It runs a GRPC server, ready to receive requests from the Main Server.
 
 The adavantages of separating this component relies in its heavy load task which can then be escalated freely.
 
-The GRPC endpoints will provide access to the codec functionalities.
+The GRPC endpoints provides access to the codec functionalities.
 
 - Encoding
   - A smart contract is received as string, it's analysed, and finally a JSON structure is produced.
 - Decoding
-  - A JSON structure is received, it is then decoded back to a smart contract, following some defined coding standard.
+  - A JSON structure is received, it is then decoded back to a smart contract, following some defined coding standards.
 
-Here two challenges arise.
-The first one reguards the conding end encoding opretaions.
-The identified approaches to this problem are two:
+The Parser/Lexer is implemented with the ANTLR language.
 
-- A regex based parser that scans the contract line by line
-- A LLM (AI) agent that produces the JSON from the contract
+The parser logic and data structures are shared among the microservice through a package named `solidity_parser`.
 
-The first one is harder to implement, but once tested and running it would be faster, cheaper and probably more reliable.
-The second one will be easier to implement using some LLM APIs available on the market. Still the agent needs to be prepared for the task, the operation would require some async operation to run and it will cost an amount of money.
+### Assistant service
 
-Considering an high load of operations, the first approach would be the favourite one.
+The AI Assistant is a Golang microservice.
 
-#### LLM Support microservice
+It takes care of two tasks.
 
-Still the LLM could be helpful in describing the JSON structures obtained, and commenting the resulting code.
+- The first one is to provide descriptions to the single elements obtained from the codec analysis.
 
-This support operation could be implemented over a different microservice, or inside the codec itself.
+- The second on is to create a list of functional relations.
+Each of those describes how the single element interact with another element.
 
-The second microservice approach could be usefull as it would expose the functionality to other uses other than simply coding/encoding.
-Again the scaling advantage is present too.
+To do all of this, the microservice intaract with Chat GPT through the Open AI APIs and the user of the `go-openai` library.
+
+This is currently the most time consuming operation and it requires the user to provide an API key with sufficent balance for the operation.
+
+### Auditor service
+
+The Auditor is a Golang microservice.
+
+The scope of this service is to return the result of a vulnerability analysis over the provided smart contract code.
+
+It does so by running a static analysis with `Slither`.
+https://github.com/crytic/slither
+
+The obtained results are then added beside the structure and provided back to the client for displaying.
 
 ### Editor Client
 
-The Client will be implement as a Flutter single page application.
-It will support Desktop and Web environment.
+The Client is Flutter single page application.
+It supports Desktop and Web environment.
 
-The interface will be composed by:
+The interface is by:
 
-- Graph like editor
-- Genetal and contract settings
-- Node specific settings
+- A graph like editor for the contracts code.
+- General settings page.
+- A sidebar with the selected element properties.
 
-The most complex blocks should behave like blackbox composed of input and outputs.
-The content shuld be described by the LLM service and therefore easy to understand.
-A way to edit the code would be needed in case the user wants to access it.
+The editor is responsible for taking the JSON structure received and rapresenting it graphically.
 
-The editor will be responsible for taking the JSON structure received and rapresenting it graphically.
+It also takes care of displaying the vulnerabilities.
 
 Finally, after changes are applied, the client can request the server to produce a smart contract out of the updated JSON.
