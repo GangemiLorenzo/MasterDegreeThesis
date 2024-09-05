@@ -24,7 +24,7 @@ func NewCodecServer(p solidity_parser.ISolidityParser) service.CodecServiceServe
 func (s *codecServer) Encode(ctx context.Context, req *service.EncodeRequest) (*service.EncodeResponse, error) {
 	println("Encode called")
 
-	sourceUnit, err := s.parser.ParseSmartContract(req.Data)
+	sourceUnit, err := s.parser.ParseSmartContract(req.SmartContractCode)
 	if err != nil {
 		return nil, err
 	}
@@ -39,20 +39,20 @@ func (s *codecServer) Encode(ctx context.Context, req *service.EncodeRequest) (*
 		return nil, fmt.Errorf("error cleaning null properties: %v", err)
 	}
 
-	return &service.EncodeResponse{Result: string(cleanedJson)}, nil
+	return &service.EncodeResponse{JsonStructure: string(cleanedJson)}, nil
 }
 
 // Decode implements the logic for the Decode RPC.
 func (s *codecServer) Decode(ctx context.Context, req *service.DecodeRequest) (*service.DecodeResponse, error) {
 	println("Decode called")
 
-	data := []byte(req.Data)
+	data := []byte(req.JsonStructure)
 	_, err := CleanNullProperties(data)
 	if err != nil {
 		return nil, fmt.Errorf("error cleaning null properties: %v", err)
 	}
 
-	return &service.DecodeResponse{Result: "Decoded data"}, nil
+	return &service.DecodeResponse{SmartContractCode: "Decoded data"}, nil
 }
 
 func CleanNullProperties(jsonData []byte) ([]byte, error) {

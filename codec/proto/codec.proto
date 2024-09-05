@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package codec;
 
-// Specify the Go package where the generated code should reside.
-// Adjust the path according to your module path and desired package structure.
 option go_package = "codec_service/;codec_service";
 
 service CodecService {
@@ -12,17 +10,17 @@ service CodecService {
 }
 
 message EncodeRequest {
-  string data = 1;
+  string smartContractCode = 1; // Input smart contract code to be encoded into JSON
 }
 
 message EncodeResponse {
-  string result = 1;
+  string jsonStructure = 1; // Encoded JSON structure of the smart contract
 }
 
 message DecodeRequest {
-  string data = 1;
+  string jsonStructure = 1; // Input JSON structure to be decoded back into smart contract code
 }
 
 message DecodeResponse {
-  string result = 1;
+  string smartContractCode = 1; // Decoded smart contract code
 }
