@@ -1,3 +1,31 @@
+
+# 301270 - Software Engineer - Thesis 
+
+This project contains my Software Engineer Master's Thesis project.
+
+The result we wanted to obtain was to provide a tool that allows the user to read and modify the content of a Solidity smart contract.
+
+All of it while being supported by an LLM and receiving vulnerability warnings.
+
+
+## Development Setup
+
+### Basic requirements
+- The **Flutter environment** must be installed to be able to compile and run the client in the `./editor` folder and the package in the `./editor_grid` folder.
+  - https://docs.flutter.dev/get-started/install
+
+- Installing **Golang** is necessary for running the main server and each microservice.
+  - https://go.dev/doc/install
+
+### Client setup
+- Move into the `./editor` folder, and run `make setup`. This command will execute a `pub get` for retriving the dependencies, then it will run a `build runner` command that generates the missing files.
+- Same for the `./editor_grid` package. Running `make setup` will retrive the dependencies needed.
+- At this point, if you are using VS-Code, the project contains a `launch.json` file, from which it is possible to launch the Editor. Otherwise, simply propmting `flutter run` in the terminal from the `./editor` should start the client.
+In both this situation, you should be prompted to select the Desktop or Web client.
+
+
+...
+
 ## Architecture
 
 ![Architecture structure from Figma](Architecture.png)
