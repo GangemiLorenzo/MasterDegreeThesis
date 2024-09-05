@@ -15,16 +15,16 @@ const List<NavBarItemModel> _defaultNavBarItems = [
     route: 'code',
     icon: Icons.code,
   ),
-  NavBarItemModel(
-    type: NavBarItemType.contracts,
-    route: 'contract',
-    icon: Icons.document_scanner_outlined,
-  ),
-  NavBarItemModel(
-    type: NavBarItemType.deploy,
-    route: 'deploy',
-    icon: Icons.rocket,
-  ),
+  // NavBarItemModel(
+  //   type: NavBarItemType.contracts,
+  //   route: 'contract',
+  //   icon: Icons.document_scanner_outlined,
+  // ),
+  // NavBarItemModel(
+  //   type: NavBarItemType.deploy,
+  //   route: 'deploy',
+  //   icon: Icons.rocket,
+  // ),
 ];
 
 const List<NavBarItemModel> _defaultBottomNavBarItems = [

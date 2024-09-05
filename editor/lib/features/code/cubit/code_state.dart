@@ -4,18 +4,21 @@ part of 'code_cubit.dart';
 class CodeState with _$CodeState {
   const factory CodeState.initial({
     @Default(false) bool isLoading,
-    File? file,
+    String? fileName,
+    Uint8List? fileBytes,
   }) = _Initial;
 
   const factory CodeState.processing({
-    required File file,
+    required String fileName,
+    required Uint8List fileBytes,
     required String taskId,
     required int progress,
     required String message,
   }) = _Processing;
 
   const factory CodeState.loaded({
-    required File file,
+    required String fileName,
+    required Uint8List fileBytes,
     required Task task,
     @Default(false) bool isLoading,
     String? selectedItem,

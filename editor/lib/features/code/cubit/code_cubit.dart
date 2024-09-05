@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:editor/api/gen/api_client.enums.swagger.dart';
 import 'package:editor/features/code/model/link.dart';
 import 'package:editor/features/code/model/source_unit.dart';
@@ -39,8 +37,11 @@ class CodeCubit extends Cubit<CodeState> {
       ),
     );
 
-    final file = await repo.openSmartContract();
-    if (file == null) {
+    final platformFile = await repo.openSmartContract();
+    final fileBytes =
+        platformFile != null ? await repo.getBytes(platformFile) : null;
+
+    if (platformFile == null || fileBytes == null) {
       emit(
         currentState.copyWith(
           isLoading: false,
@@ -52,7 +53,8 @@ class CodeCubit extends Cubit<CodeState> {
     emit(
       currentState.copyWith(
         isLoading: false,
-        file: file,
+        fileName: platformFile.name,
+        fileBytes: fileBytes,
       ),
     );
   }
@@ -65,7 +67,7 @@ class CodeCubit extends Cubit<CodeState> {
 
     final currentState = state as _Initial;
 
-    if (currentState.file == null) {
+    if (currentState.fileBytes == null) {
       return;
     }
 
@@ -76,11 +78,12 @@ class CodeCubit extends Cubit<CodeState> {
         ),
       );
 
-      final taskId = await repo.uploadFile(currentState.file!);
+      final taskId = await repo.uploadFile(currentState.fileBytes!);
 
       emit(
         CodeState.processing(
-          file: currentState.file!,
+          fileBytes: currentState.fileBytes!,
+          fileName: currentState.fileName ?? '',
           taskId: taskId,
           progress: 0,
           message: 'Uploading the smart contract',
@@ -162,7 +165,8 @@ class CodeCubit extends Cubit<CodeState> {
       );
       emit(
         CodeState.loaded(
-          file: currentState.file,
+          fileBytes: currentState.fileBytes,
+          fileName: currentState.fileName,
           task: task,
         ),
       );
@@ -254,7 +258,8 @@ class CodeCubit extends Cubit<CodeState> {
 
       emit(
         CodeState.processing(
-          file: currentState.file,
+          fileBytes: currentState.fileBytes,
+          fileName: currentState.fileName,
           taskId: taskId,
           progress: 0,
           message: 'Uploading the smart contract',

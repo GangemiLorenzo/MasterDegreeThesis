@@ -47,7 +47,7 @@ class CodePageBuilder extends StatelessWidget {
                 child: BlocConsumer<CodeCubit, CodeState>(
                   listener: (context, state) {
                     state.maybeWhen(
-                      processing: (_, __, progress, ___) {
+                      processing: (_, __, ___, progress, ____) {
                         if (progress == 0) {
                           context.read<CodeCubit>().startPollingTask();
                         }
@@ -59,7 +59,7 @@ class CodePageBuilder extends StatelessWidget {
                     return state.map(
                       initial: (state) => FileInputContent(
                         isLoading: state.isLoading,
-                        file: state.file,
+                        filePath: state.fileName,
                       ),
                       processing: (state) => ProcessingPage(
                         taskId: state.taskId,

@@ -373,7 +373,6 @@ class FunctionDetailsForm extends StatelessWidget {
               const Text('Returns:'),
               ...data.returns.map(
                 (e) => TextFormField(
-                  key: Key('8${data.id}'),
                   initialValue: e.name,
                   decoration: const InputDecoration(
                     labelText: 'Name',
@@ -396,7 +395,6 @@ class FunctionDetailsForm extends StatelessWidget {
               const Text('Modifiers:'),
               ...data.modifiers.map(
                 (e) => TextFormField(
-                  key: Key('9${data.id}'),
                   initialValue: e,
                   decoration: const InputDecoration(
                     labelText: 'Name',

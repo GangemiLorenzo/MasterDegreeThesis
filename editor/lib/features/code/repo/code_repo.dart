@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -5,7 +6,9 @@ import 'package:editor/api/gen/api_client.models.swagger.dart';
 import 'package:editor/features/code/model/source_unit.dart';
 import 'package:editor/service/file_picker_service.dart';
 import 'package:editor/service/rest_service.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -18,14 +21,38 @@ class CodeRepo {
     required this.filePickerService,
   });
 
-  Future<File?> openSmartContract() async {
+  Future<PlatformFile?> openSmartContract() async {
     final platformFile = await filePickerService.pickSingleFile(
       allowedExtensions: ['sol'],
     );
-    if (platformFile == null || platformFile.path == null) {
+
+    if (platformFile == null) {
       return null;
     }
-    return File(platformFile.path!);
+
+    if (!kIsWeb) {
+      if (platformFile.path == null) {
+        return null;
+      }
+    }
+
+    return platformFile;
+  }
+
+  Future<Uint8List> getBytes(PlatformFile platformFile) async {
+    if (platformFile.bytes != null) {
+      return platformFile.bytes!;
+    }
+
+    if (kIsWeb) {
+      throw Exception('Failed to get bytes');
+    }
+
+    final file = File(platformFile.path!);
+    await Future.delayed(const Duration(milliseconds: 500));
+    final bytes = await file.readAsBytes();
+
+    return bytes;
   }
 
   Future<bool> saveSmartContract(String code, String id) async {
@@ -40,9 +67,7 @@ class CodeRepo {
     }
   }
 
-  Future<String> uploadFile(File file) async {
-    final fileBytes = await file.readAsBytes();
-
+  Future<String> uploadFile(Uint8List fileBytes) async {
     final response = await restService.client.uploadPost(file: fileBytes);
 
     if (response.statusCode != 200) {
