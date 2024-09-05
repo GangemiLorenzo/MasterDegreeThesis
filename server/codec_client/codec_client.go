@@ -31,11 +31,11 @@ func (c *codecClient) Encode(data string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	resp, err := c.client.Encode(ctx, &service.EncodeRequest{Data: data})
+	resp, err := c.client.Encode(ctx, &service.EncodeRequest{SmartContractCode: data})
 	if err != nil {
 		return "", err
 	}
-	return resp.Result, nil
+	return resp.JsonStructure, nil
 }
 
 // Decode calls the Decode method on the codec service.
@@ -43,9 +43,9 @@ func (c *codecClient) Decode(data string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	resp, err := c.client.Decode(ctx, &service.DecodeRequest{Data: data})
+	resp, err := c.client.Decode(ctx, &service.DecodeRequest{JsonStructure: data})
 	if err != nil {
 		return "", err
 	}
-	return resp.Result, nil
+	return resp.SmartContractCode, nil
 }

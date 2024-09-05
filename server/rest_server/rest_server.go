@@ -43,6 +43,7 @@ func NewServer(
 
 func (s *Server) Start() {
 	router := mux.NewRouter()
+	router.Use(corsMiddleware)
 	router.HandleFunc("/api/upload", s.FileHandler).Methods("POST")
 	router.HandleFunc("/api/tasks/{taskId}", s.GetTaskStatusHandler).Methods("GET")
 	router.HandleFunc("/api/tasks/{taskId}", s.RefreshCodeHandler).Methods("POST")
@@ -51,6 +52,23 @@ func (s *Server) Start() {
 	router.Use(loggingMiddleware)
 	log.Printf("Server starting on port %s", s.Port)
 	log.Fatal(http.ListenAndServe(":"+s.Port, router))
+}
+
+// CORS middleware
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*") // Replace '*' with specific domains if needed
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// Handle preflight OPTIONS requests
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {

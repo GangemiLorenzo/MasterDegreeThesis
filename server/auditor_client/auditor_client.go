@@ -28,7 +28,7 @@ func (c *auditorClient) Audit(data string, code string) ([]*service.Vulnerabilit
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
-	resp, err := c.client.Audit(ctx, &service.AuditRequest{Data: data, Code: code})
+	resp, err := c.client.Audit(ctx, &service.AuditRequest{JsonStructure: data, SmartContractCode: code})
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (c *auditorClient) ConvertVulnerabilities(vulnerabilities []*service.Vulner
 	vulns := make([]map[string]interface{}, len(vulnerabilities))
 	for i, v := range vulnerabilities {
 		vulns[i] = map[string]interface{}{
-			"Check":       v.Check,
+			"Name":        v.Name,
 			"Description": v.Description,
 			"Severity":    v.Severity,
 		}
