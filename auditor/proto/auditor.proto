@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package auditor;
 
-// Specify the Go package where the generated code should reside.
-// Adjust the path according to your module path and desired package structure.
 option go_package = "auditor_service/;auditor_service";
 
 service AuditorService {
@@ -11,16 +9,16 @@ service AuditorService {
 }
 
 message AuditRequest {
-  string data = 1;
-  string code = 2;
+  string jsonStructure = 1;     // The JSON structure of the smart contract to be audited.
+  string smartContractCode = 2;  // The original smart contract code in its source format.
 }
 
 message Vulnerability {
-  string check = 1;
-  string description = 2;
-  string severity = 3;
+  string name = 1;              // The name or identifier of the security check that was triggered.
+  string description = 2;        // A detailed description of the vulnerability found.
+  string severity = 3;           // The severity level of the vulnerability (e.g., low, medium, high).
 }
 
 message AuditResponse {
-  repeated Vulnerability vulnerabilities = 1;
+  repeated Vulnerability vulnerabilities = 1;  // A list of vulnerabilities detected during the audit.
 }

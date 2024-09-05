@@ -25,12 +25,12 @@ func (s *auditorServer) Audit(ctx context.Context, req *service.AuditRequest) (*
 	println("Audit called")
 
 	var sourceUnit parser.SourceUnit
-	err := json.Unmarshal([]byte(req.Data), &sourceUnit)
+	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)
 	if err != nil {
 		return nil, err
 	}
 
-	code := req.Code
+	code := req.SmartContractCode
 
 	vulnerabilities, err := s.auditor_utils.RunAudit(code)
 	if err != nil {
@@ -40,7 +40,7 @@ func (s *auditorServer) Audit(ctx context.Context, req *service.AuditRequest) (*
 	var vulnerabilitiesResponse []*service.Vulnerability
 	for _, v := range vulnerabilities {
 		vulnerabilitiesResponse = append(vulnerabilitiesResponse, &service.Vulnerability{
-			Check:       v.Check,
+			Name:        v.Check,
 			Description: v.Description,
 			Severity:    v.Severity,
 		})
