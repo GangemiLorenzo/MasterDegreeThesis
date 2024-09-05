@@ -12,19 +12,19 @@ service AiAssistantService {
 }
 
 message CommentRequest {
-  string sourceUnit = 1;
-  string code = 2;
+  string jsonStructure = 1;     // The JSON structure of the smart contract to be commented on.
+  string smartContractCode = 2;  // The original smart contract code in its source format.
 }
 
 message CommentResponse {
-  string result = 1;
+  string jsonStructure = 1;  // The JSON structure with added comments or explanations.
 }
 
 message LinkRequest {
-  string sourceUnit = 1;
-  string code = 2;
+  string jsonStructure = 1;     // The JSON structure of the smart contract to be analyzed for links.
+  string smartContractCode = 2;  // The original smart contract code in its source format.
 }
 
 message LinkResponse {
-  string result = 1;
+  string Links = 1;  // The list of links found in the smart contract.
 }

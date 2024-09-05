@@ -27,14 +27,14 @@ func (s *aiAssistantServer) Comment(ctx context.Context, req *service.CommentReq
 	println("Comment process called")
 
 	var sourceUnit parser.SourceUnit
-	err := json.Unmarshal([]byte(req.SourceUnit), &sourceUnit)
+	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)
 	if err != nil {
 		return nil, err
 	}
 
-	code := req.Code
+	code := req.SmartContractCode
 
-	results, err := s.comments_utils.RunCommentProcess(req.SourceUnit, code)
+	results, err := s.comments_utils.RunCommentProcess(req.JsonStructure, code)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (s *aiAssistantServer) Comment(ctx context.Context, req *service.CommentReq
 		return nil, fmt.Errorf("error marshalling contract: %v", err)
 	}
 
-	return &service.CommentResponse{Result: string(sourceUnitJson)}, nil
+	return &service.CommentResponse{JsonStructure: string(sourceUnitJson)}, nil
 }
 
 type Result struct {
@@ -59,14 +59,14 @@ func (s *aiAssistantServer) Link(ctx context.Context, req *service.LinkRequest) 
 	println("Link process called")
 
 	var sourceUnit parser.SourceUnit
-	err := json.Unmarshal([]byte(req.SourceUnit), &sourceUnit)
+	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)
 	if err != nil {
 		return nil, err
 	}
 
-	code := req.Code
+	code := req.SmartContractCode
 
-	results, err := s.link_utils.RunLinkProcess(req.SourceUnit, code)
+	results, err := s.link_utils.RunLinkProcess(req.JsonStructure, code)
 	if err != nil {
 		return nil, err
 	}
@@ -79,5 +79,5 @@ func (s *aiAssistantServer) Link(ctx context.Context, req *service.LinkRequest) 
 		return nil, fmt.Errorf("error marshalling result: %v", err)
 	}
 
-	return &service.LinkResponse{Result: string(jsonResult)}, nil
+	return &service.LinkResponse{Links: string(jsonResult)}, nil
 }
