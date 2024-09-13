@@ -16,7 +16,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.23"
+          go-version: "1.20"
 
       - name: Build solidity_parser
         run: |
@@ -26,13 +26,13 @@ jobs:
       - name: Build ${{ matrix.service }}
         run: |
           cd ${{ matrix.service }}
-          go build -v -o ${{ matrix.service }} ./...
+          go build -v -o ${matrix.service}_service ./${matrix.service}.go
 
       - name: Upload ${{ matrix.service }} artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.service }}
-          path: ${{ matrix.service }}/${{ matrix.service }}
+          name: ${{ matrix.service }}_service
+          path: ${{ matrix.service }}/${matrix.service}_service
 
   release:
     needs: build
@@ -57,8 +57,8 @@ jobs:
       - name: Upload Release Assets
         run: |
           for service in codec ai_assistant auditor server; do
-            asset_path="./${service}/${service}"
-            asset_name="${service}"
+            asset_path="./${service}_service/${service}_service"
+            asset_name="${service}_service"
             content_type="application/octet-stream"
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                  -H "Content-Type: ${content_type}" \
