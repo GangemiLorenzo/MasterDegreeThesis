@@ -25,8 +25,17 @@ class CustomError with _$CustomError implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
     final customErrorCard = CustomErrorCard(
       id: id,
       position: position,
@@ -37,6 +46,7 @@ class CustomError with _$CustomError implements VisualElement {
     final vrParameters = parameters.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: variablePosition,
       );
       variablePosition = vr.nextPosition ?? lastPosition;
@@ -50,8 +60,14 @@ class CustomError with _$CustomError implements VisualElement {
               position.y - 220,
             )
           : null,
-      cards: [customErrorCard, ...vrParameters.cards],
-      links: [...vrParameters.links],
+      cards: [
+        customErrorCard,
+        ...vrParameters.cards,
+      ],
+      links: [
+        linkPair,
+        ...vrParameters.links,
+      ],
     );
   }
 
@@ -95,7 +111,10 @@ class CustomError with _$CustomError implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => CustomErrorDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      CustomErrorDetailsForm(data: this);
 }
 
 class CustomErrorCard extends StatelessWidget {

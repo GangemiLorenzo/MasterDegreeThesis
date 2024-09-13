@@ -24,8 +24,17 @@ class EnumDefinition with _$EnumDefinition implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
     return VisualRapresentation(
       nextPosition: position != null
           ? MyPoint(
@@ -36,7 +45,9 @@ class EnumDefinition with _$EnumDefinition implements VisualElement {
       cards: [
         EnumCard(id: id, position: position),
       ],
-      links: [],
+      links: [
+        linkPair,
+      ],
     );
   }
 
@@ -64,7 +75,10 @@ class EnumDefinition with _$EnumDefinition implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => EnumDetailsForm(
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      EnumDetailsForm(
         data: this,
       );
 }

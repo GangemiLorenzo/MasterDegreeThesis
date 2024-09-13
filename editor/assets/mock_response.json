@@ -1,71 +1,71 @@
 {
-    "id": "33aa3204-4c1c-42ca-8c99-f16cb0a234e1",
+    "id": "d8c58873-2254-41e1-912e-59cbf5e8c49a",
     "links": [
         {
             "action": "set",
-            "description": "The constructor sets the priceFeed and owner when the contract is deployed.",
-            "end": "bade375a-c28a-4125-b63c-6b652e092cc5",
-            "start": "c2f81963-b61a-4e99-b7a0-6e03ad90492a"
+            "description": "The constructor initializes the price feed and owner of the FundMe contract.",
+            "end": "4c3332df-7308-429a-9aa9-74753a45e733",
+            "start": "c89373bf-d169-4478-bd30-7622ea36be5b"
         },
         {
             "action": "set",
-            "description": "The fund function adds the value sent by the sender to the amount funded for the sender.",
-            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
-            "start": "033c1eb1-efaa-4475-bd8a-9b362dd511a4"
+            "description": "The fund function updates the amount funded by the sender and adds the sender to the list of funders.",
+            "end": "fa03b671-f770-4ce4-a55f-5004d79071f1",
+            "start": "6ead9e47-e23d-4384-b40c-6bc2f98f491c"
         },
         {
             "action": "set",
-            "description": "The withdraw function empties the amount funded for all funders and transfers the balance to the owner.",
-            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
-            "start": "bade375a-c28a-4125-b63c-6b652e092cc5"
+            "description": "The withdraw function resets the amount funded for each funder and empties the funders list.",
+            "end": "fa03b671-f770-4ce4-a55f-5004d79071f1",
+            "start": "dac3f495-8bc6-454a-9ed7-01a4da7339d2"
         },
         {
             "action": "set",
-            "description": "The cheaperWithdraw function is similar to withdraw but uses a memory array for funders.",
-            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
-            "start": "a0d16ee4-f58b-4540-844b-973690f710c8"
+            "description": "The cheaperWithdraw function resets the amount funded for each funder and empties the funders list, using a different approach.",
+            "end": "fa03b671-f770-4ce4-a55f-5004d79071f1",
+            "start": "bd4fc773-4d2b-40cf-b206-90e7d25436e9"
         },
         {
             "action": "return",
             "description": "The getAddressToAmountFunded function returns the amount funded by a specific address.",
-            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
-            "start": "887b931c-3085-4bf9-bf59-c52e286f51b9"
+            "end": "fa03b671-f770-4ce4-a55f-5004d79071f1",
+            "start": "e876e162-23ce-4946-abfe-f5921c8dde29"
         },
         {
             "action": "return",
             "description": "The getVersion function returns the version of the price feed.",
-            "end": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
-            "start": "4a8c9df0-3590-43ae-870d-00e48aaf00f2"
+            "end": "403ef642-6825-4413-ba79-020c8a2faa1b",
+            "start": "0c3c8cd6-1f6e-4024-a8ac-d0f15ed63662"
         },
         {
             "action": "return",
             "description": "The getFunder function returns the funder at a specific index.",
-            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
-            "start": "bd01fd22-a5ea-4788-9f91-2524355b3ba6"
+            "end": "fa03b671-f770-4ce4-a55f-5004d79071f1",
+            "start": "e62bdf52-8ad2-45e4-afd4-3381cda7d392"
         },
         {
             "action": "return",
-            "description": "The getOwner function returns the owner address.",
-            "end": "616952a3-b72c-49b6-a643-5f411a013da8",
-            "start": "a277378e-282f-4092-a606-32bdf10502be"
+            "description": "The getOwner function returns the owner of the FundMe contract.",
+            "end": "4c3332df-7308-429a-9aa9-74753a45e733",
+            "start": "45747384-f2e5-40bb-a1b8-cbf2a3bd0ad3"
         },
         {
             "action": "return",
             "description": "The getPriceFeed function returns the price feed interface.",
-            "end": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
-            "start": "ee9c3a38-2442-4884-82dd-b0432785171c"
+            "end": "7ffaee90-9921-4bef-9331-235f0ee9e69f",
+            "start": "403ef642-6825-4413-ba79-020c8a2faa1b"
         },
         {
-            "action": "set",
-            "description": "The getPrice function fetches the latest round data from the price feed.",
-            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
-            "start": "35f3f2e9-caa8-458a-9e74-d66dd812e229"
+            "action": "return",
+            "description": "The getPrice function retrieves the price from the price feed.",
+            "end": "7ffaee90-9921-4bef-9331-235f0ee9e69f",
+            "start": "26da66d9-c31f-403b-9b34-f23615a27dd0"
         },
         {
-            "action": "set",
-            "description": "The getConversionRate function calculates the conversion rate between the ETH amount and USD using the price feed.",
-            "end": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
-            "start": "e6c01f9d-5112-4623-85d2-c9f76136383e"
+            "action": "return",
+            "description": "The getConversionRate function calculates the ETH amount in USD based on the price feed.",
+            "end": "27e15ea8-c2a0-4f35-ba0b-fc92fb82a290",
+            "start": "ecaa73ce-7b87-4e34-b465-95a5c35b2fae"
         }
     ],
     "progress": 100,
@@ -79,8 +79,8 @@
                 "functions": [
                     {
                         "body": "{ s_priceFeed = AggregatorV3Interface ( priceFeed ) ; i_owner = msg . sender ; } ",
-                        "description": "Constructor to initialize the contract by setting the price feed and the owner.",
-                        "id": "c2f81963-b61a-4e99-b7a0-6e03ad90492a",
+                        "description": "Constructor function that initializes the contract with the price feed interface and sets the owner address.",
+                        "id": "c89373bf-d169-4478-bd30-7622ea36be5b",
                         "isConstructor": true,
                         "isFallback": false,
                         "isReceive": false,
@@ -89,7 +89,7 @@
                         "parameters": [
                             {
                                 "description": "",
-                                "id": "a377223e-b874-40f2-a8b1-78c09ae98df2",
+                                "id": "bbabf7ad-f36e-426c-9782-cc1ccbacdc1e",
                                 "isIndexed": false,
                                 "name": "priceFeed",
                                 "payable": false,
@@ -102,9 +102,9 @@
                         "visibility": ""
                     },
                     {
-                        "body": "{ require ( msg . value . getConversionRate ( s_priceFeed ) \u003e= MINIMUM_USD , \"You need to spend more ETH!\" ) ; s_addressToAmountFunded [ msg . sender ] += msg . value ; s_funders . push ( msg . sender ) ; } ",
-                        "description": "Function for funders to deposit ETH, ensuring the amount meets the minimum USD threshold.",
-                        "id": "033c1eb1-efaa-4475-bd8a-9b362dd511a4",
+                        "body": "{ require ( PriceConverter . getConversionRate ( msg . value , s_priceFeed ) \u003e= MINIMUM_USD , \"You need to spend more ETH!\" ) ; s_addressToAmountFunded [ msg . sender ] += msg . value ; s_funders . push ( msg . sender ) ; } ",
+                        "description": "Function for users to fund the contract with Ether, ensuring the amount spent meets a minimum in USD equivalent.",
+                        "id": "6ead9e47-e23d-4384-b40c-6bc2f98f491c",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -119,8 +119,8 @@
                     },
                     {
                         "body": "{ for ( uint256 funderIndex = 0 ; funderIndex \u003c s_funders . length ; funderIndex ++ ) { address funder = s_funders [ funderIndex ] ; s_addressToAmountFunded [ funder ] = 0 ; } s_funders = new address [ ] ( 0 ) ; ( bool success , ) = i_owner . call { value : address ( this ) . balance } ( \"\" ) ; require ( success ) ; } ",
-                        "description": "Function for the owner to withdraw all funds from the contract, resetting all funder balances.",
-                        "id": "bade375a-c28a-4125-b63c-6b652e092cc5",
+                        "description": "Function for the owner to withdraw all funds from the contract and reset funders' balances.",
+                        "id": "dac3f495-8bc6-454a-9ed7-01a4da7339d2",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -136,8 +136,8 @@
                     },
                     {
                         "body": "{ address [ ] memory funders = s_funders ; for ( uint256 funderIndex = 0 ; funderIndex \u003c funders . length ; funderIndex ++ ) { address funder = funders [ funderIndex ] ; s_addressToAmountFunded [ funder ] = 0 ; } s_funders = new address [ ] ( 0 ) ; ( bool success , ) = i_owner . call { value : address ( this ) . balance } ( \"\" ) ; require ( success ) ; } ",
-                        "description": "Function for the owner to withdraw all funds from the contract more efficiently without utilizing the funder array.",
-                        "id": "a0d16ee4-f58b-4540-844b-973690f710c8",
+                        "description": "Function for the owner to withdraw funds more efficiently by using a memory array for funders.",
+                        "id": "bd4fc773-4d2b-40cf-b206-90e7d25436e9",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -154,7 +154,7 @@
                     {
                         "body": "{ return s_addressToAmountFunded [ fundingAddress ] ; } ",
                         "description": "Function to retrieve the amount funded by a specific address.",
-                        "id": "887b931c-3085-4bf9-bf59-c52e286f51b9",
+                        "id": "e876e162-23ce-4946-abfe-f5921c8dde29",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -165,7 +165,7 @@
                         "parameters": [
                             {
                                 "description": "",
-                                "id": "a524a34f-95e6-4fd0-9c4e-bcc616d2564d",
+                                "id": "49c69f5c-ded6-4d16-a986-38de169fbb54",
                                 "isIndexed": false,
                                 "name": "fundingAddress",
                                 "payable": false,
@@ -176,7 +176,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "8f86fae6-3410-4445-9516-3d19a59760fd",
+                                "id": "5ab7bec2-c0ed-4444-8f90-31141004f81b",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -189,8 +189,8 @@
                     },
                     {
                         "body": "{ return s_priceFeed . version ( ) ; } ",
-                        "description": "Function to get the version of the price feed contract.",
-                        "id": "4a8c9df0-3590-43ae-870d-00e48aaf00f2",
+                        "description": "Function to get the version of the price feed interface.",
+                        "id": "0c3c8cd6-1f6e-4024-a8ac-d0f15ed63662",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -202,7 +202,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "51e6a92a-f1f6-4a61-a12c-deafbc1b7147",
+                                "id": "871b7ebe-9296-4c5b-b612-e7ed665a8f49",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -215,8 +215,8 @@
                     },
                     {
                         "body": "{ return s_funders [ index ] ; } ",
-                        "description": "Function to retrieve the funder's address based on the index in the funder array.",
-                        "id": "bd01fd22-a5ea-4788-9f91-2524355b3ba6",
+                        "description": "Function to retrieve the funder address at a specific index.",
+                        "id": "e62bdf52-8ad2-45e4-afd4-3381cda7d392",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -227,7 +227,7 @@
                         "parameters": [
                             {
                                 "description": "",
-                                "id": "5ee64fbe-3113-43f4-9bfc-cd2a17b35cd1",
+                                "id": "4141760a-7976-40a1-8f9e-6082ce14e8d2",
                                 "isIndexed": false,
                                 "name": "index",
                                 "payable": false,
@@ -238,7 +238,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "b7f11df4-fa63-4e82-abf2-e589b7266991",
+                                "id": "b688d544-0bd2-4907-8dd6-5560d270aac8",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -251,8 +251,8 @@
                     },
                     {
                         "body": "{ return i_owner ; } ",
-                        "description": "Function to get the owner's address.",
-                        "id": "a277378e-282f-4092-a606-32bdf10502be",
+                        "description": "Function to get the owner address of the contract.",
+                        "id": "45747384-f2e5-40bb-a1b8-cbf2a3bd0ad3",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -264,7 +264,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "c4004e63-d475-4a97-aace-f12905de0756",
+                                "id": "945f4c0a-8435-491f-8e9a-3bef3f0cb2ae",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -277,8 +277,8 @@
                     },
                     {
                         "body": "{ return s_priceFeed ; } ",
-                        "description": "Function to get the price feed contract instance.",
-                        "id": "ee9c3a38-2442-4884-82dd-b0432785171c",
+                        "description": "Function to retrieve the price feed interface used in the contract.",
+                        "id": "403ef642-6825-4413-ba79-020c8a2faa1b",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -290,7 +290,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "bc79aa6c-9ecf-4d84-9aa9-f481fc418785",
+                                "id": "715baff6-2e23-4b20-825c-e0589c6f6f10",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -302,7 +302,7 @@
                         "visibility": "public"
                     }
                 ],
-                "id": "8ce09065-6f57-4fb6-8532-0eae07c1f484",
+                "id": "0264cdeb-5b7e-4a6d-bd8d-6947e37dec6c",
                 "inheritance": null,
                 "isInterface": false,
                 "isLibrary": false,
@@ -310,7 +310,7 @@
                     {
                         "body": "{ if ( msg . sender != i_owner ) revert FundMe__NotOwner ( ) ; _ ; } ",
                         "description": "",
-                        "id": "8d45844e-fca2-400f-bb62-807b3c072d81",
+                        "id": "0fdd3c02-ae6b-45ec-b5e5-dd8c12b46ab1",
                         "name": "onlyOwner",
                         "parameters": null
                     }
@@ -320,7 +320,7 @@
                 "variables": [
                     {
                         "description": "",
-                        "id": "65d1627e-ba53-465a-8860-d7bfcb042a97",
+                        "id": "2a5ea500-e3ac-4351-82d8-3360a9f6e0f7",
                         "mappingFrom": "",
                         "mappingTo": "",
                         "modifiers": [
@@ -334,7 +334,7 @@
                     },
                     {
                         "description": "",
-                        "id": "86f75164-afa6-46e2-a4f5-830e09c6e9d2",
+                        "id": "4c3332df-7308-429a-9aa9-74753a45e733",
                         "mappingFrom": "",
                         "mappingTo": "",
                         "modifiers": [
@@ -348,7 +348,7 @@
                     },
                     {
                         "description": "",
-                        "id": "616952a3-b72c-49b6-a643-5f411a013da8",
+                        "id": "7f7d45e7-83b1-457a-9c2c-d27185312f23",
                         "mappingFrom": "",
                         "mappingTo": "",
                         "modifiers": [
@@ -361,7 +361,7 @@
                     },
                     {
                         "description": "",
-                        "id": "54906dbe-fcaa-4ec4-9f1e-e9d396dab682",
+                        "id": "fa03b671-f770-4ce4-a55f-5004d79071f1",
                         "mappingFrom": "address",
                         "mappingTo": "uint256",
                         "modifiers": [
@@ -374,7 +374,7 @@
                     },
                     {
                         "description": "",
-                        "id": "539c117b-0f8b-4a70-ac07-257dc4e0626b",
+                        "id": "a9fac292-5a9e-49c2-91b5-ab3cc8add100",
                         "mappingFrom": "",
                         "mappingTo": "",
                         "modifiers": [
@@ -395,8 +395,8 @@
                 "functions": [
                     {
                         "body": "{ ( , int256 answer , , , ) = priceFeed . latestRoundData ( ) ; return uint256 ( answer * 10000000000 ) ; } ",
-                        "description": "Internal function to retrieve the latest price from the price feed contract.",
-                        "id": "35f3f2e9-caa8-458a-9e74-d66dd812e229",
+                        "description": "Internal function to get the price from the price feed interface.",
+                        "id": "26da66d9-c31f-403b-9b34-f23615a27dd0",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -407,7 +407,7 @@
                         "parameters": [
                             {
                                 "description": "",
-                                "id": "d4e3c47d-efe6-4082-b7e4-3630612f271f",
+                                "id": "c512bedf-d67f-48f4-9ade-0181a196535b",
                                 "isIndexed": false,
                                 "name": "priceFeed",
                                 "payable": false,
@@ -418,7 +418,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "0f9bfe14-a3c0-467b-8e11-3fa54bd4063e",
+                                "id": "4f9ba6fc-feb3-41b8-8709-4a1902409aa4",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -431,8 +431,8 @@
                     },
                     {
                         "body": "{ uint256 ethPrice = getPrice ( priceFeed ) ; uint256 ethAmountInUsd = ( ethPrice * ethAmount ) / 1000000000000000000 ; return ethAmountInUsd ; } ",
-                        "description": "Internal function to calculate the USD amount based on the ETH amount and the price feed.",
-                        "id": "e6c01f9d-5112-4623-85d2-c9f76136383e",
+                        "description": "Internal function to calculate the conversion rate of ETH amount to USD based on the price feed.",
+                        "id": "ecaa73ce-7b87-4e34-b465-95a5c35b2fae",
                         "isConstructor": false,
                         "isFallback": false,
                         "isReceive": false,
@@ -443,7 +443,7 @@
                         "parameters": [
                             {
                                 "description": "",
-                                "id": "e929134a-e49a-483a-9203-69850872d48c",
+                                "id": "3c66074e-a693-4ac9-ba62-76876a2f37c8",
                                 "isIndexed": false,
                                 "name": "ethAmount",
                                 "payable": false,
@@ -452,7 +452,7 @@
                             },
                             {
                                 "description": "",
-                                "id": "85b04196-7457-41b8-b4eb-d470e4c16b3a",
+                                "id": "395ed4e9-5342-4e41-b4a8-58c72e6ccd2c",
                                 "isIndexed": false,
                                 "name": "priceFeed",
                                 "payable": false,
@@ -463,7 +463,7 @@
                         "returns": [
                             {
                                 "description": "",
-                                "id": "65e0152d-4eb5-4ccc-90e4-c93533c8d880",
+                                "id": "81dd90cc-f16e-431e-8842-d54d164bb7a7",
                                 "isIndexed": false,
                                 "name": "",
                                 "payable": false,
@@ -475,12 +475,282 @@
                         "visibility": "internal"
                     }
                 ],
-                "id": "6c21da16-7e33-4a00-8b10-7e68dd64ec7d",
+                "id": "a24d90b9-80b6-4718-8e6d-c37be797d5d3",
                 "inheritance": null,
                 "isInterface": false,
                 "isLibrary": true,
                 "modifiers": null,
                 "name": "PriceConverter",
+                "structs": null,
+                "variables": null
+            },
+            {
+                "description": "",
+                "enums": null,
+                "errors": null,
+                "events": null,
+                "functions": [
+                    {
+                        "body": "",
+                        "description": "External function to get the decimals of the price feed interface.",
+                        "id": "4861633c-0f3f-4e99-8a39-e9db2ebcd9b5",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "decimals",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "898c038f-cfd5-484a-9698-082166318d58",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint8"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    },
+                    {
+                        "body": "",
+                        "description": "External function to get the description of the price feed interface.",
+                        "id": "db215186-27ab-4a9f-bd65-0998caa7b556",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "description",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "e60e4aea-a21d-4300-8ef1-94f37b524f35",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "memory",
+                                "type": "string"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    },
+                    {
+                        "body": "",
+                        "description": "External function to get the version of the price feed interface.",
+                        "id": "bca933b7-2228-4ce3-b5f1-8c2037688db4",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "version",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "28dff6cf-a759-4eaf-a96f-4493b650dc90",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    },
+                    {
+                        "body": "",
+                        "description": "External function to retrieve round data from the price feed interface based on round ID.",
+                        "id": "3eb3f02d-a1b2-4f93-9185-5ff1d19f2c41",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "getRoundData",
+                        "parameters": [
+                            {
+                                "description": "",
+                                "id": "b07a2310-0dda-4bc7-8758-354c00af6a3b",
+                                "isIndexed": false,
+                                "name": "_roundId",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint80"
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "64abea12-d7e3-4927-82ab-58db464c65a0",
+                                "isIndexed": false,
+                                "name": "roundId",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint80"
+                            },
+                            {
+                                "description": "",
+                                "id": "fa8a503d-c991-43e3-b4b8-839b271e5a68",
+                                "isIndexed": false,
+                                "name": "answer",
+                                "payable": false,
+                                "storage": "",
+                                "type": "int256"
+                            },
+                            {
+                                "description": "",
+                                "id": "27838c60-1e02-4e15-a7c4-fc1f0832493f",
+                                "isIndexed": false,
+                                "name": "startedAt",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "description": "",
+                                "id": "3a52f9f2-d329-43fe-bbe8-45607aa89687",
+                                "isIndexed": false,
+                                "name": "updatedAt",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "description": "",
+                                "id": "f50ae029-2401-444b-b62a-3f4a15742d07",
+                                "isIndexed": false,
+                                "name": "answeredInRound",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint80"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    },
+                    {
+                        "body": "",
+                        "description": "External function to retrieve the latest round data from the price feed interface.",
+                        "id": "dbce0d6b-2ff6-4273-bd89-1a44db2499de",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "latestRoundData",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "7c83893e-dfb6-42e0-aff0-01310499ccfa",
+                                "isIndexed": false,
+                                "name": "roundId",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint80"
+                            },
+                            {
+                                "description": "",
+                                "id": "c8fe6455-2b69-4a8a-a265-7f094fa6208c",
+                                "isIndexed": false,
+                                "name": "answer",
+                                "payable": false,
+                                "storage": "",
+                                "type": "int256"
+                            },
+                            {
+                                "description": "",
+                                "id": "0dc195ac-ae1d-4ee7-99c0-e649d3b89ae9",
+                                "isIndexed": false,
+                                "name": "startedAt",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "description": "",
+                                "id": "a70b5964-5f29-47ed-b564-4e8610583a23",
+                                "isIndexed": false,
+                                "name": "updatedAt",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint256"
+                            },
+                            {
+                                "description": "",
+                                "id": "a507648b-a738-41d6-9ff9-d1bfa8645b07",
+                                "isIndexed": false,
+                                "name": "answeredInRound",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint80"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    }
+                ],
+                "id": "7ffaee90-9921-4bef-9331-235f0ee9e69f",
+                "inheritance": null,
+                "isInterface": true,
+                "isLibrary": false,
+                "modifiers": null,
+                "name": "AggregatorV3Interface",
+                "structs": null,
+                "variables": null
+            },
+            {
+                "description": "",
+                "enums": null,
+                "errors": null,
+                "events": null,
+                "functions": [
+                    {
+                        "body": "",
+                        "description": "External function to get the decimals of the price feed interface.",
+                        "id": "4861633c-0f3f-4e99-8a39-e1112ebcd9b5",
+                        "isConstructor": false,
+                        "isFallback": false,
+                        "isReceive": false,
+                        "modifiers": [
+                            "external"
+                        ],
+                        "name": "decimals",
+                        "parameters": null,
+                        "returns": [
+                            {
+                                "description": "",
+                                "id": "898c038f-cfd5-484a-9698-082164518d58",
+                                "isIndexed": false,
+                                "name": "",
+                                "payable": false,
+                                "storage": "",
+                                "type": "uint8"
+                            }
+                        ],
+                        "stateMutability": "view",
+                        "visibility": ""
+                    }
+                ],
+                "id": "7ffaee90-9921-4bef-9331-235f0512e69f",
+                "inheritance": null,
+                "isInterface": true,
+                "isLibrary": false,
+                "modifiers": null,
+                "name": "TestContract",
                 "structs": null,
                 "variables": null
             }
@@ -490,35 +760,21 @@
         "errors": [
             {
                 "description": "",
-                "id": "28f60eba-cef7-44a8-88e6-45613a753a27",
+                "id": "2342dfd6-e3b6-4c13-a120-c5e26d6d78e0",
                 "name": "FundMe__NotOwner",
                 "parameters": null
             }
         ],
         "events": null,
         "functions": null,
-        "id": "a5d10e89-02e4-47e5-b9fb-29e5b9c4c894",
-        "imports": [
-            {
-                "description": "",
-                "id": "d83a0f99-8ab5-4985-9917-40f55b1e33ff",
-                "path": "\"@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol\"",
-                "symbols": [
-                    {
-                        "alias": "",
-                        "description": "",
-                        "id": "61c1853d-bdf3-4cfe-a20a-e5e956b0d417",
-                        "name": "AggregatorV3Interface"
-                    }
-                ]
-            }
-        ],
+        "id": "add3fb6d-94cd-4c62-a352-c993cce943e0",
+        "imports": null,
         "pragmas": [
             {
                 "description": "",
-                "id": "9efb60d8-2216-4696-af5e-a1ef45e8146b",
+                "id": "553fb307-ae83-45af-a449-43e3cc866320",
                 "name": "solidity",
-                "value": "^0.8.19"
+                "value": "^0.8.12"
             }
         ],
         "structs": null
@@ -528,9 +784,44 @@
     "vulnerabilities": {
         "vulnerabilities": [
             {
-                "Check": "solc-version",
-                "Description": "Version constraint ^0.8.0 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)\n\t- FullInlinerNonExpressionSplitArgumentEvaluationOrder\n\t- MissingSideEffectsOnSelectorAccess\n\t- AbiReencodingHeadOverflowWithStaticArrayCleanup\n\t- DirtyBytesArrayToStorage\n\t- DataLocationChangeInInternalOverride\n\t- NestedCalldataArrayAbiReencodingSizeValidation\n\t- SignedImmutables\n\t- ABIDecodeTwoDimensionalArrayMemory\n\t- KeccakCaching.\n It is used by:\n\t- ../../../../../../var/folders/87/fpjrvwkn4g1227j5cxz70kz80000gp/T/solidity_code_2458241668.sol#5\n",
+                "Description": "PriceConverter.getPrice(AggregatorV3Interface) (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#85-90) ignores return value by (None,answer,None,None,None) = priceFeed.latestRoundData() (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#88)\n",
+                "Name": "unused-return",
+                "Severity": "Medium"
+            },
+            {
+                "Description": "Version constraint ^0.8.12 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)\n\t- VerbatimInvalidDeduplication\n\t- FullInlinerNonExpressionSplitArgumentEvaluationOrder\n\t- MissingSideEffectsOnSelectorAccess\n\t- AbiReencodingHeadOverflowWithStaticArrayCleanup\n\t- DirtyBytesArrayToStorage\n\t- DataLocationChangeInInternalOverride\n\t- NestedCalldataArrayAbiReencodingSizeValidation\n\t- AbiEncodeCallLiteralAsFixedBytesBug.\n It is used by:\n\t- reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#1\n",
+                "Name": "solc-version",
                 "Severity": "Informational"
+            },
+            {
+                "Description": "Low level call in FundMe.cheaperWithdraw() (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#46-59):\n\t- (success,None) = i_owner.call{value: address(this).balance}() (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#57)\n",
+                "Name": "low-level-calls",
+                "Severity": "Informational"
+            },
+            {
+                "Description": "Low level call in FundMe.withdraw() (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#32-44):\n\t- (success,None) = i_owner.call{value: address(this).balance}() (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#42)\n",
+                "Name": "low-level-calls",
+                "Severity": "Informational"
+            },
+            {
+                "Description": "PriceConverter.getPrice(AggregatorV3Interface) (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#85-90) uses literals with too many digits:\n\t- uint256(answer * 10000000000) (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#89)\n",
+                "Name": "too-many-digits",
+                "Severity": "Informational"
+            },
+            {
+                "Description": "PriceConverter.getConversionRate(uint256,AggregatorV3Interface) (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#92-99) uses literals with too many digits:\n\t- ethAmountInUsd = (ethPrice * ethAmount) / 1000000000000000000 (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#97)\n",
+                "Name": "too-many-digits",
+                "Severity": "Informational"
+            },
+            {
+                "Description": "Loop condition funderIndex \u003c s_funders.length (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#35) should use cached array length instead of referencing `length` member of the storage array.\n ",
+                "Name": "cache-array-length",
+                "Severity": "Optimization"
+            },
+            {
+                "Description": "FundMe.s_priceFeed (reports/report21252012-be80-4bb9-aa64-2e0ea93134f3.sol#10) should be immutable \n",
+                "Name": "immutable-states",
+                "Severity": "Optimization"
             }
         ]
     }

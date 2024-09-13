@@ -1,5 +1,4 @@
-import 'package:editor_grid/src/grid_element.dart';
-import 'package:editor_grid/src/my_point.dart';
+import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 
 enum GridCardItemType {
@@ -67,9 +66,8 @@ class GridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final connectionProvider = ConnectionProvider.of(context);
-
     return DraggableGridElement(
+      id: key.toString(),
       position: position,
       child: ConstrainedBox(
         constraints: const BoxConstraints(
@@ -94,7 +92,7 @@ class GridCard extends StatelessWidget {
             ),
             child: Card(
               elevation: isSelected ? 0 : null,
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

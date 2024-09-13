@@ -37,7 +37,7 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/ai_assistant/assistant.go"
-    }
+    },
   ],
   "compounds": [
     {
@@ -46,6 +46,15 @@
         "Launch Codec",
         "Launch Auditor",
         "Launch Server",
+        "Launch Assistant"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Launch micro services",
+      "configurations": [
+        "Launch Codec",
+        "Launch Auditor",
         "Launch Assistant"
       ],
       "stopAll": true

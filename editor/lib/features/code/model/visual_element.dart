@@ -42,10 +42,15 @@ class VisualRapresentation {
 abstract class VisualElement {
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   });
 
-  Widget toDetailsForm();
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  });
 
   VisualElement? findById({
     required String id,

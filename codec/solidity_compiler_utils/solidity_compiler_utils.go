@@ -35,5 +35,7 @@ func (scu *SolidityCompilerUtils) CheckValidity(code string) error {
 		return fmt.Errorf("solidity code cannot be compiled: %v", err)
 	}
 
+	fmt.Println("Solidity code is valid")
+
 	return nil
 }

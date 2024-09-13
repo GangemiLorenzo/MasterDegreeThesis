@@ -29,8 +29,25 @@ class Variable with _$Variable implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    var _position = position ?? const MyPoint(-600, 500);
+
+    _position = MyPoint(_position.x + 500, _position.y);
+
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+    final card = VariableGridCard(
+      id: id,
+      position: _position,
+    );
     return VisualRapresentation(
       nextPosition: position != null
           ? MyPoint(
@@ -39,12 +56,11 @@ class Variable with _$Variable implements VisualElement {
             )
           : null,
       cards: [
-        VariableGridCard(
-          id: id,
-          position: position,
-        ),
+        card,
       ],
-      links: [],
+      links: [
+        linkPair,
+      ],
     );
   }
 
@@ -72,7 +88,10 @@ class Variable with _$Variable implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => VariableDetailsForm(
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      VariableDetailsForm(
         data: this,
       );
 }

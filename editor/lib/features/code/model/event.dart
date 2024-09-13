@@ -1,8 +1,7 @@
 import 'package:editor/features/code/cubit/code_cubit.dart';
 import 'package:editor/features/code/model/parameter.dart';
 import 'package:editor/features/code/model/visual_element.dart';
-import 'package:editor_grid/src/grid_card.dart';
-import 'package:editor_grid/src/my_point.dart';
+import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -25,14 +24,25 @@ class Event with _$Event implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+
     final lastPosition = position ?? const MyPoint(0, 0);
 
     var variablePosition = MyPoint(lastPosition.x + 300, lastPosition.y);
     final vrParameters = parameters.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: variablePosition,
       );
       variablePosition = vr.nextPosition ?? lastPosition;
@@ -54,6 +64,7 @@ class Event with _$Event implements VisualElement {
         ...vrParameters.cards,
       ],
       links: [
+        linkPair,
         ...vrParameters.links,
       ],
     );
@@ -99,7 +110,10 @@ class Event with _$Event implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => EventDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      EventDetailsForm(data: this);
 }
 
 class EventCard extends StatelessWidget {

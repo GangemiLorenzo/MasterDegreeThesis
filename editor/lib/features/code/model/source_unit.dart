@@ -7,7 +7,7 @@ import 'package:editor/features/code/model/import.dart';
 import 'package:editor/features/code/model/pragma.dart';
 import 'package:editor/features/code/model/struct.dart';
 import 'package:editor/features/code/model/visual_element.dart';
-import 'package:editor_grid/src/my_point.dart';
+import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -36,12 +36,23 @@ class SourceUnit with _$SourceUnit implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+
     var lastPosition = position ?? const MyPoint(0, 0);
     final vrPragmas = pragmas.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -51,6 +62,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrImports = imports.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -60,6 +72,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrEnums = enums.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -69,6 +82,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrEvents = events.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -78,6 +92,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrStructs = structs.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -87,6 +102,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrFunctions = functions.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -96,6 +112,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     final vrErrors = errors.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: lastPosition,
       );
       lastPosition = vr.nextPosition ?? lastPosition;
@@ -113,6 +130,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
         ...vrErrors.cards,
       ],
       links: [
+        linkPair,
         ...vrPragmas.links,
         ...vrImports.links,
         ...vrEnums.links,
@@ -276,5 +294,8 @@ class SourceUnit with _$SourceUnit implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => Container();
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      Container();
 }

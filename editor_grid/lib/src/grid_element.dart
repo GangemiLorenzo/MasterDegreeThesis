@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 class GridElement extends ParentDataWidget<RendererElementParentData> {
   final MyPoint position;
   final Offset dragOffset;
+  final String id;
 
   const GridElement({
     super.key,
     required super.child,
     required this.position,
     this.dragOffset = Offset.zero,
+    required this.id,
   });
 
   @override
@@ -19,18 +21,25 @@ class GridElement extends ParentDataWidget<RendererElementParentData> {
     assert(renderObject.parentData is RendererElementParentData);
     final RendererElementParentData parentData =
         renderObject.parentData as RendererElementParentData;
+    bool needsLayout = false;
+
     if (parentData.customPosition != position) {
       parentData.customPosition = position;
-      final RenderObject? ro = renderObject.parent;
-      if (ro is RenderObject) ro.markNeedsLayout();
+      needsLayout = true;
     }
     if (parentData.dragOffset != dragOffset) {
       parentData.dragOffset = dragOffset;
+      needsLayout = true;
+    }
+    if (parentData.id != id) {
+      parentData.id = id;
+      needsLayout = true;
+    }
+
+    if (needsLayout) {
       final RenderObject? ro = renderObject.parent;
       if (ro is RenderObject) ro.markNeedsLayout();
     }
-    renderObject.parentData = parentData;
-    renderObject.parent!.parentData = parentData;
   }
 
   @override
@@ -40,11 +49,13 @@ class GridElement extends ParentDataWidget<RendererElementParentData> {
 class DraggableGridElement extends StatefulWidget {
   final MyPoint position;
   final Widget child;
+  final String id;
 
   const DraggableGridElement({
     super.key,
     required this.position,
     required this.child,
+    required this.id,
   });
 
   @override
@@ -69,6 +80,7 @@ class _DraggableGridElementState extends State<DraggableGridElement> {
   @override
   Widget build(BuildContext context) {
     return GridElement(
+      id: widget.id,
       position: widget.position,
       dragOffset: dragOffset,
       child: GestureDetector(

@@ -23,8 +23,18 @@ class Pragma with _$Pragma implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+
     return VisualRapresentation(
       nextPosition: position != null
           ? MyPoint(
@@ -38,7 +48,9 @@ class Pragma with _$Pragma implements VisualElement {
           position: position,
         ),
       ],
-      links: [],
+      links: [
+        linkPair,
+      ],
     );
   }
 
@@ -66,7 +78,10 @@ class Pragma with _$Pragma implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => PragmaDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      PragmaDetailsForm(data: this);
 }
 
 /// Returns a widget that represents a [Pragma] element in a grid card.

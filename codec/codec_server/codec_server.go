@@ -22,7 +22,7 @@ func NewCodecServer(p solidity_parser.ISolidityParser) service.CodecServiceServe
 
 // Encode implements the logic for the Encode RPC.
 func (s *codecServer) Encode(ctx context.Context, req *service.EncodeRequest) (*service.EncodeResponse, error) {
-	println("Encode called")
+	fmt.Println("Encode called")
 
 	sourceUnit, err := s.parser.ParseSmartContract(req.SmartContractCode)
 	if err != nil {
@@ -44,7 +44,7 @@ func (s *codecServer) Encode(ctx context.Context, req *service.EncodeRequest) (*
 
 // Decode implements the logic for the Decode RPC.
 func (s *codecServer) Decode(ctx context.Context, req *service.DecodeRequest) (*service.DecodeResponse, error) {
-	println("Decode called")
+	fmt.Println("Decode called")
 
 	data := []byte(req.JsonStructure)
 	_, err := CleanNullProperties(data)

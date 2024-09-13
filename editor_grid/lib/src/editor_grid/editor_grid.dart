@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:editor_grid/src/editor_grid/connection_provider.dart';
 import 'package:editor_grid/src/editor_grid/renderer_grid.dart';
 import 'package:flutter/material.dart';
 
@@ -42,11 +43,9 @@ class _EditorGridState extends State<EditorGrid> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onScaleUpdate: (ScaleUpdateDetails details) {
-        debugPrint('Scale update');
         final difference =
             Offset(details.focalPointDelta.dx, details.focalPointDelta.dy);
-        debugPrint('scale: ${details.scale}');
-        final zoomDifference = details.scale - 1;
+        const zoomDifference = 0;
         setState(() {
           zoomFactor = min(max(lastZoomFactor + zoomDifference, 0.5), 3);
           dragOffset = dragOffset.translate(difference.dx, difference.dy);
@@ -60,47 +59,21 @@ class _EditorGridState extends State<EditorGrid> {
       child: Container(
         color: Colors.transparent,
         child: ConnectionProvider(
-          connections: const [],
-          child: RendererGrid(
-            zoomFactor: zoomFactor,
-            dragOffset: dragOffset,
-            children: widget.children,
-          ),
+          connections: widget.links,
+          child: Builder(builder: (context) {
+            final connectionProvider = ConnectionProvider.of(context);
+
+            return Positioned.fill(
+              child: RendererGrid(
+                zoomFactor: zoomFactor,
+                dragOffset: dragOffset,
+                connections: connectionProvider?.validConnections ?? [],
+                children: widget.children,
+              ),
+            );
+          }),
         ),
       ),
     );
   }
-}
-
-class ConnectionProvider extends InheritedWidget {
-  final List<LinkPair> connections;
-
-  const ConnectionProvider({
-    super.key,
-    required super.child,
-    required this.connections,
-  });
-
-  static ConnectionProvider? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ConnectionProvider>();
-  }
-
-  @override
-  bool updateShouldNotify(ConnectionProvider oldWidget) {
-    return connections != oldWidget.connections;
-  }
-
-  void addConnection(LinkPair connection) {
-    connections.add(connection);
-  }
-}
-
-class LinkPair {
-  final int startId;
-  final int endId;
-
-  LinkPair({
-    required this.startId,
-    required this.endId,
-  });
 }

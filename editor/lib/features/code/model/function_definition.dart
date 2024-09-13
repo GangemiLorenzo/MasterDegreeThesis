@@ -36,45 +36,60 @@ class FunctionDefinition with _$FunctionDefinition implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
-    final lastPosition = position ?? const MyPoint(0, 0);
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
 
-    final gridCard = FunctionGridCard(id: id, position: lastPosition);
+    var _position = position ?? const MyPoint(-600, 500);
 
-    var variablePosition = MyPoint(lastPosition.x + 300, lastPosition.y);
+    final gridCard = FunctionGridCard(id: id, position: _position);
+
+    // Move the position to the right for children elements
+    _position = MyPoint(_position.x + 500, _position.y);
+
     final vrVariables = parameters.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: variablePosition,
+        fatherId: id,
+        position: _position,
+        linkDescription: 'Expects',
+        linkColor: Colors.green.withOpacity(0.5),
       );
-      variablePosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
 
-    var returnPosition = variablePosition;
     final vrReturns = returns.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: returnPosition,
+        fatherId: id,
+        position: _position,
+        linkDescription: 'Returns',
       );
-      returnPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
 
     return VisualRapresentation(
-      nextPosition: position != null
-          ? MyPoint(
-              position.x,
-              position.y - 220,
-            )
-          : null,
+      nextPosition: MyPoint(
+        _position.x,
+        _position.y - 220,
+      ),
       cards: [
         gridCard,
         ...vrVariables.cards,
         ...vrReturns.cards,
       ],
       links: [
+        linkPair,
         ...vrVariables.links,
         ...vrReturns.links,
       ],
@@ -137,7 +152,10 @@ class FunctionDefinition with _$FunctionDefinition implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => FunctionDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      FunctionDetailsForm(data: this);
 }
 
 class FunctionGridCard extends StatelessWidget {
@@ -232,9 +250,11 @@ class FunctionGridCard extends StatelessWidget {
 
 class FunctionDetailsForm extends StatelessWidget {
   final FunctionDefinition data;
+  final List<LinkPair> links;
 
   const FunctionDetailsForm({
     required this.data,
+    this.links = const [],
     super.key,
   });
 
@@ -287,7 +307,7 @@ class FunctionDetailsForm extends StatelessWidget {
             ),
             Text(
               key: Key('4${data.id}'),
-              data.description,
+              data.description + links.map((e) => e.description).join('\n'),
               maxLines: 20,
             ),
             const SizedBox(

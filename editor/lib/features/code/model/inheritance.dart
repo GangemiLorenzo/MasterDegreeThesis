@@ -24,8 +24,17 @@ class Inheritance with _$Inheritance implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
     return VisualRapresentation(
       nextPosition: position != null
           ? MyPoint(
@@ -39,7 +48,9 @@ class Inheritance with _$Inheritance implements VisualElement {
           position: position,
         ),
       ],
-      links: [],
+      links: [
+        linkPair,
+      ],
     );
   }
 
@@ -67,7 +78,10 @@ class Inheritance with _$Inheritance implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => InheritanceDetailsForm(
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      InheritanceDetailsForm(
         data: this,
       );
 }

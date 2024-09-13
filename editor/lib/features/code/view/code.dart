@@ -69,6 +69,9 @@ class CodePageBuilder extends StatelessWidget {
                       loaded: (state) => CodePage(
                         sourceUnit: state.task.sourceUnit,
                         vulnerabilities: state.task.vulnerabilities,
+                        functionalLinks: state.task.links
+                            .map((e) => e.toLinkPair())
+                            .toList(),
                       ),
                     );
                   },
@@ -123,10 +126,12 @@ class ProcessingPage extends StatelessWidget {
 class CodePage extends StatefulWidget {
   final SourceUnit sourceUnit;
   final List<Vulnerability> vulnerabilities;
+  final List<LinkPair> functionalLinks;
 
   const CodePage({
     required this.sourceUnit,
     required this.vulnerabilities,
+    required this.functionalLinks,
     super.key,
   });
 
@@ -180,7 +185,10 @@ class _CodePageState extends State<CodePage>
                     sourceUnit: widget.sourceUnit,
                   ),
                   for (var contract in widget.sourceUnit.contracts)
-                    ContractEditor(contract: contract),
+                    ContractEditor(
+                      contract: contract,
+                      functionalLinks: widget.functionalLinks,
+                    ),
                 ],
               ),
             ),
@@ -321,6 +329,7 @@ class _MetaEditorState extends State<MetaEditor>
     const startingPosition = MyPoint(-500, 500);
     visualRapresentation = widget.sourceUnit.toVisualRapresentation(
       context: context,
+      fatherId: '',
       position: startingPosition,
     );
     super.initState();
@@ -347,9 +356,11 @@ class _MetaEditorState extends State<MetaEditor>
 
 class ContractEditor extends StatefulWidget {
   final Contract contract;
+  final List<LinkPair> functionalLinks;
 
   const ContractEditor({
     required this.contract,
+    required this.functionalLinks,
     super.key,
   });
 
@@ -366,8 +377,10 @@ class _ContractEditorState extends State<ContractEditor>
     const startingPosition = MyPoint(-500, 500);
     visualRapresentation = widget.contract.toVisualRapresentation(
       context: context,
+      fatherId: '',
       position: startingPosition,
     );
+    visualRapresentation.links.addAll(widget.functionalLinks);
     super.initState();
   }
 
@@ -395,6 +408,7 @@ class ElementDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final connectionProvider = ConnectionProvider.of(context);
     return BlocBuilder<CodeCubit, CodeState>(
       builder: (context, state) {
         return state.map(
@@ -413,7 +427,11 @@ class ElementDetails extends StatelessWidget {
                 width: 300,
                 child: Padding(
                   padding: allPadding16,
-                  child: selectedElement.toDetailsForm(),
+                  child: selectedElement.toDetailsForm(
+                    links: connectionProvider
+                            ?.getConnectionsFromId(selectedElement.id) ??
+                        [],
+                  ),
                 ),
               );
             }

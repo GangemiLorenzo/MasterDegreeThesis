@@ -27,8 +27,23 @@ class Parameter with _$Parameter implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+
+    final card = ParameterGridCard(
+      id: id,
+      position: position,
+    );
+
     return VisualRapresentation(
       nextPosition: position != null
           ? MyPoint(
@@ -37,12 +52,11 @@ class Parameter with _$Parameter implements VisualElement {
             )
           : null,
       cards: [
-        ParameterGridCard(
-          id: id,
-          position: position,
-        ),
+        card,
       ],
-      links: [],
+      links: [
+        linkPair,
+      ],
     );
   }
 
@@ -70,7 +84,10 @@ class Parameter with _$Parameter implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => ParameterDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      ParameterDetailsForm(data: this);
 }
 
 /// Returns a widget that represents a [Struct] element in a grid card.

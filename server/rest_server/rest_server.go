@@ -74,6 +74,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20) // 10 MB limit
 	if err != nil {
+		log.Printf("Failed to parse multipart form: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -82,6 +83,7 @@ func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 
 	task, err := generateTask(fileContent)
 	if err != nil {
+		log.Printf("Failed to create task: %v", err)
 		http.Error(w, "Failed to create task", http.StatusInternalServerError)
 		return
 	}
@@ -89,6 +91,8 @@ func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 	s.TaskMapMutex.Lock()
 	s.TaskMap[task.ID] = task
 	s.TaskMapMutex.Unlock()
+
+	log.Printf("Task created with ID: %s", task.ID)
 
 	// Respond with the taskId
 	w.Header().Set("Content-Type", "application/json")

@@ -24,13 +24,23 @@ class Struct with _$Struct implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
     final lastPosition = position ?? const MyPoint(0, 0);
     var fieldPosition = MyPoint(lastPosition.x + 300, lastPosition.y);
     final vrFields = fields.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
+        fatherId: id,
         position: fieldPosition,
       );
       fieldPosition = vr.nextPosition ?? lastPosition;
@@ -51,6 +61,7 @@ class Struct with _$Struct implements VisualElement {
         ...vrFields.cards,
       ],
       links: [
+        linkPair,
         ...vrFields.links,
       ],
     );
@@ -96,7 +107,10 @@ class Struct with _$Struct implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => StructDetailsForm(data: this);
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      StructDetailsForm(data: this);
 }
 
 /// Returns a widget that represents a [Struct] element in a grid card.

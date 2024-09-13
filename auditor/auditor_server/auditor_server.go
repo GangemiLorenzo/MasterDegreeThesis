@@ -3,6 +3,7 @@ package codec_server
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	service "auditor/auditor_service"
 	"auditor/auditor_utils"
@@ -22,7 +23,7 @@ func NewAuditorServer(auditor_utils auditor_utils.AuditorUtils) service.AuditorS
 
 // Audit implements the logic for the RPC.
 func (s *auditorServer) Audit(ctx context.Context, req *service.AuditRequest) (*service.AuditResponse, error) {
-	println("Audit called")
+	fmt.Println("Audit called")
 
 	var sourceUnit parser.SourceUnit
 	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)

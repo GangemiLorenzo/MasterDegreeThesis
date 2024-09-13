@@ -26,10 +26,24 @@ class Import with _$Import implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Imports',
+      color: linkColor,
+    );
     final vrSymbols = symbols
-        .map((s) => s.toVisualRapresentation(context: context))
+        .map(
+          (s) => s.toVisualRapresentation(
+            context: context,
+            fatherId: id,
+          ),
+        )
         .reduceVR();
 
     return VisualRapresentation(
@@ -47,6 +61,7 @@ class Import with _$Import implements VisualElement {
         ...vrSymbols.cards,
       ],
       links: [
+        linkPair,
         ...vrSymbols.links,
       ],
     );
@@ -92,7 +107,10 @@ class Import with _$Import implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => ImportDetailsForm(
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      ImportDetailsForm(
         data: this,
       );
 }

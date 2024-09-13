@@ -7,7 +7,7 @@ import 'package:editor/features/code/model/modifier.dart';
 import 'package:editor/features/code/model/struct.dart';
 import 'package:editor/features/code/model/variable.dart';
 import 'package:editor/features/code/model/visual_element.dart';
-import 'package:editor_grid/src/my_point.dart';
+import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -39,73 +39,95 @@ class Contract with _$Contract implements VisualElement {
   @override
   VisualRapresentation toVisualRapresentation({
     required BuildContext context,
+    required String fatherId,
     MyPoint? position,
+    String? linkDescription,
+    Color? linkColor,
   }) {
-    var lastPosition = position ?? const MyPoint(0, 0);
+    var _position = position ?? const MyPoint(-600, 500);
+
+    final linkPair = LinkPair(
+      startId: fatherId,
+      endId: id,
+      operation: linkDescription ?? 'Defines',
+      color: linkColor,
+    );
+
     final vrVariables = variables.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
+
     final vrFunctions = functions.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
+
     final vrModifiers = modifiers.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
     final vrEvents = events.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
     final vrInheritance = inheritance.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
     final vrEnums = enums.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
     final vrStructs = structs.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
     final vrErrors = errors.map((e) {
       final vr = e.toVisualRapresentation(
         context: context,
-        position: lastPosition,
+        fatherId: '',
+        position: _position,
       );
-      lastPosition = vr.nextPosition ?? lastPosition;
+      _position = MyPoint(_position.x, vr.nextPosition?.y ?? _position.y);
       return vr;
     }).reduceVR();
+
     return VisualRapresentation(
       cards: [
         ...vrFunctions.cards,
@@ -118,6 +140,7 @@ class Contract with _$Contract implements VisualElement {
         ...vrErrors.cards,
       ],
       links: [
+        linkPair,
         ...vrVariables.links,
         ...vrFunctions.links,
         ...vrModifiers.links,
@@ -282,5 +305,8 @@ class Contract with _$Contract implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm() => Container();
+  Widget toDetailsForm({
+    List<LinkPair> links = const [],
+  }) =>
+      Container();
 }

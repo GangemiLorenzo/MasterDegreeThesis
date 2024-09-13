@@ -1,16 +1,20 @@
-import 'package:editor_grid/src/my_point.dart';
+import 'dart:math';
+
+import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class RendererGrid extends MultiChildRenderObjectWidget {
   final Offset dragOffset;
   final double zoomFactor;
+  final List<LinkPair> connections;
 
   const RendererGrid({
     super.key,
     super.children,
     this.dragOffset = Offset.zero,
     this.zoomFactor = 1,
+    required this.connections,
   });
 
   @override
@@ -18,6 +22,7 @@ class RendererGrid extends MultiChildRenderObjectWidget {
     return RendererObjectForGrid(
       dragOffset: dragOffset,
       zoomFactor: zoomFactor,
+      connections: connections,
     );
   }
 
@@ -26,6 +31,7 @@ class RendererGrid extends MultiChildRenderObjectWidget {
       BuildContext context, RendererObjectForGrid renderObject) {
     renderObject.dragOffset = dragOffset;
     renderObject.zoomFactor = zoomFactor;
+    renderObject.connections = connections;
   }
 }
 
@@ -34,30 +40,41 @@ class RendererObjectForGrid extends RenderBox
         ContainerRenderObjectMixin<RenderBox, RendererElementParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, RendererElementParentData> {
   Offset _dragOffset;
+  double _zoomFactor;
+  List<LinkPair> _connections;
+
   Offset get dragOffset => _dragOffset;
+  double get zoomFactor => _zoomFactor;
+  List<LinkPair> get connections => _connections;
 
   set dragOffset(Offset value) {
     if (_dragOffset != value) {
       _dragOffset = value;
-      markNeedsLayout();
+      markNeedsPaint();
     }
   }
-
-  double _zoomFactor;
-  double get zoomFactor => _zoomFactor;
 
   set zoomFactor(double value) {
     if (_zoomFactor != value) {
       _zoomFactor = value;
-      markNeedsLayout();
+      markNeedsPaint();
+    }
+  }
+
+  set connections(List<LinkPair> value) {
+    if (_connections != value) {
+      _connections = value;
+      markNeedsPaint();
     }
   }
 
   RendererObjectForGrid({
     required Offset dragOffset,
     required double zoomFactor,
+    required List<LinkPair> connections,
   })  : _dragOffset = dragOffset,
-        _zoomFactor = zoomFactor;
+        _zoomFactor = zoomFactor,
+        _connections = connections;
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
@@ -89,7 +106,9 @@ class RendererObjectForGrid extends RenderBox
   @override
   void setupParentData(RenderBox child) {
     if (child.parentData is! RendererElementParentData) {
-      child.parentData = RendererElementParentData();
+      child.parentData = RendererElementParentData(
+        id: UniqueKey().toString(),
+      );
     }
   }
 
@@ -164,7 +183,152 @@ class RendererObjectForGrid extends RenderBox
 
     canvas.restore();
 
+    for (final connection in _connections) {
+      final startChild = _findChildById(connection.startId);
+      final endChild = _findChildById(connection.endId);
+
+      if (startChild != null && endChild != null) {
+        final startOffset = _getChildOffset(startChild);
+        final endOffset = _getChildOffset(endChild);
+
+        final startPoint = startOffset +
+            offset +
+            Offset(startChild.size.width, startChild.size.height / 2);
+        final endPoint =
+            endOffset + offset + Offset(0, endChild.size.height / 2);
+
+        paintLine(
+          canvas: canvas,
+          startPoint: startPoint,
+          endPoint: endPoint,
+          text: connection.operation,
+          color: connection.color,
+        );
+      }
+    }
+
     super.paint(context, offset);
+  }
+
+  void paintLine({
+    required Offset startPoint,
+    required Offset endPoint,
+    required Canvas canvas,
+    String? text,
+    Color? color,
+  }) {
+    final paint = Paint()
+      ..color = color ?? Colors.grey
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    canvas.save();
+
+    final line = Path()..moveTo(startPoint.dx, startPoint.dy);
+
+    // Calculate control points for the cubic Bezier curve
+    final midX = (startPoint.dx + endPoint.dx) / 2;
+    final controlPoint1 = Offset(midX, startPoint.dy);
+    final controlPoint2 = Offset(midX, endPoint.dy);
+
+    // Add the cubic Bezier curve
+    line.cubicTo(
+      controlPoint1.dx,
+      controlPoint1.dy,
+      controlPoint2.dx,
+      controlPoint2.dy,
+      endPoint.dx,
+      endPoint.dy,
+    );
+
+    // Draw start point circle
+    canvas.drawCircle(startPoint, 4, paint);
+
+    // Draw the curve
+    canvas.drawPath(line, paint);
+
+    // Draw end point circle
+    canvas.drawCircle(endPoint, 4, paint);
+
+    // Draw an arrow at the end point
+    final arrowPaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill;
+
+    final arrowPath = Path();
+    const arrowSize = 10.0;
+    final angle = (endPoint - controlPoint2).direction;
+    final arrowPoint1 =
+        endPoint + Offset.fromDirection(angle - pi * 3 / 4, arrowSize);
+    final arrowPoint2 =
+        endPoint + Offset.fromDirection(angle + pi * 3 / 4, arrowSize);
+
+    arrowPath.moveTo(endPoint.dx, endPoint.dy);
+    arrowPath.lineTo(arrowPoint1.dx, arrowPoint1.dy);
+    arrowPath.lineTo(arrowPoint2.dx, arrowPoint2.dy);
+    arrowPath.close();
+
+    canvas.drawPath(arrowPath, arrowPaint);
+
+    // Draw text in the middle of the line
+    if (text != null && text.isNotEmpty) {
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+            backgroundColor: Colors.white.withOpacity(0.7),
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+
+      // Calculate the position for the text
+      final midPoint = Offset(
+        (startPoint.dx + endPoint.dx) / 2,
+        (startPoint.dy + endPoint.dy) / 2,
+      );
+
+      // Draw a background for the text
+      final textBackgroundRect = Rect.fromCenter(
+        center: midPoint,
+        width: textPainter.width + 8,
+        height: textPainter.height + 4,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(textBackgroundRect, const Radius.circular(4)),
+        Paint()..color = Colors.white.withOpacity(0.7),
+      );
+
+      // Draw the text
+      textPainter.paint(
+        canvas,
+        midPoint.translate(-textPainter.width / 2, -textPainter.height / 2),
+      );
+    }
+
+    canvas.restore();
+  }
+
+  RenderBox? _findChildById(String id) {
+    RenderBox? child = firstChild;
+    while (child != null) {
+      final childParentData = child.parentData! as RendererElementParentData;
+      final childId =
+          childParentData.id.substring(3, childParentData.id.length - 3);
+      if (childId == id) {
+        return child;
+      }
+      child = childParentData.nextSibling;
+    }
+    return null;
+  }
+
+  Offset _getChildOffset(RenderBox child) {
+    final childParentData = child.parentData! as RendererElementParentData;
+    return childParentData.offset + dragOffset;
   }
 
   void drawGrid(Canvas canvas) {
@@ -302,9 +466,11 @@ class RendererObjectForGrid extends RenderBox
 class RendererElementParentData extends ContainerBoxParentData<RenderBox> {
   MyPoint customPosition;
   Offset dragOffset;
+  String id;
 
   RendererElementParentData({
     this.customPosition = const MyPoint(0, 0),
     this.dragOffset = Offset.zero,
+    required this.id,
   });
 }

@@ -24,7 +24,7 @@ func NewAiAssistantServer(comments_utils ai_assistant_utils.AiAssistantUtils, li
 }
 
 func (s *aiAssistantServer) Comment(ctx context.Context, req *service.CommentRequest) (*service.CommentResponse, error) {
-	println("Comment process called")
+	fmt.Println("Comment process called")
 
 	var sourceUnit parser.SourceUnit
 	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)
@@ -56,7 +56,7 @@ type Result struct {
 }
 
 func (s *aiAssistantServer) Link(ctx context.Context, req *service.LinkRequest) (*service.LinkResponse, error) {
-	println("Link process called")
+	fmt.Println("Link process called")
 
 	var sourceUnit parser.SourceUnit
 	err := json.Unmarshal([]byte(req.JsonStructure), &sourceUnit)
