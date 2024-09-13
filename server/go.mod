@@ -1,8 +1,8 @@
 module server
 
-go 1.22.3
+go 1.23
 
-toolchain go1.22.3
+toolchain go1.23
 
 require (
 	github.com/google/uuid v1.6.0
