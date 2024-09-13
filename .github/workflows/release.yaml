@@ -1,4 +1,4 @@
-name: Build and Release Services
+name: Build Codec Services
 
 on:
   workflow_dispatch:
@@ -6,9 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [codec, ai_assistant, auditor, server]
 
     steps:
       - uses: actions/checkout@v3
@@ -16,52 +13,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.20"
+          go-version: "1.23"
 
-      - name: Build solidity_parser
+      - name: Build codec
         run: |
-          cd solidity_parser
-          go build -v ./...
+          go build -o ./output/codec/codec_service ./codec/codec.go
 
-      - name: Build ${{ matrix.service }}
-        run: |
-          cd ${{ matrix.service }}
-          go build -v -o ${matrix.service}_service ./${matrix.service}.go
-
-      - name: Upload ${{ matrix.service }} artifact
+      - name: Upload codec artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.service }}_service
-          path: ${{ matrix.service }}/${matrix.service}_service
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Assets
-        run: |
-          for service in codec ai_assistant auditor server; do
-            asset_path="./${service}_service/${service}_service"
-            asset_name="${service}_service"
-            content_type="application/octet-stream"
-            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                 -H "Content-Type: ${content_type}" \
-                 --data-binary @"${asset_path}" \
-                 "${{ steps.create_release.outputs.upload_url }}?name=${asset_name}"
-          done
+          name: codec_service
+          path: ./output/codec/codec_service
