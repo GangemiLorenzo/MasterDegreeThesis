@@ -40,5 +40,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ./artifacts/codec_service
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
