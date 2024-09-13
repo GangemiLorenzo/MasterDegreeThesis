@@ -1,0 +1,133 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-codec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Build codec
+        run: |
+          go build -o ./output/codec/codec_service ./codec/codec.go
+
+      - name: Upload codec artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: codec_service
+          path: ./output/codec/codec_service
+
+  build-assistant:
+    needs: build-codec
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Build assistant
+        run: |
+          go build -o ./output/assistant/assistant_service ./ai_assistant/assistant.go
+
+      - name: Upload assistant artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: assistant_service
+          path: ./output/assistant/assistant_service
+
+  build-auditor:
+    needs: build-assistant
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Build auditor
+        run: |
+          go build -o ./output/auditor/auditor_service ./auditor/auditor.go
+
+      - name: Upload auditor artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: auditor_service
+          path: ./output/auditor/auditor_service
+
+  build-server:
+    needs: build-auditor
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Build server
+        run: |
+          go build -o ./output/server/server_service ./server/server.go
+
+      - name: Upload server artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: server_service
+          path: ./output/server/server_service
+
+  release:
+    needs: build-server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download codec artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: codec_service
+          path: ./artifacts
+      - name: Download assistant artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: assistant_service
+          path: ./artifacts
+      - name: Download auditor artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: auditor_service
+          path: ./artifacts
+      - name: Download server artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: server_service
+          path: ./artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./artifacts/codec_service
+            ./artifacts/assistant_service
+            ./artifacts/auditor_service
+            ./artifacts/server_service
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
