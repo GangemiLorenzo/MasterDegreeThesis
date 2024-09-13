@@ -1,4 +1,4 @@
-name: Build Codec Services
+name: Build and Release Codec
 
 on:
   workflow_dispatch:
@@ -24,3 +24,35 @@ jobs:
         with:
           name: codec_service
           path: ./output/codec/codec_service
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        run: |
+          for service in codec ; do
+            asset_path="./${service}_service/${service}_service"
+            asset_name="${service}_service"
+            content_type="application/octet-stream"
+            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                 -H "Content-Type: ${content_type}" \
+                 --data-binary @"${asset_path}" \
+                 "${{ steps.create_release.outputs.upload_url }}?name=${asset_name}"
+          done
