@@ -17,3 +17,6 @@ docker-run:
 	docker run -d -p 8080:8080 --name $(IMAGE_NAME)-container $(IMAGE_NAME)
 
 docker-clean-run: docker-build docker-run
+
+clean-reports:
+	find reports/* -type f -mtime +1 -exec rm {} \;

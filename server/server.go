@@ -140,9 +140,15 @@ func main() {
 		log.Fatal("SERVER_PORT is not set in .env file")
 	}
 
+	ip := os.Getenv("SERVER_IP")
+	if ip == "" {
+		log.Fatal("SERVER_IP is not set in .env file")
+	}
+
 	tasks := make(map[string]*rest_server.Task)
 
 	restServer := rest_server.NewServer(
+		ip,
 		port,
 		codecClient,
 		auditorClient,

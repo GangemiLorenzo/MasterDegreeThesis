@@ -17,6 +17,7 @@ import (
 )
 
 type Server struct {
+	IP              string
 	Port            string
 	CodecClient     codec_client.CodecClient
 	AuditorClient   auditor_client.AuditorClient
@@ -26,6 +27,7 @@ type Server struct {
 }
 
 func NewServer(
+	ip string,
 	port string,
 	codecClient codec_client.CodecClient,
 	auditorClient auditor_client.AuditorClient,
@@ -33,6 +35,7 @@ func NewServer(
 	tasks map[string]*Task,
 ) *Server {
 	return &Server{
+		IP:              ip,
 		Port:            port,
 		CodecClient:     codecClient,
 		AuditorClient:   auditorClient,
@@ -50,8 +53,8 @@ func (s *Server) Start() {
 	router.HandleFunc("/api/download/{taskId}", s.DownloadCodeHanlder).Methods("POST")
 	// Use a middleware to log all requests
 	router.Use(loggingMiddleware)
-	log.Printf("Server starting on port %s", s.Port)
-	log.Fatal(http.ListenAndServe(":"+s.Port, router))
+	log.Printf("Server starting on ip %s and port %s", s.IP, s.Port)
+	log.Fatal(http.ListenAndServe(s.IP+":"+s.Port, router))
 }
 
 // CORS middleware
@@ -102,8 +105,8 @@ func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 	// Start processing the task asynchronously
 	go s.processTask(task)
 }
-
 func (s *Server) processTask(task *Task) {
+	log.Printf("Starting task processing: %s", task.ID)
 	task.Progress = 10
 	task.StatusMessage = "Encoding contract code"
 
@@ -114,6 +117,7 @@ func (s *Server) processTask(task *Task) {
 		task.Status = Failed
 		return
 	}
+	log.Printf("Task %s: Encoding completed", task.ID)
 
 	task.StatusMessage = "Commenting contract code"
 	task.Progress = 30
@@ -125,6 +129,7 @@ func (s *Server) processTask(task *Task) {
 		task.Status = Failed
 		return
 	}
+	log.Printf("Task %s: Commenting completed", task.ID)
 
 	var jsonMap map[string]interface{}
 	err = json.Unmarshal([]byte(commented), &jsonMap)
@@ -145,6 +150,7 @@ func (s *Server) processTask(task *Task) {
 		task.Status = Failed
 		return
 	}
+	log.Printf("Task %s: Linking completed", task.ID)
 
 	var linksJsonMap map[string]interface{}
 	err = json.Unmarshal([]byte(links), &linksJsonMap)
@@ -165,6 +171,7 @@ func (s *Server) processTask(task *Task) {
 		task.Status = Failed
 		return
 	}
+	log.Printf("Task %s: Auditing completed", task.ID)
 
 	task.Vulnerabilities = s.AuditorClient.ConvertVulnerabilities(vulnerabilities)
 	task.Progress = 100
@@ -174,6 +181,8 @@ func (s *Server) processTask(task *Task) {
 	s.TaskMapMutex.Lock()
 	s.TaskMap[task.ID] = task
 	s.TaskMapMutex.Unlock()
+
+	log.Printf("Task %s: Processing completed", task.ID)
 }
 
 func generateTask(fileContent string) (*Task, error) {

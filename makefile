@@ -52,6 +52,11 @@ upload_output:
 	@echo "Uploading output files..."
 	@scp -r output/ root@46.101.102.88:~/service/output/
 
+clean_services:
+	@echo "Cleaning services..."
+	@$(MAKE) -C ./auditor clean-reports
+	@$(MAKE) -C ./server clean-tasks
+
 
 .PHONY: start_assistant start_codec start_auditor start_server start_all
 
