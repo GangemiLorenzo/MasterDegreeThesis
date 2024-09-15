@@ -60,7 +60,7 @@ class CodeCubit extends Cubit<CodeState> {
   }
 
   /// Submits the file to the server.
-  void submitFile() async {
+  void submitFile(String openAiKey) async {
     if (state is! _Initial) {
       return;
     }
@@ -78,7 +78,10 @@ class CodeCubit extends Cubit<CodeState> {
         ),
       );
 
-      final taskId = await repo.uploadFile(currentState.fileBytes!);
+      final taskId = await repo.uploadFile(
+        fileBytes: currentState.fileBytes!,
+        openAIKey: openAiKey,
+      );
 
       emit(
         CodeState.processing(
@@ -111,7 +114,7 @@ class CodeCubit extends Cubit<CodeState> {
 
     debugPrint('Start polling');
 
-    _taskPollingManager ??= PollingManager(
+    _taskPollingManager = PollingManager(
       interval: const Duration(milliseconds: 500),
       action: (_) => _fetchTask(),
     )..start();
@@ -188,9 +191,19 @@ class CodeCubit extends Cubit<CodeState> {
 
     final currentState = state as _Loaded;
 
+    if (currentState.selectedItem == id) {
+      emit(
+        currentState.copyWith(
+          selectedItem: null,
+        ),
+      );
+      return;
+    }
+
     emit(
       currentState.copyWith(
         selectedItem: id,
+        showSettings: false,
       ),
     );
   }
@@ -308,4 +321,73 @@ class CodeCubit extends Cubit<CodeState> {
       );
     }
   }
+
+  void reset() {
+    emit(
+      const CodeState.initial(),
+    );
+  }
+
+  void openSettings() {
+    if (state is! _Loaded) {
+      return;
+    }
+
+    final currentState = state as _Loaded;
+
+    if (currentState.showSettings) {
+      emit(
+        currentState.copyWith(
+          showSettings: false,
+        ),
+      );
+      return;
+    }
+
+    emit(
+      currentState.copyWith(
+        showSettings: true,
+        selectedItem: null,
+      ),
+    );
+  }
+
+//   void submitTaskId(String taskId) async {
+//     if (state is! _Initial) {
+//       return;
+//     }
+
+//     final currentState = state as _Initial;
+
+//     if (currentState.fileBytes == null) {
+//       return;
+//     }
+
+//     try {
+//       emit(
+//         currentState.copyWith(
+//           isLoading: true,
+//         ),
+//       );
+
+//       final response = await repo.verifyTaskId(taskId);
+
+//       emit(
+//         CodeState.processing(
+//           fileBytes: response.fileBytes,
+//           fileName: response.fileName,
+//           taskId: response.taskId,
+//           progress: 0,
+//           message: 'Processing the smart contract',
+//         ),
+//       );
+//     } catch (e) {
+//       debugPrint(' Failed to upload file: $e');
+//       emit(
+//         currentState.copyWith(
+//           isLoading: false,
+//         ),
+//       );
+//     }
+//   }
 }

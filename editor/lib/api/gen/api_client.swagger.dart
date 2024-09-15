@@ -49,11 +49,14 @@ abstract class ApiClient extends ChopperService {
   }
 
   ///Upload a file for processing
-  Future<chopper.Response<UploadPost$Response>> uploadPost({List<int>? file}) {
+  Future<chopper.Response<UploadPost$Response>> uploadPost({
+    required List<int> file,
+    required String? openAiKey,
+  }) {
     generatedMapping.putIfAbsent(
         UploadPost$Response, () => UploadPost$Response.fromJsonFactory);
 
-    return _uploadPost(file: file);
+    return _uploadPost(file: file, openAiKey: openAiKey);
   }
 
   ///Upload a file for processing
@@ -62,8 +65,10 @@ abstract class ApiClient extends ChopperService {
     optionalBody: true,
   )
   @Multipart()
-  Future<chopper.Response<UploadPost$Response>> _uploadPost(
-      {@PartFile() List<int>? file});
+  Future<chopper.Response<UploadPost$Response>> _uploadPost({
+    @PartFile() required List<int> file,
+    @Part('openAiKey') required String? openAiKey,
+  });
 
   ///Post the new Source unit into the task
   ///@param taskId Identifier of the task to get status for

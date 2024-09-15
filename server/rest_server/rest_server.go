@@ -83,6 +83,7 @@ func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fileContent := r.MultipartForm.Value["file"][0]
+	openAiKey := r.MultipartForm.Value["openAiKey"][0]
 
 	task, err := generateTask(fileContent)
 	if err != nil {
@@ -103,9 +104,9 @@ func (s *Server) FileHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 
 	// Start processing the task asynchronously
-	go s.processTask(task)
+	go s.processTask(task, openAiKey)
 }
-func (s *Server) processTask(task *Task) {
+func (s *Server) processTask(task *Task, openAiKey string) {
 	log.Printf("Starting task processing: %s", task.ID)
 	task.Progress = 10
 	task.StatusMessage = "Encoding contract code"
@@ -123,7 +124,7 @@ func (s *Server) processTask(task *Task) {
 	task.Progress = 30
 
 	// COMMENTING
-	commented, err := s.AssistantClient.ComputeComments(encoded, task.ContractCode)
+	commented, err := s.AssistantClient.ComputeComments(encoded, task.ContractCode, openAiKey)
 	if err != nil {
 		log.Printf("Failed to comment task %s: %v", task.ID, err)
 		task.Status = Failed
@@ -144,7 +145,7 @@ func (s *Server) processTask(task *Task) {
 	task.Progress = 50
 
 	// LINKING
-	links, err := s.AssistantClient.ComputeLinks(encoded, task.ContractCode)
+	links, err := s.AssistantClient.ComputeLinks(encoded, task.ContractCode, openAiKey)
 	if err != nil {
 		log.Printf("Failed to get links %s: %v", task.ID, err)
 		task.Status = Failed

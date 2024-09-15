@@ -432,43 +432,45 @@ class FunctionDetailsForm extends StatelessWidget {
                 ),
               ),
             ],
-            const SizedBox(height: 16),
-            Text(
-              'Body:',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            ConstrainedBox(
-              key: Key('10${data.id}'),
-              constraints: const BoxConstraints(
-                maxHeight: 400,
+            if (data.body.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              Text(
+                'Body:',
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              child: HighlightView(
-                data.body.substring(1, data.body.length - 2),
-                language: 'solidity',
-                padding: const EdgeInsets.all(2),
-                textStyle: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 14,
+              ConstrainedBox(
+                key: Key('10${data.id}'),
+                constraints: const BoxConstraints(
+                  maxHeight: 400,
                 ),
-                theme: a11yDarkTheme,
+                child: HighlightView(
+                  data.body.substring(1, data.body.length - 2),
+                  language: 'solidity',
+                  padding: const EdgeInsets.all(2),
+                  textStyle: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 14,
+                  ),
+                  theme: a11yDarkTheme,
+                ),
               ),
-            ),
-            TextFormField(
-              key: Key('11${data.id}'),
-              initialValue: data.body,
-              maxLines: 20,
-              minLines: 5,
-              decoration: const InputDecoration(
-                labelText: 'Update Body',
+              TextFormField(
+                key: Key('11${data.id}'),
+                initialValue: data.body,
+                maxLines: 20,
+                minLines: 5,
+                decoration: const InputDecoration(
+                  labelText: 'Update Body',
+                ),
+                onChanged: (value) {
+                  BlocProvider.of<CodeCubit>(context).updateItem(
+                    data.copyWith(body: value),
+                  );
+                },
               ),
-              onChanged: (value) {
-                BlocProvider.of<CodeCubit>(context).updateItem(
-                  data.copyWith(body: value),
-                );
-              },
-            ),
+            ],
           ],
         ),
       ),

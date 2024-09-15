@@ -18,13 +18,20 @@ final class _$ApiClient extends ApiClient {
   final Type definitionType = ApiClient;
 
   @override
-  Future<Response<UploadPost$Response>> _uploadPost({List<int>? file}) {
+  Future<Response<UploadPost$Response>> _uploadPost({
+    required List<int> file,
+    required String? openAiKey,
+  }) {
     final Uri $url = Uri.parse('/upload');
     final List<PartValue> $parts = <PartValue>[
-      PartValueFile<List<int>?>(
+      PartValue<String?>(
+        'openAiKey',
+        openAiKey,
+      ),
+      PartValueFile<List<int>>(
         'file',
         file,
-      )
+      ),
     ];
     final Request $request = Request(
       'POST',

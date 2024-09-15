@@ -26,8 +26,14 @@ mixin _$CodeState {
     required TResult Function(String fileName, Uint8List fileBytes,
             String taskId, int progress, String message)
         processing,
-    required TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)
+    required TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)
         loaded,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,8 +44,14 @@ mixin _$CodeState {
     TResult? Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult? Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult? Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
   }) =>
       throw _privateConstructorUsedError;
@@ -50,8 +62,14 @@ mixin _$CodeState {
     TResult Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
     required TResult orElse(),
   }) =>
@@ -223,8 +241,14 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     required TResult Function(String fileName, Uint8List fileBytes,
             String taskId, int progress, String message)
         processing,
-    required TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)
+    required TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)
         loaded,
   }) {
     return initial(isLoading, fileName, fileBytes);
@@ -238,8 +262,14 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     TResult? Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult? Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult? Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
   }) {
     return initial?.call(isLoading, fileName, fileBytes);
@@ -253,8 +283,14 @@ class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
     TResult Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
     required TResult orElse(),
   }) {
@@ -450,8 +486,14 @@ class _$ProcessingImpl with DiagnosticableTreeMixin implements _Processing {
     required TResult Function(String fileName, Uint8List fileBytes,
             String taskId, int progress, String message)
         processing,
-    required TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)
+    required TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)
         loaded,
   }) {
     return processing(fileName, fileBytes, taskId, progress, message);
@@ -465,8 +507,14 @@ class _$ProcessingImpl with DiagnosticableTreeMixin implements _Processing {
     TResult? Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult? Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult? Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
   }) {
     return processing?.call(fileName, fileBytes, taskId, progress, message);
@@ -480,8 +528,14 @@ class _$ProcessingImpl with DiagnosticableTreeMixin implements _Processing {
     TResult Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
     required TResult orElse(),
   }) {
@@ -560,7 +614,8 @@ abstract class _$$LoadedImplCopyWith<$Res> implements $CodeStateCopyWith<$Res> {
       Task task,
       bool isLoading,
       String? selectedItem,
-      bool justSavedFile});
+      bool justSavedFile,
+      bool showSettings});
 
   $TaskCopyWith<$Res> get task;
 }
@@ -582,6 +637,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? selectedItem = freezed,
     Object? justSavedFile = null,
+    Object? showSettings = null,
   }) {
     return _then(_$LoadedImpl(
       fileName: null == fileName
@@ -608,6 +664,10 @@ class __$$LoadedImplCopyWithImpl<$Res>
           ? _value.justSavedFile
           : justSavedFile // ignore: cast_nullable_to_non_nullable
               as bool,
+      showSettings: null == showSettings
+          ? _value.showSettings
+          : showSettings // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -629,7 +689,8 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
       required this.task,
       this.isLoading = false,
       this.selectedItem,
-      this.justSavedFile = false});
+      this.justSavedFile = false,
+      this.showSettings = false});
 
   @override
   final String fileName;
@@ -645,10 +706,13 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
   @override
   @JsonKey()
   final bool justSavedFile;
+  @override
+  @JsonKey()
+  final bool showSettings;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CodeState.loaded(fileName: $fileName, fileBytes: $fileBytes, task: $task, isLoading: $isLoading, selectedItem: $selectedItem, justSavedFile: $justSavedFile)';
+    return 'CodeState.loaded(fileName: $fileName, fileBytes: $fileBytes, task: $task, isLoading: $isLoading, selectedItem: $selectedItem, justSavedFile: $justSavedFile, showSettings: $showSettings)';
   }
 
   @override
@@ -661,7 +725,8 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
       ..add(DiagnosticsProperty('task', task))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('selectedItem', selectedItem))
-      ..add(DiagnosticsProperty('justSavedFile', justSavedFile));
+      ..add(DiagnosticsProperty('justSavedFile', justSavedFile))
+      ..add(DiagnosticsProperty('showSettings', showSettings));
   }
 
   @override
@@ -678,7 +743,9 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
             (identical(other.selectedItem, selectedItem) ||
                 other.selectedItem == selectedItem) &&
             (identical(other.justSavedFile, justSavedFile) ||
-                other.justSavedFile == justSavedFile));
+                other.justSavedFile == justSavedFile) &&
+            (identical(other.showSettings, showSettings) ||
+                other.showSettings == showSettings));
   }
 
   @override
@@ -689,7 +756,8 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
       task,
       isLoading,
       selectedItem,
-      justSavedFile);
+      justSavedFile,
+      showSettings);
 
   @JsonKey(ignore: true)
   @override
@@ -706,12 +774,18 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
     required TResult Function(String fileName, Uint8List fileBytes,
             String taskId, int progress, String message)
         processing,
-    required TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)
+    required TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)
         loaded,
   }) {
-    return loaded(
-        fileName, fileBytes, task, isLoading, selectedItem, justSavedFile);
+    return loaded(fileName, fileBytes, task, isLoading, selectedItem,
+        justSavedFile, showSettings);
   }
 
   @override
@@ -722,12 +796,18 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
     TResult? Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult? Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult? Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
   }) {
-    return loaded?.call(
-        fileName, fileBytes, task, isLoading, selectedItem, justSavedFile);
+    return loaded?.call(fileName, fileBytes, task, isLoading, selectedItem,
+        justSavedFile, showSettings);
   }
 
   @override
@@ -738,14 +818,20 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
     TResult Function(String fileName, Uint8List fileBytes, String taskId,
             int progress, String message)?
         processing,
-    TResult Function(String fileName, Uint8List fileBytes, Task task,
-            bool isLoading, String? selectedItem, bool justSavedFile)?
+    TResult Function(
+            String fileName,
+            Uint8List fileBytes,
+            Task task,
+            bool isLoading,
+            String? selectedItem,
+            bool justSavedFile,
+            bool showSettings)?
         loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(
-          fileName, fileBytes, task, isLoading, selectedItem, justSavedFile);
+      return loaded(fileName, fileBytes, task, isLoading, selectedItem,
+          justSavedFile, showSettings);
     }
     return orElse();
   }
@@ -792,7 +878,8 @@ abstract class _Loaded implements CodeState {
       required final Task task,
       final bool isLoading,
       final String? selectedItem,
-      final bool justSavedFile}) = _$LoadedImpl;
+      final bool justSavedFile,
+      final bool showSettings}) = _$LoadedImpl;
 
   @override
   String get fileName;
@@ -802,6 +889,7 @@ abstract class _Loaded implements CodeState {
   bool get isLoading;
   String? get selectedItem;
   bool get justSavedFile;
+  bool get showSettings;
   @override
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>

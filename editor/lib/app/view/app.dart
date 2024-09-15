@@ -2,6 +2,7 @@ import 'package:editor/app/router/local_router.dart';
 import 'package:editor/app/state/global_settings/cubit/global_setting_cubit.dart';
 import 'package:editor/app/state/secure_settings/cubit/secure_settings_cubit.dart';
 import 'package:editor/app/theme/theme.dart';
+import 'package:editor/features/code/cubit/code_cubit.dart';
 import 'package:editor/foundation/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +55,9 @@ class BaseCubitProvider extends StatelessWidget {
         ),
         BlocProvider<SecureSettingsCubit>(
           create: (_) => getIt.get<SecureSettingsCubit>(),
+        ),
+        BlocProvider<CodeCubit>(
+          create: (_) => getIt.get<CodeCubit>(),
         ),
       ],
       child: Builder(

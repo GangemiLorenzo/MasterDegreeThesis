@@ -23,5 +23,6 @@ class CodeState with _$CodeState {
     @Default(false) bool isLoading,
     String? selectedItem,
     @Default(false) bool justSavedFile,
+    @Default(false) bool showSettings,
   }) = _Loaded;
 }

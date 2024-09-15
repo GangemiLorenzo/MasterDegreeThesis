@@ -15,10 +15,17 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - file
+                - openAiKey
               properties:
                 file:
                   type: string
                   format: binary
+                openAiKey:
+                  type: string
+                  description: OpenAI API key
+
       responses:
         "200":
           description: File successfully uploaded

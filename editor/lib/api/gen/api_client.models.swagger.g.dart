@@ -9,13 +9,15 @@ part of 'api_client.models.swagger.dart';
 UploadPost$RequestBody _$UploadPost$RequestBodyFromJson(
         Map<String, dynamic> json) =>
     UploadPost$RequestBody(
-      file: json['file'] as String?,
+      file: json['file'] as String,
+      openAiKey: json['openAiKey'] as String,
     );
 
 Map<String, dynamic> _$UploadPost$RequestBodyToJson(
         UploadPost$RequestBody instance) =>
     <String, dynamic>{
       'file': instance.file,
+      'openAiKey': instance.openAiKey,
     };
 
 DownloadTaskIdPost$RequestBody _$DownloadTaskIdPost$RequestBodyFromJson(

@@ -67,8 +67,14 @@ class CodeRepo {
     }
   }
 
-  Future<String> uploadFile(Uint8List fileBytes) async {
-    final response = await restService.client.uploadPost(file: fileBytes);
+  Future<String> uploadFile({
+    required Uint8List fileBytes,
+    required String openAIKey,
+  }) async {
+    final response = await restService.client.uploadPost(
+      file: fileBytes,
+      openAiKey: openAIKey,
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to upload file');
@@ -78,6 +84,18 @@ class CodeRepo {
 
     //return 'taskId';
   }
+
+  // Future<VerifyTaskIdResponse> verifyTaskId(String taskId) async {
+  //   final response = await restService.client.verifyTaskId(taskId: taskId);
+
+  //   if (response.statusCode != 200) {
+  //     throw Exception('Failed to check task id');
+  //   }
+
+  //   return response.body!.taskId;
+
+  //   //return 'taskId';
+  // }
 
   Future<TasksTaskIdGet$Response> getTask(String taskId) async {
     final response = await restService.client.tasksTaskIdGet(
@@ -131,4 +149,16 @@ class CodeRepo {
 
     return result;
   }
+}
+
+class VerifyTaskIdResponse {
+  final String taskId;
+  final String fileName;
+  final Uint8List fileBytes;
+
+  VerifyTaskIdResponse({
+    required this.taskId,
+    required this.fileName,
+    required this.fileBytes,
+  });
 }

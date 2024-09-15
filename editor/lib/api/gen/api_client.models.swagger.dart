@@ -11,7 +11,8 @@ part 'api_client.models.swagger.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UploadPost$RequestBody {
   const UploadPost$RequestBody({
-    this.file,
+    required this.file,
+    required this.openAiKey,
   });
 
   factory UploadPost$RequestBody.fromJson(Map<String, dynamic> json) =>
@@ -21,7 +22,9 @@ class UploadPost$RequestBody {
   Map<String, dynamic> toJson() => _$UploadPost$RequestBodyToJson(this);
 
   @JsonKey(name: 'file')
-  final String? file;
+  final String file;
+  @JsonKey(name: 'openAiKey')
+  final String openAiKey;
   static const fromJsonFactory = _$UploadPost$RequestBodyFromJson;
 
   @override
@@ -29,7 +32,10 @@ class UploadPost$RequestBody {
     return identical(this, other) ||
         (other is UploadPost$RequestBody &&
             (identical(other.file, file) ||
-                const DeepCollectionEquality().equals(other.file, file)));
+                const DeepCollectionEquality().equals(other.file, file)) &&
+            (identical(other.openAiKey, openAiKey) ||
+                const DeepCollectionEquality()
+                    .equals(other.openAiKey, openAiKey)));
   }
 
   @override
@@ -37,17 +43,22 @@ class UploadPost$RequestBody {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(file) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(file) ^
+      const DeepCollectionEquality().hash(openAiKey) ^
+      runtimeType.hashCode;
 }
 
 extension $UploadPost$RequestBodyExtension on UploadPost$RequestBody {
-  UploadPost$RequestBody copyWith({String? file}) {
-    return UploadPost$RequestBody(file: file ?? this.file);
+  UploadPost$RequestBody copyWith({String? file, String? openAiKey}) {
+    return UploadPost$RequestBody(
+        file: file ?? this.file, openAiKey: openAiKey ?? this.openAiKey);
   }
 
-  UploadPost$RequestBody copyWithWrapped({Wrapped<String?>? file}) {
+  UploadPost$RequestBody copyWithWrapped(
+      {Wrapped<String>? file, Wrapped<String>? openAiKey}) {
     return UploadPost$RequestBody(
-        file: (file != null ? file.value : this.file));
+        file: (file != null ? file.value : this.file),
+        openAiKey: (openAiKey != null ? openAiKey.value : this.openAiKey));
   }
 }
 

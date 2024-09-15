@@ -10,8 +10,8 @@ import (
 )
 
 type AiAssistantClient interface {
-	ComputeComments(sourceUnitJson string, code string) (string, error)
-	ComputeLinks(sourceUnitJson string, code string) (string, error)
+	ComputeComments(sourceUnitJson string, code string, openAiKey string) (string, error)
+	ComputeLinks(sourceUnitJson string, code string, openAiKey string) (string, error)
 }
 
 type aiAssistantClient struct {
@@ -24,22 +24,30 @@ func NewAiAssistantClient(cc *grpc.ClientConn) AiAssistantClient {
 	}
 }
 
-func (c *aiAssistantClient) ComputeComments(sourceUnitJson string, code string) (string, error) {
+func (c *aiAssistantClient) ComputeComments(sourceUnitJson string, code string, openAiKey string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	resp, err := c.client.Comment(ctx, &service.CommentRequest{JsonStructure: sourceUnitJson, SmartContractCode: code})
+	resp, err := c.client.Comment(ctx, &service.CommentRequest{
+		JsonStructure:     sourceUnitJson,
+		SmartContractCode: code,
+		OpenAiKey:         openAiKey,
+	})
 	if err != nil {
 		return "", err
 	}
 	return resp.JsonStructure, nil
 }
 
-func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string) (string, error) {
+func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string, openAiKey string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
-	resp, err := c.client.Link(ctx, &service.LinkRequest{JsonStructure: sourceUnitJson, SmartContractCode: code})
+	resp, err := c.client.Link(ctx, &service.LinkRequest{
+		JsonStructure:     sourceUnitJson,
+		SmartContractCode: code,
+		OpenAiKey:         openAiKey,
+	})
 	if err != nil {
 		return "", err
 	}

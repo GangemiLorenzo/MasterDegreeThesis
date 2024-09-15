@@ -1,5 +1,0 @@
-- Upload della struttura e generazione del codice modificato, successivamente scaricabile!!!! <- IMPORTANTE
-- Eventualmente reinserimento del codice ricevuto a sistema per reiterare
-- Aggiunta dei link!!!! <- IMPORTANTE
-- Scheda con le Vulnerabilita!!!! <- IMPORTANTE (OKKK)
-- Descrizione su tutti gli elementi
