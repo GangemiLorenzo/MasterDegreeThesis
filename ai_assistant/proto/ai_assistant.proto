@@ -14,6 +14,7 @@ service AiAssistantService {
 message CommentRequest {
   string jsonStructure = 1;     // The JSON structure of the smart contract to be commented on.
   string smartContractCode = 2;  // The original smart contract code in its source format.
+  string openAiKey = 3;          // The OpenAI API key to use for generating comments.
 }
 
 message CommentResponse {
@@ -23,6 +24,7 @@ message CommentResponse {
 message LinkRequest {
   string jsonStructure = 1;     // The JSON structure of the smart contract to be analyzed for links.
   string smartContractCode = 2;  // The original smart contract code in its source format.
+  string openAiKey = 3;          // The OpenAI API key to use for generating comments.
 }
 
 message LinkResponse {

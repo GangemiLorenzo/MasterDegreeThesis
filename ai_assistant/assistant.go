@@ -8,10 +8,8 @@ import (
 
 	server "ai_assistant/ai_assistant_server"
 	service "ai_assistant/ai_assistant_service"
-	utils "ai_assistant/ai_assistant_utils"
 
 	"github.com/joho/godotenv"
-	"github.com/sashabaranov/go-openai"
 	"google.golang.org/grpc"
 )
 
@@ -41,26 +39,26 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	openAiClient := createOpenAIClient()
+	//openAiClient := createOpenAIClient()
 
-	uComments := *utils.NewAiAssistantUtils(*openAiClient)
-	err = uComments.SetupAssistantDialog()
-	if err != nil {
-		log.Fatalf("failed to setup assistant: %v", err)
-	}
-	fmt.Println("OpenAi Assistant check\t✔️")
+	// uComments := *utils.NewAiAssistantUtils()
+	// // err = uComments.SetupAssistantDialog()
+	// // if err != nil {
+	// // 	log.Fatalf("failed to setup assistant: %v", err)
+	// // }
+	// fmt.Println("OpenAi comment utils check\t✔️")
 
-	uLink := *utils.NewAiAssistantUtils(*openAiClient)
-	err = uLink.SetupLinkDialog()
-	if err != nil {
-		log.Fatalf("failed to setup link assistant: %v", err)
-	}
-	fmt.Println("OpenAi Link Assistant check\t✔️")
+	// uLink := *utils.NewAiAssistantUtils()
+	// // err = uLink.SetupLinkDialog()
+	// // if err != nil {
+	// // 	log.Fatalf("failed to setup link assistant: %v", err)
+	// // }
+	// fmt.Println("OpenAi Link utils check\t✔️")
 
 	s := grpc.NewServer()
 	service.RegisterAiAssistantServiceServer(
 		s,
-		server.NewAiAssistantServer(uComments, uLink),
+		server.NewAiAssistantServer(),
 	)
 
 	log.Printf("server listening at %v", lis.Addr())
@@ -68,31 +66,4 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-}
-
-func createOpenAIClient() *openai.Client {
-
-	// token := os.Getenv("OPEN_API_KEY")
-	// if token == "" {
-	// 	log.Fatal("OPEN_API_KEY is not set in .env file")
-	// }
-
-	//httpClient := http.Client{}
-
-	// sk-proj-nQNAliPue067fXp333svT3BlbkFJbLty5gxl4YUHOtxHIGUR
-	// config := openai.ClientConfig{
-
-	// 	BaseURL:    "http://localhost:1234/v1",
-	// 	APIType:    openai.APITypeOpenAI,
-	// 	HTTPClient: &httpClient,
-	// }
-
-	// client := openai.NewClientWithConfig(config)
-
-	token := "sk-proj-nQNAliPue067fXp333svT3BlbkFJbLty5gxl4YUHOtxHIGUR"
-	client := openai.NewClient(token)
-
-	fmt.Println("OpenAi Client check\t✔️")
-
-	return client
 }
