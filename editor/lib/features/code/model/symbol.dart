@@ -82,6 +82,9 @@ class Symbol with _$Symbol implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       SymbolDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 /// Returns a widget that represents a [Symbol] element in a grid card.

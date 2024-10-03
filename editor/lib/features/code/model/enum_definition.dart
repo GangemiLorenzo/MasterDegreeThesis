@@ -81,6 +81,9 @@ class EnumDefinition with _$EnumDefinition implements VisualElement {
       EnumDetailsForm(
         data: this,
       );
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 class EnumCard extends StatelessWidget {

@@ -12,6 +12,7 @@ import (
 type AiAssistantClient interface {
 	ComputeComments(sourceUnitJson string, code string, openAiKey string) (string, error)
 	ComputeLinks(sourceUnitJson string, code string, openAiKey string) (string, error)
+	ComputeWarnings(sourceUnitJson string, code string, openAiKey string) (string, error)
 }
 
 type aiAssistantClient struct {
@@ -52,4 +53,19 @@ func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string, ope
 		return "", err
 	}
 	return resp.Links, nil
+}
+
+func (c *aiAssistantClient) ComputeWarnings(sourceUnitJson string, code string, openAiKey string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
+	resp, err := c.client.Warning(ctx, &service.WarningRequest{
+		JsonStructure:     sourceUnitJson,
+		SmartContractCode: code,
+		OpenAiKey:         openAiKey,
+	})
+	if err != nil {
+		return "", err
+	}
+	return resp.Warnings, nil
 }

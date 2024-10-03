@@ -19,6 +19,7 @@ mixin _$Task {
   String get id => throw _privateConstructorUsedError;
   SourceUnit get sourceUnit => throw _privateConstructorUsedError;
   List<Link> get links => throw _privateConstructorUsedError;
+  List<String> get warnings => throw _privateConstructorUsedError;
   List<Vulnerability> get vulnerabilities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,6 +35,7 @@ abstract class $TaskCopyWith<$Res> {
       {String id,
       SourceUnit sourceUnit,
       List<Link> links,
+      List<String> warnings,
       List<Vulnerability> vulnerabilities});
 
   $SourceUnitCopyWith<$Res> get sourceUnit;
@@ -55,6 +57,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? id = null,
     Object? sourceUnit = null,
     Object? links = null,
+    Object? warnings = null,
     Object? vulnerabilities = null,
   }) {
     return _then(_value.copyWith(
@@ -70,6 +73,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
               as List<Link>,
+      warnings: null == warnings
+          ? _value.warnings
+          : warnings // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vulnerabilities: null == vulnerabilities
           ? _value.vulnerabilities
           : vulnerabilities // ignore: cast_nullable_to_non_nullable
@@ -97,6 +104,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       {String id,
       SourceUnit sourceUnit,
       List<Link> links,
+      List<String> warnings,
       List<Vulnerability> vulnerabilities});
 
   @override
@@ -116,6 +124,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? id = null,
     Object? sourceUnit = null,
     Object? links = null,
+    Object? warnings = null,
     Object? vulnerabilities = null,
   }) {
     return _then(_$TaskImpl(
@@ -131,6 +140,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value._links
           : links // ignore: cast_nullable_to_non_nullable
               as List<Link>,
+      warnings: null == warnings
+          ? _value._warnings
+          : warnings // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       vulnerabilities: null == vulnerabilities
           ? _value._vulnerabilities
           : vulnerabilities // ignore: cast_nullable_to_non_nullable
@@ -146,8 +159,10 @@ class _$TaskImpl implements _Task {
       {required this.id,
       required this.sourceUnit,
       required final List<Link> links,
+      required final List<String> warnings,
       required final List<Vulnerability> vulnerabilities})
       : _links = links,
+        _warnings = warnings,
         _vulnerabilities = vulnerabilities;
 
   @override
@@ -162,6 +177,14 @@ class _$TaskImpl implements _Task {
     return EqualUnmodifiableListView(_links);
   }
 
+  final List<String> _warnings;
+  @override
+  List<String> get warnings {
+    if (_warnings is EqualUnmodifiableListView) return _warnings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_warnings);
+  }
+
   final List<Vulnerability> _vulnerabilities;
   @override
   List<Vulnerability> get vulnerabilities {
@@ -172,7 +195,7 @@ class _$TaskImpl implements _Task {
 
   @override
   String toString() {
-    return 'Task(id: $id, sourceUnit: $sourceUnit, links: $links, vulnerabilities: $vulnerabilities)';
+    return 'Task(id: $id, sourceUnit: $sourceUnit, links: $links, warnings: $warnings, vulnerabilities: $vulnerabilities)';
   }
 
   @override
@@ -184,6 +207,7 @@ class _$TaskImpl implements _Task {
             (identical(other.sourceUnit, sourceUnit) ||
                 other.sourceUnit == sourceUnit) &&
             const DeepCollectionEquality().equals(other._links, _links) &&
+            const DeepCollectionEquality().equals(other._warnings, _warnings) &&
             const DeepCollectionEquality()
                 .equals(other._vulnerabilities, _vulnerabilities));
   }
@@ -194,6 +218,7 @@ class _$TaskImpl implements _Task {
       id,
       sourceUnit,
       const DeepCollectionEquality().hash(_links),
+      const DeepCollectionEquality().hash(_warnings),
       const DeepCollectionEquality().hash(_vulnerabilities));
 
   @JsonKey(ignore: true)
@@ -208,6 +233,7 @@ abstract class _Task implements Task {
       {required final String id,
       required final SourceUnit sourceUnit,
       required final List<Link> links,
+      required final List<String> warnings,
       required final List<Vulnerability> vulnerabilities}) = _$TaskImpl;
 
   @override
@@ -216,6 +242,8 @@ abstract class _Task implements Task {
   SourceUnit get sourceUnit;
   @override
   List<Link> get links;
+  @override
+  List<String> get warnings;
   @override
   List<Vulnerability> get vulnerabilities;
   @override

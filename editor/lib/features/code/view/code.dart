@@ -21,62 +21,59 @@ class CodePageBuilder extends StatelessWidget {
       padding: allPadding8,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: Card(
-              child: BlocListener<CodeCubit, CodeState>(
-                listenWhen: (previous, current) {
-                  final currentSaved = current.mapOrNull(
-                        loaded: (state) => state.justSavedFile,
-                      ) ??
-                      false;
+          Card(
+            child: BlocListener<CodeCubit, CodeState>(
+              listenWhen: (previous, current) {
+                final currentSaved = current.mapOrNull(
+                      loaded: (state) => state.justSavedFile,
+                    ) ??
+                    false;
 
-                  final previousSaved = previous.mapOrNull(
-                        loaded: (state) => state.justSavedFile,
-                      ) ??
-                      false;
+                final previousSaved = previous.mapOrNull(
+                      loaded: (state) => state.justSavedFile,
+                    ) ??
+                    false;
 
-                  return currentSaved != previousSaved && currentSaved;
-                },
+                return currentSaved != previousSaved && currentSaved;
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content:
+                        Text('File saved successfully in the Dowload folder'),
+                  ),
+                );
+              },
+              child: BlocConsumer<CodeCubit, CodeState>(
                 listener: (context, state) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text('File saved successfully in the Dowload folder'),
+                  state.maybeWhen(
+                    processing: (_, __, ___, progress, ____) {
+                      if (progress == 0) {
+                        context.read<CodeCubit>().startPollingTask();
+                      }
+                    },
+                    orElse: () {},
+                  );
+                },
+                builder: (context, state) {
+                  return state.map(
+                    initial: (state) => FileInputContent(
+                      isLoading: state.isLoading,
+                      filePath: state.fileName,
+                    ),
+                    processing: (state) => ProcessingPage(
+                      taskId: state.taskId,
+                      progress: state.progress,
+                      message: state.message,
+                    ),
+                    loaded: (state) => CodePage(
+                      sourceUnit: state.task.sourceUnit,
+                      vulnerabilities: state.task.vulnerabilities,
+                      functionalLinks:
+                          state.task.links.map((e) => e.toLinkPair()).toList(),
                     ),
                   );
                 },
-                child: BlocConsumer<CodeCubit, CodeState>(
-                  listener: (context, state) {
-                    state.maybeWhen(
-                      processing: (_, __, ___, progress, ____) {
-                        if (progress == 0) {
-                          context.read<CodeCubit>().startPollingTask();
-                        }
-                      },
-                      orElse: () {},
-                    );
-                  },
-                  builder: (context, state) {
-                    return state.map(
-                      initial: (state) => FileInputContent(
-                        isLoading: state.isLoading,
-                        filePath: state.fileName,
-                      ),
-                      processing: (state) => ProcessingPage(
-                        taskId: state.taskId,
-                        progress: state.progress,
-                        message: state.message,
-                      ),
-                      loaded: (state) => CodePage(
-                        sourceUnit: state.task.sourceUnit,
-                        vulnerabilities: state.task.vulnerabilities,
-                        functionalLinks: state.task.links
-                            .map((e) => e.toLinkPair())
-                            .toList(),
-                      ),
-                    );
-                  },
-                ),
               ),
             ),
           ),
@@ -459,15 +456,9 @@ class _MetaEditorState extends State<MetaEditor>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: EditorGrid(
-            links: visualRapresentation.links,
-            children: visualRapresentation.cards,
-          ),
-        ),
-      ],
+    return EditorGrid(
+      links: visualRapresentation.links,
+      children: visualRapresentation.cards,
     );
   }
 
@@ -508,15 +499,9 @@ class _ContractEditorState extends State<ContractEditor>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: EditorGrid(
-            links: visualRapresentation.links,
-            children: visualRapresentation.cards,
-          ),
-        ),
-      ],
+    return EditorGrid(
+      links: visualRapresentation.links,
+      children: visualRapresentation.cards,
     );
   }
 

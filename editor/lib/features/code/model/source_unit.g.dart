@@ -9,6 +9,7 @@ part of 'source_unit.dart';
 _$SourceUnitImpl _$$SourceUnitImplFromJson(Map<String, dynamic> json) =>
     _$SourceUnitImpl(
       id: json['id'] as String,
+      description: json['description'] as String,
       pragmas: (json['pragmas'] as List<dynamic>?)
               ?.map((e) => Pragma.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -47,6 +48,7 @@ _$SourceUnitImpl _$$SourceUnitImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$SourceUnitImplToJson(_$SourceUnitImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'description': instance.description,
       'pragmas': instance.pragmas,
       'contracts': instance.contracts,
       'imports': instance.imports,

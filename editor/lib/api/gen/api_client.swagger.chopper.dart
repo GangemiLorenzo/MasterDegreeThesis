@@ -44,11 +44,11 @@ final class _$ApiClient extends ApiClient {
   }
 
   @override
-  Future<Response<DownloadTaskIdPost$Response>> _downloadTaskIdPost({
+  Future<Response<ExportTaskIdPost$Response>> _exportTaskIdPost({
     required String? taskId,
-    required DownloadTaskIdPost$RequestBody? body,
+    required ExportTaskIdPost$RequestBody? body,
   }) {
-    final Uri $url = Uri.parse('/download/${taskId}');
+    final Uri $url = Uri.parse('/export/${taskId}');
     final $body = body;
     final Request $request = Request(
       'POST',
@@ -56,8 +56,8 @@ final class _$ApiClient extends ApiClient {
       client.baseUrl,
       body: $body,
     );
-    return client.send<DownloadTaskIdPost$Response,
-        DownloadTaskIdPost$Response>($request);
+    return client
+        .send<ExportTaskIdPost$Response, ExportTaskIdPost$Response>($request);
   }
 
   @override

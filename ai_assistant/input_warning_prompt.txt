@@ -1,0 +1,9 @@
+Solidity Code:
+```solidity
+<<SOLIDITY_CODE>>
+```
+
+JSON Structure:
+```json
+<<JSON_STRUCTURE>>
+```

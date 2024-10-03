@@ -47,10 +47,11 @@ func NewServer(
 func (s *Server) Start() {
 	router := mux.NewRouter()
 	router.Use(corsMiddleware)
+	router.Use(limitRequestBodySize)
 	router.HandleFunc("/api/upload", s.FileHandler).Methods("POST")
 	router.HandleFunc("/api/tasks/{taskId}", s.GetTaskStatusHandler).Methods("GET")
 	router.HandleFunc("/api/tasks/{taskId}", s.RefreshCodeHandler).Methods("POST")
-	router.HandleFunc("/api/download/{taskId}", s.DownloadCodeHanlder).Methods("POST")
+	router.HandleFunc("/api/export/{taskId}", s.ExportCodeHandler).Methods("POST")
 	// Use a middleware to log all requests
 	router.Use(loggingMiddleware)
 	log.Printf("Server starting on ip %s and port %s", s.IP, s.Port)
@@ -60,9 +61,9 @@ func (s *Server) Start() {
 // CORS middleware
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*") // Replace '*' with specific domains if needed
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length")
 
 		// Handle preflight OPTIONS requests
 		if r.Method == http.MethodOptions {
@@ -70,6 +71,14 @@ func corsMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
+		next.ServeHTTP(w, r)
+	})
+}
+
+func limitRequestBodySize(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Limit the request body to 10MB
+		r.Body = http.MaxBytesReader(w, r.Body, 20<<20) // 20MB limit
 		next.ServeHTTP(w, r)
 	})
 }
@@ -142,7 +151,7 @@ func (s *Server) processTask(task *Task, openAiKey string) {
 
 	task.Result = jsonMap
 	task.StatusMessage = "Generating links from contract code"
-	task.Progress = 50
+	task.Progress = 45
 
 	// LINKING
 	links, err := s.AssistantClient.ComputeLinks(encoded, task.ContractCode, openAiKey)
@@ -162,6 +171,27 @@ func (s *Server) processTask(task *Task, openAiKey string) {
 	}
 
 	task.Links = linksJsonMap
+	task.StatusMessage = "Searching for improvements in contract code"
+	task.Progress = 65
+
+	// ADD WARNINGS
+	warnings, err := s.AssistantClient.ComputeWarnings(encoded, task.ContractCode, openAiKey)
+	if err != nil {
+		log.Printf("Failed to get warnings %s: %v", task.ID, err)
+		task.Status = Failed
+		return
+	}
+	log.Printf("Task %s: Warnings completed", task.ID)
+
+	var warningsJsonMap map[string]interface{}
+	err = json.Unmarshal([]byte(warnings), &warningsJsonMap)
+	if err != nil {
+		log.Printf("Failed to unmarshal encoded data for task %s: %v", task.ID, err)
+		task.Status = Failed
+		return
+	}
+
+	task.Warnings = warningsJsonMap
 	task.StatusMessage = "Auditing contract code"
 	task.Progress = 75
 
@@ -241,6 +271,7 @@ func (s *Server) GetTaskStatusHandler(w http.ResponseWriter, r *http.Request) {
 		"vulnerabilities": task.Vulnerabilities,
 		"progress":        task.Progress,
 		"links":           task.Links["id"],
+		"warnings":        task.Warnings["id"],
 		"statusMessage":   task.StatusMessage,
 	}
 
@@ -266,7 +297,7 @@ func (s *Server) RefreshCodeHandler(w http.ResponseWriter, r *http.Request) {
 //	          sourceUnit:
 //	            type: object
 //	            description: Source unit to be downloaded for the task
-func (s *Server) DownloadCodeHanlder(w http.ResponseWriter, r *http.Request) {
+func (s *Server) ExportCodeHandler(w http.ResponseWriter, r *http.Request) {
 	var requestBody struct {
 		SourceUnit parser.SourceUnit `json:"sourceUnit"`
 	}

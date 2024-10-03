@@ -160,10 +160,15 @@ class CodeCubit extends Cubit<CodeState> {
           .map((e) => Vulnerability.fromJson(e))
           .toList();
 
+      final warnings = List<Map<String, dynamic>>.from(taskDto.warnings as List)
+          .map((e) => e['id'] as String)
+          .toList();
+
       final task = Task(
         id: taskDto.id,
         sourceUnit: sourceUnit,
         links: links,
+        warnings: warnings,
         vulnerabilities: vulnerabilities,
       );
       emit(
@@ -216,6 +221,18 @@ class CodeCubit extends Cubit<CodeState> {
     final currentState = state as _Loaded;
 
     return currentState.selectedItem == id;
+  }
+
+  bool isWarning(String id) {
+    if (state is! _Loaded) {
+      return false;
+    }
+
+    final currentState = state as _Loaded;
+
+    final warnings = currentState.task.warnings;
+
+    return warnings.contains(id);
   }
 
   VisualElement getItem(String id) {
@@ -314,6 +331,42 @@ class CodeCubit extends Cubit<CodeState> {
       );
     } catch (e) {
       debugPrint(' Failed to download code: $e');
+      emit(
+        currentState.copyWith(
+          isLoading: false,
+        ),
+      );
+    }
+  }
+
+  void downloadDescription() async {
+    if (state is! _Loaded) {
+      return;
+    }
+
+    final currentState = state as _Loaded;
+
+    try {
+      emit(
+        currentState.copyWith(
+          isLoading: true,
+          justSavedFile: false,
+        ),
+      );
+
+      await repo.downloadDescription(
+        currentState.task.id,
+        currentState.task.sourceUnit,
+      );
+
+      emit(
+        currentState.copyWith(
+          isLoading: false,
+          justSavedFile: true,
+        ),
+      );
+    } catch (e) {
+      debugPrint(' Failed to download description: $e');
       emit(
         currentState.copyWith(
           isLoading: false,

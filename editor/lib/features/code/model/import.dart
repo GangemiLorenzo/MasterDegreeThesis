@@ -113,6 +113,9 @@ class Import with _$Import implements VisualElement {
       ImportDetailsForm(
         data: this,
       );
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 class ImportCard extends StatelessWidget {

@@ -22,6 +22,7 @@ CustomError _$CustomErrorFromJson(Map<String, dynamic> json) {
 mixin _$CustomError {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   List<Parameter> get parameters => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,8 @@ abstract class $CustomErrorCopyWith<$Res> {
           CustomError value, $Res Function(CustomError) then) =
       _$CustomErrorCopyWithImpl<$Res, CustomError>;
   @useResult
-  $Res call({String id, String name, List<Parameter> parameters});
+  $Res call(
+      {String id, String name, String description, List<Parameter> parameters});
 }
 
 /// @nodoc
@@ -54,6 +56,7 @@ class _$CustomErrorCopyWithImpl<$Res, $Val extends CustomError>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? parameters = null,
   }) {
     return _then(_value.copyWith(
@@ -64,6 +67,10 @@ class _$CustomErrorCopyWithImpl<$Res, $Val extends CustomError>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       parameters: null == parameters
           ? _value.parameters
@@ -81,7 +88,8 @@ abstract class _$$CustomErrorImplCopyWith<$Res>
       __$$CustomErrorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, List<Parameter> parameters});
+  $Res call(
+      {String id, String name, String description, List<Parameter> parameters});
 }
 
 /// @nodoc
@@ -97,6 +105,7 @@ class __$$CustomErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? parameters = null,
   }) {
     return _then(_$CustomErrorImpl(
@@ -107,6 +116,10 @@ class __$$CustomErrorImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       parameters: null == parameters
           ? _value._parameters
@@ -122,6 +135,7 @@ class _$CustomErrorImpl extends _CustomError {
   const _$CustomErrorImpl(
       {required this.id,
       required this.name,
+      required this.description,
       final List<Parameter> parameters = const []})
       : _parameters = parameters,
         super._();
@@ -133,6 +147,8 @@ class _$CustomErrorImpl extends _CustomError {
   final String id;
   @override
   final String name;
+  @override
+  final String description;
   final List<Parameter> _parameters;
   @override
   @JsonKey()
@@ -144,7 +160,7 @@ class _$CustomErrorImpl extends _CustomError {
 
   @override
   String toString() {
-    return 'CustomError(id: $id, name: $name, parameters: $parameters)';
+    return 'CustomError(id: $id, name: $name, description: $description, parameters: $parameters)';
   }
 
   @override
@@ -154,14 +170,16 @@ class _$CustomErrorImpl extends _CustomError {
             other is _$CustomErrorImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             const DeepCollectionEquality()
                 .equals(other._parameters, _parameters));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, const DeepCollectionEquality().hash(_parameters));
+  int get hashCode => Object.hash(runtimeType, id, name, description,
+      const DeepCollectionEquality().hash(_parameters));
 
   @JsonKey(ignore: true)
   @override
@@ -181,6 +199,7 @@ abstract class _CustomError extends CustomError {
   const factory _CustomError(
       {required final String id,
       required final String name,
+      required final String description,
       final List<Parameter> parameters}) = _$CustomErrorImpl;
   const _CustomError._() : super._();
 
@@ -191,6 +210,8 @@ abstract class _CustomError extends CustomError {
   String get id;
   @override
   String get name;
+  @override
+  String get description;
   @override
   List<Parameter> get parameters;
   @override

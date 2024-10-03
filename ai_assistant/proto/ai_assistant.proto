@@ -9,6 +9,7 @@ option go_package = "ai_assistant_service/;ai_assistant_service";
 service AiAssistantService {
   rpc Comment(CommentRequest) returns (CommentResponse);
   rpc Link(LinkRequest) returns (LinkResponse);
+  rpc Warning(WarningRequest) returns (WarningResponse);
 }
 
 message CommentRequest {
@@ -29,4 +30,14 @@ message LinkRequest {
 
 message LinkResponse {
   string Links = 1;  // The list of links found in the smart contract.
+}
+
+message WarningRequest {
+  string jsonStructure = 1;     // The JSON structure of the smart contract to be analyzed for warnings.
+  string smartContractCode = 2;  // The original smart contract code in its source format.
+  string openAiKey = 3;          // The OpenAI API key to use for generating comments.
+}
+
+message WarningResponse {
+  string Warnings = 1;  // The list of warnings found in the smart contract
 }

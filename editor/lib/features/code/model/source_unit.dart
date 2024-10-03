@@ -20,6 +20,7 @@ class SourceUnit with _$SourceUnit implements VisualElement {
 
   const factory SourceUnit({
     required String id,
+    required String description,
     @Default([]) List<Pragma> pragmas,
     @Default([]) List<Contract> contracts,
     @Default([]) List<Import> imports,
@@ -298,4 +299,44 @@ class SourceUnit with _$SourceUnit implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       Container();
+
+  @override
+  List<TextSpan> get toDescription {
+    final result = <TextSpan>[];
+
+    if (description.isNotEmpty) {
+      result.addAll([
+        TextSpan(
+          text: '$description\n\n',
+        ),
+      ]);
+    }
+
+    for (final f in functions) {
+      result.addAll(f.toDescription);
+    }
+
+    for (final e in events) {
+      result.addAll(e.toDescription);
+    }
+
+    for (final e in errors) {
+      result.addAll(e.toDescription);
+    }
+
+    for (final c in contracts) {
+      result.addAll([
+        if (c.toDescription.isNotEmpty)
+          const TextSpan(
+            text: '-------------------\n\n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ...c.toDescription,
+      ]);
+    }
+
+    return result;
+  }
 }

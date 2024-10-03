@@ -22,6 +22,7 @@ Event _$EventFromJson(Map<String, dynamic> json) {
 mixin _$Event {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   List<Parameter> get parameters => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +35,8 @@ abstract class $EventCopyWith<$Res> {
   factory $EventCopyWith(Event value, $Res Function(Event) then) =
       _$EventCopyWithImpl<$Res, Event>;
   @useResult
-  $Res call({String id, String name, List<Parameter> parameters});
+  $Res call(
+      {String id, String name, String description, List<Parameter> parameters});
 }
 
 /// @nodoc
@@ -52,6 +54,7 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? parameters = null,
   }) {
     return _then(_value.copyWith(
@@ -62,6 +65,10 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       parameters: null == parameters
           ? _value.parameters
@@ -78,7 +85,8 @@ abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
       __$$EventImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, List<Parameter> parameters});
+  $Res call(
+      {String id, String name, String description, List<Parameter> parameters});
 }
 
 /// @nodoc
@@ -94,6 +102,7 @@ class __$$EventImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? parameters = null,
   }) {
     return _then(_$EventImpl(
@@ -104,6 +113,10 @@ class __$$EventImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       parameters: null == parameters
           ? _value._parameters
@@ -119,6 +132,7 @@ class _$EventImpl extends _Event {
   const _$EventImpl(
       {required this.id,
       required this.name,
+      required this.description,
       final List<Parameter> parameters = const []})
       : _parameters = parameters,
         super._();
@@ -130,6 +144,8 @@ class _$EventImpl extends _Event {
   final String id;
   @override
   final String name;
+  @override
+  final String description;
   final List<Parameter> _parameters;
   @override
   @JsonKey()
@@ -141,7 +157,7 @@ class _$EventImpl extends _Event {
 
   @override
   String toString() {
-    return 'Event(id: $id, name: $name, parameters: $parameters)';
+    return 'Event(id: $id, name: $name, description: $description, parameters: $parameters)';
   }
 
   @override
@@ -151,14 +167,16 @@ class _$EventImpl extends _Event {
             other is _$EventImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             const DeepCollectionEquality()
                 .equals(other._parameters, _parameters));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, const DeepCollectionEquality().hash(_parameters));
+  int get hashCode => Object.hash(runtimeType, id, name, description,
+      const DeepCollectionEquality().hash(_parameters));
 
   @JsonKey(ignore: true)
   @override
@@ -178,6 +196,7 @@ abstract class _Event extends Event {
   const factory _Event(
       {required final String id,
       required final String name,
+      required final String description,
       final List<Parameter> parameters}) = _$EventImpl;
   const _Event._() : super._();
 
@@ -187,6 +206,8 @@ abstract class _Event extends Event {
   String get id;
   @override
   String get name;
+  @override
+  String get description;
   @override
   List<Parameter> get parameters;
   @override

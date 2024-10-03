@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AiAssistantServiceClient interface {
 	Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*CommentResponse, error)
 	Link(ctx context.Context, in *LinkRequest, opts ...grpc.CallOption) (*LinkResponse, error)
+	Warning(ctx context.Context, in *WarningRequest, opts ...grpc.CallOption) (*WarningResponse, error)
 }
 
 type aiAssistantServiceClient struct {
@@ -52,12 +53,22 @@ func (c *aiAssistantServiceClient) Link(ctx context.Context, in *LinkRequest, op
 	return out, nil
 }
 
+func (c *aiAssistantServiceClient) Warning(ctx context.Context, in *WarningRequest, opts ...grpc.CallOption) (*WarningResponse, error) {
+	out := new(WarningResponse)
+	err := c.cc.Invoke(ctx, "/ai_assistant.AiAssistantService/Warning", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AiAssistantServiceServer is the server API for AiAssistantService service.
 // All implementations must embed UnimplementedAiAssistantServiceServer
 // for forward compatibility
 type AiAssistantServiceServer interface {
 	Comment(context.Context, *CommentRequest) (*CommentResponse, error)
 	Link(context.Context, *LinkRequest) (*LinkResponse, error)
+	Warning(context.Context, *WarningRequest) (*WarningResponse, error)
 	mustEmbedUnimplementedAiAssistantServiceServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedAiAssistantServiceServer) Comment(context.Context, *CommentRe
 }
 func (UnimplementedAiAssistantServiceServer) Link(context.Context, *LinkRequest) (*LinkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Link not implemented")
+}
+func (UnimplementedAiAssistantServiceServer) Warning(context.Context, *WarningRequest) (*WarningResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Warning not implemented")
 }
 func (UnimplementedAiAssistantServiceServer) mustEmbedUnimplementedAiAssistantServiceServer() {}
 
@@ -120,6 +134,24 @@ func _AiAssistantService_Link_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AiAssistantService_Warning_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WarningRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AiAssistantServiceServer).Warning(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ai_assistant.AiAssistantService/Warning",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AiAssistantServiceServer).Warning(ctx, req.(*WarningRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AiAssistantService_ServiceDesc is the grpc.ServiceDesc for AiAssistantService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var AiAssistantService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Link",
 			Handler:    _AiAssistantService_Link_Handler,
+		},
+		{
+			MethodName: "Warning",
+			Handler:    _AiAssistantService_Warning_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -94,6 +94,9 @@ class Variable with _$Variable implements VisualElement {
       VariableDetailsForm(
         data: this,
       );
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 /// Returns a widget that represents a [Variable] element in a grid card.

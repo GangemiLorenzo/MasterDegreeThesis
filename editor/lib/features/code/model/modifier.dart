@@ -116,6 +116,9 @@ class Modifier with _$Modifier implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       ModifierErrorDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 class ModifierErrorCard extends StatelessWidget {

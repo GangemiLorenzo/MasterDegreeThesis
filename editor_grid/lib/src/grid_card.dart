@@ -53,6 +53,7 @@ class GridCard extends StatelessWidget {
   final List<GridCardItem> properties;
   final String title;
   final bool isSelected;
+  final bool isWarning;
   final VoidCallback? onTap;
 
   const GridCard({
@@ -61,6 +62,7 @@ class GridCard extends StatelessWidget {
     required this.properties,
     required this.title,
     this.isSelected = false,
+    this.isWarning = false,
     this.onTap,
   });
 
@@ -86,12 +88,14 @@ class GridCard extends StatelessWidget {
               border: Border.all(
                 color: isSelected
                     ? Theme.of(context).colorScheme.primary
-                    : Colors.transparent,
+                    : isWarning
+                        ? Colors.amber
+                        : Colors.transparent,
                 width: 2,
               ),
             ),
             child: Card(
-              elevation: isSelected ? 0 : null,
+              elevation: (isSelected || isWarning) ? 0 : null,
               color: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

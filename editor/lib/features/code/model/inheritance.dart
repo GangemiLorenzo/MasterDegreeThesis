@@ -84,6 +84,9 @@ class Inheritance with _$Inheritance implements VisualElement {
       InheritanceDetailsForm(
         data: this,
       );
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 class InheritanceCard extends StatelessWidget {

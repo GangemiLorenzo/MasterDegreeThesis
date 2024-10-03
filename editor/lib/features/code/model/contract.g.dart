@@ -10,6 +10,7 @@ _$ContractImpl _$$ContractImplFromJson(Map<String, dynamic> json) =>
     _$ContractImpl(
       id: json['id'] as String,
       name: json['name'] as String,
+      description: json['description'] as String,
       isInterface: json['isInterface'] as bool? ?? false,
       isLibrary: json['isLibrary'] as bool? ?? false,
       variables: (json['variables'] as List<dynamic>?)
@@ -51,6 +52,7 @@ Map<String, dynamic> _$$ContractImplToJson(_$ContractImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'description': instance.description,
       'isInterface': instance.isInterface,
       'isLibrary': instance.isLibrary,
       'variables': instance.variables,

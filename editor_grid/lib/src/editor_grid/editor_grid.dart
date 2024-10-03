@@ -63,13 +63,11 @@ class _EditorGridState extends State<EditorGrid> {
           child: Builder(builder: (context) {
             final connectionProvider = ConnectionProvider.of(context);
 
-            return Positioned.fill(
-              child: RendererGrid(
-                zoomFactor: zoomFactor,
-                dragOffset: dragOffset,
-                connections: connectionProvider?.validConnections ?? [],
-                children: widget.children,
-              ),
+            return RendererGrid(
+              zoomFactor: zoomFactor,
+              dragOffset: dragOffset,
+              connections: connectionProvider?.validConnections ?? [],
+              children: widget.children,
             );
           }),
         ),

@@ -16,6 +16,7 @@ class Event with _$Event implements VisualElement {
   const factory Event({
     required String id,
     required String name,
+    required String description,
     @Default([]) List<Parameter> parameters,
   }) = _Event;
 
@@ -114,6 +115,33 @@ class Event with _$Event implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       EventDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription {
+    final result = <TextSpan>[];
+
+    if (description.isEmpty) {
+      return result;
+    }
+
+    result.addAll([
+      const TextSpan(
+        text: 'Event ',
+      ),
+      TextSpan(
+        text: '$name:\n',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      TextSpan(
+        text: '$description\n\n',
+      ),
+    ]);
+
+    return result;
+  }
 }
 
 class EventCard extends StatelessWidget {

@@ -21,6 +21,7 @@ SourceUnit _$SourceUnitFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SourceUnit {
   String get id => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   List<Pragma> get pragmas => throw _privateConstructorUsedError;
   List<Contract> get contracts => throw _privateConstructorUsedError;
   List<Import> get imports => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $SourceUnitCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String description,
       List<Pragma> pragmas,
       List<Contract> contracts,
       List<Import> imports,
@@ -68,6 +70,7 @@ class _$SourceUnitCopyWithImpl<$Res, $Val extends SourceUnit>
   @override
   $Res call({
     Object? id = null,
+    Object? description = null,
     Object? pragmas = null,
     Object? contracts = null,
     Object? imports = null,
@@ -81,6 +84,10 @@ class _$SourceUnitCopyWithImpl<$Res, $Val extends SourceUnit>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       pragmas: null == pragmas
           ? _value.pragmas
@@ -128,6 +135,7 @@ abstract class _$$SourceUnitImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String description,
       List<Pragma> pragmas,
       List<Contract> contracts,
       List<Import> imports,
@@ -150,6 +158,7 @@ class __$$SourceUnitImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? description = null,
     Object? pragmas = null,
     Object? contracts = null,
     Object? imports = null,
@@ -163,6 +172,10 @@ class __$$SourceUnitImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       pragmas: null == pragmas
           ? _value._pragmas
@@ -205,6 +218,7 @@ class __$$SourceUnitImplCopyWithImpl<$Res>
 class _$SourceUnitImpl extends _SourceUnit {
   const _$SourceUnitImpl(
       {required this.id,
+      required this.description,
       final List<Pragma> pragmas = const [],
       final List<Contract> contracts = const [],
       final List<Import> imports = const [],
@@ -228,6 +242,8 @@ class _$SourceUnitImpl extends _SourceUnit {
 
   @override
   final String id;
+  @override
+  final String description;
   final List<Pragma> _pragmas;
   @override
   @JsonKey()
@@ -302,7 +318,7 @@ class _$SourceUnitImpl extends _SourceUnit {
 
   @override
   String toString() {
-    return 'SourceUnit(id: $id, pragmas: $pragmas, contracts: $contracts, imports: $imports, enums: $enums, events: $events, structs: $structs, functions: $functions, errors: $errors)';
+    return 'SourceUnit(id: $id, description: $description, pragmas: $pragmas, contracts: $contracts, imports: $imports, enums: $enums, events: $events, structs: $structs, functions: $functions, errors: $errors)';
   }
 
   @override
@@ -311,6 +327,8 @@ class _$SourceUnitImpl extends _SourceUnit {
         (other.runtimeType == runtimeType &&
             other is _$SourceUnitImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             const DeepCollectionEquality().equals(other._pragmas, _pragmas) &&
             const DeepCollectionEquality()
                 .equals(other._contracts, _contracts) &&
@@ -328,6 +346,7 @@ class _$SourceUnitImpl extends _SourceUnit {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      description,
       const DeepCollectionEquality().hash(_pragmas),
       const DeepCollectionEquality().hash(_contracts),
       const DeepCollectionEquality().hash(_imports),
@@ -354,6 +373,7 @@ class _$SourceUnitImpl extends _SourceUnit {
 abstract class _SourceUnit extends SourceUnit {
   const factory _SourceUnit(
       {required final String id,
+      required final String description,
       final List<Pragma> pragmas,
       final List<Contract> contracts,
       final List<Import> imports,
@@ -369,6 +389,8 @@ abstract class _SourceUnit extends SourceUnit {
 
   @override
   String get id;
+  @override
+  String get description;
   @override
   List<Pragma> get pragmas;
   @override

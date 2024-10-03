@@ -141,7 +141,7 @@ func (scu *AiAssistantUtils) RunCommentProcess(sourceUnitJson string, code strin
 		return nil, err
 	}
 
-	fmt.Println(resp.Choices[0].Message.Content)
+	fmt.Printf("Received %v tool calls\n", len(msg.ToolCalls))
 
 	res := DescriptionFCResult{
 		Items: []DescriptionResult{},
@@ -284,7 +284,7 @@ func (scu *AiAssistantUtils) RunLinkProcess(sourceUnitJson string, code string) 
 		return nil, err
 	}
 
-	fmt.Println(resp.Choices[0].Message.Content)
+	fmt.Printf("Received %v tool calls\n", len(msg.ToolCalls))
 
 	res := LinkFCResult{
 		Items: []LinkResult{},
@@ -293,6 +293,134 @@ func (scu *AiAssistantUtils) RunLinkProcess(sourceUnitJson string, code string) 
 		f := toolCall.Function
 		dr := f.Arguments
 		r := LinkFCResult{}
+		err := json.Unmarshal([]byte(dr), &r)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return nil, err
+		}
+		res.Items = append(res.Items, r.Items...)
+	}
+
+	return res.Items, nil
+}
+
+type WarningFCResult struct {
+	Items []WarningResult `json:"items"`
+}
+
+type WarningResult struct {
+	Id string `json:"id"`
+}
+
+func (scu *AiAssistantUtils) SetupWarningDialog() error {
+	item := jsonschema.Definition{
+		Type: jsonschema.Object,
+		Properties: map[string]jsonschema.Definition{
+			"id": {
+				Type:        jsonschema.String,
+				Description: "The ID belonging to the element specified as a warning, e.g. 058f661c-2c5e-4eed-ab92-72b102f19ee7, a47acf50-0907-4663-bb1f-38117a2a42f6",
+			},
+		},
+		Required: []string{"id"},
+	}
+
+	params := jsonschema.Definition{
+		Type: jsonschema.Object,
+		Properties: map[string]jsonschema.Definition{
+			"items": {
+				Type:  jsonschema.Array,
+				Items: &item,
+			},
+		},
+	}
+	f := openai.FunctionDefinition{
+		Name:        "set_warning",
+		Description: "Identifies the functions which can be improved.",
+		Parameters:  params,
+	}
+	t := openai.Tool{
+		Type:     openai.ToolTypeFunction,
+		Function: &f,
+	}
+	instructions := readFileContent("setup_warning_prompt.txt")
+	scu.dialogue = []openai.ChatCompletionMessage{
+		{
+			Role:    openai.ChatMessageRoleUser,
+			Content: instructions,
+		},
+	}
+	scu.tools = []openai.Tool{t}
+	resp, err := scu.openAiClient.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:    openai.GPT3Dot5Turbo,
+			Messages: scu.dialogue,
+			Tools:    scu.tools,
+		},
+	)
+	if err != nil || len(resp.Choices) != 1 {
+		fmt.Printf("Completion error: err:%v len(choices):%v\n", err,
+			len(resp.Choices))
+		return err
+	}
+	msg := resp.Choices[0].Message
+	if len(msg.ToolCalls) != 0 {
+		fmt.Printf("Completion error: len(toolcalls): %v\n", len(msg.ToolCalls))
+		return err
+	}
+
+	scu.dialogue = append(scu.dialogue, msg)
+
+	return nil
+}
+
+func (scu *AiAssistantUtils) RunWarningProcess(sourceUnitJson string, code string) ([]WarningResult, error) {
+
+	instructions := readFileContent("input_warning_prompt.txt")
+	instructions = strings.Replace(instructions, "<<SOLIDITY_CODE>>", code, -1)
+	instructions = strings.Replace(instructions, "<<JSON_STRUCTURE>>", sourceUnitJson, -1)
+
+	dialogue := []openai.ChatCompletionMessage{
+		{
+			Role:    openai.ChatMessageRoleUser,
+			Content: instructions,
+		},
+	}
+	inputDialogue := append(scu.dialogue, dialogue...)
+	resp, err := scu.openAiClient.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:    openai.GPT3Dot5Turbo, //GPT3Dot5Turbo
+			Messages: inputDialogue,
+			Tools:    scu.tools,
+			ToolChoice: &openai.ToolChoice{
+				Type: openai.ToolTypeFunction,
+				Function: openai.ToolFunction{
+					Name: "set_warning",
+				},
+			},
+		},
+	)
+	if err != nil || len(resp.Choices) != 1 {
+		fmt.Printf("Completion error: err:%v len(choices):%v\n", err,
+			len(resp.Choices))
+		return nil, err
+	}
+	msg := resp.Choices[0].Message
+	if len(msg.ToolCalls) == 0 {
+		fmt.Printf("Completion error: len(toolcalls): %v\n", len(msg.ToolCalls))
+		return nil, err
+	}
+
+	fmt.Printf("Received %v tool calls\n", len(msg.ToolCalls))
+
+	res := WarningFCResult{
+		Items: []WarningResult{},
+	}
+	for _, toolCall := range msg.ToolCalls {
+		f := toolCall.Function
+		dr := f.Arguments
+		r := WarningFCResult{}
 		err := json.Unmarshal([]byte(dr), &r)
 		if err != nil {
 			fmt.Println("Error:", err)

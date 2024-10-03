@@ -72,25 +72,25 @@ abstract class ApiClient extends ChopperService {
 
   ///Post the new Source unit into the task
   ///@param taskId Identifier of the task to get status for
-  Future<chopper.Response<DownloadTaskIdPost$Response>> downloadTaskIdPost({
+  Future<chopper.Response<ExportTaskIdPost$Response>> exportTaskIdPost({
     required String? taskId,
-    required DownloadTaskIdPost$RequestBody? body,
+    required ExportTaskIdPost$RequestBody? body,
   }) {
-    generatedMapping.putIfAbsent(DownloadTaskIdPost$Response,
-        () => DownloadTaskIdPost$Response.fromJsonFactory);
+    generatedMapping.putIfAbsent(ExportTaskIdPost$Response,
+        () => ExportTaskIdPost$Response.fromJsonFactory);
 
-    return _downloadTaskIdPost(taskId: taskId, body: body);
+    return _exportTaskIdPost(taskId: taskId, body: body);
   }
 
   ///Post the new Source unit into the task
   ///@param taskId Identifier of the task to get status for
   @Post(
-    path: '/download/{taskId}',
+    path: '/export/{taskId}',
     optionalBody: true,
   )
-  Future<chopper.Response<DownloadTaskIdPost$Response>> _downloadTaskIdPost({
+  Future<chopper.Response<ExportTaskIdPost$Response>> _exportTaskIdPost({
     @Path('taskId') required String? taskId,
-    @Body() required DownloadTaskIdPost$RequestBody? body,
+    @Body() required ExportTaskIdPost$RequestBody? body,
   });
 
   ///Get the status of a processing task

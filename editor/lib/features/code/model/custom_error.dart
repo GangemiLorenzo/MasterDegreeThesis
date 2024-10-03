@@ -16,6 +16,7 @@ class CustomError with _$CustomError implements VisualElement {
   const factory CustomError({
     required String id,
     required String name,
+    required String description,
     @Default([]) List<Parameter> parameters,
   }) = _CustomError;
 
@@ -115,6 +116,33 @@ class CustomError with _$CustomError implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       CustomErrorDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription {
+    final result = <TextSpan>[];
+
+    if (description.isEmpty) {
+      return result;
+    }
+
+    result.addAll([
+      const TextSpan(
+        text: 'Error ',
+      ),
+      TextSpan(
+        text: '$name\n',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      TextSpan(
+        text: '$description\n\n',
+      ),
+    ]);
+
+    return result;
+  }
 }
 
 class CustomErrorCard extends StatelessWidget {

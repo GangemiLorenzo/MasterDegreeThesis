@@ -1,4 +1,5 @@
 import 'package:editor/features/code/code.dart';
+import 'package:editor/features/contract/contract.dart';
 import 'package:editor/features/home/cubit/home_cubit.dart';
 import 'package:editor/features/home/view/home.dart';
 import 'package:editor/features/settings/settigs.dart';
@@ -22,14 +23,7 @@ RouteBase get homeRoute {
     routes: [
       codeRoute,
       settingsRoute,
-      // Each of these will then be exported as a feature
-      GoRoute(
-        name: 'contract',
-        path: '/contract',
-        builder: (context, state) => const Center(
-          child: Text('contract'),
-        ),
-      ),
+      contractRoute,
       GoRoute(
         name: 'deploy',
         path: '/deploy',

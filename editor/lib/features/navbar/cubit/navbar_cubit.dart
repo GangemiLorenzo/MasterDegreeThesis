@@ -13,13 +13,13 @@ const List<NavBarItemModel> _defaultNavBarItems = [
   NavBarItemModel(
     type: NavBarItemType.code,
     route: 'code',
+    icon: Icons.document_scanner_outlined,
+  ),
+  NavBarItemModel(
+    type: NavBarItemType.contracts,
+    route: 'contract',
     icon: Icons.code,
   ),
-  // NavBarItemModel(
-  //   type: NavBarItemType.contracts,
-  //   route: 'contract',
-  //   icon: Icons.document_scanner_outlined,
-  // ),
   // NavBarItemModel(
   //   type: NavBarItemType.deploy,
   //   route: 'deploy',

@@ -61,5 +61,7 @@ abstract class VisualElement {
     required VisualElement element,
   });
 
+  List<TextSpan> get toDescription;
+
   String get id;
 }

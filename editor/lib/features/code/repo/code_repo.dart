@@ -71,6 +71,8 @@ class CodeRepo {
     required Uint8List fileBytes,
     required String openAIKey,
   }) async {
+    //return 'taskId';
+
     final response = await restService.client.uploadPost(
       file: fileBytes,
       openAiKey: openAIKey,
@@ -81,8 +83,6 @@ class CodeRepo {
     }
 
     return response.body!.taskId;
-
-    //return 'taskId';
   }
 
   // Future<VerifyTaskIdResponse> verifyTaskId(String taskId) async {
@@ -98,6 +98,11 @@ class CodeRepo {
   // }
 
   Future<TasksTaskIdGet$Response> getTask(String taskId) async {
+    // final jsonString = await rootBundle.loadString('assets/mock_response.json');
+    // final jsonMap = json.decode(jsonString);
+    // final response = TasksTaskIdGet$Response.fromJson(jsonMap);
+    // return response;
+
     final response = await restService.client.tasksTaskIdGet(
       taskId: taskId,
     );
@@ -107,11 +112,6 @@ class CodeRepo {
     }
 
     return response.body!;
-
-    // final jsonString = await rootBundle.loadString('assets/mock_response.json');
-    // final jsonMap = json.decode(jsonString);
-    // final response = TasksTaskIdGet$Response.fromJson(jsonMap);
-    // return response;
   }
 
   Future<String> uploadSourceUnit(String taskId, SourceUnit sourceUnit) async {
@@ -132,11 +132,11 @@ class CodeRepo {
   }
 
   Future<bool> downloadCodeFile(String taskId, SourceUnit sourceUnit) async {
-    final body = DownloadTaskIdPost$RequestBody(
+    final body = ExportTaskIdPost$RequestBody(
       sourceUnit: sourceUnit.toJson(),
     );
 
-    final response = await restService.client.downloadTaskIdPost(
+    final response = await restService.client.exportTaskIdPost(
       taskId: taskId,
       body: body,
     );
@@ -148,6 +148,22 @@ class CodeRepo {
     final result = await saveSmartContract(response.body!.contractCode, taskId);
 
     return result;
+  }
+
+  Future<bool> downloadDescription(String taskId, SourceUnit sourceUnit) async {
+    final description =
+        sourceUnit.toDescription.map((e) => e.toPlainText()).join();
+
+    try {
+      await FileSaver.instance.saveFile(
+        name: 'description_$taskId.txt',
+        bytes: utf8.encode(description),
+      );
+    } catch (e) {
+      return false;
+    }
+
+    return true;
   }
 }
 

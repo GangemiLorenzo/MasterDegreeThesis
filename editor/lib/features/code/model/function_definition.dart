@@ -1,6 +1,7 @@
 import 'package:editor/features/code/cubit/code_cubit.dart';
 import 'package:editor/features/code/model/parameter.dart';
 import 'package:editor/features/code/model/visual_element.dart';
+import 'package:editor/utils/highlight_code_theme.dart';
 import 'package:editor_grid/editor_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -156,6 +157,41 @@ class FunctionDefinition with _$FunctionDefinition implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       FunctionDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription {
+    final result = <TextSpan>[];
+
+    if (description.isEmpty) {
+      return result;
+    }
+
+    result.addAll([
+      const TextSpan(
+        text: 'Function ',
+      ),
+      TextSpan(
+        text: '$formattedName\n',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      TextSpan(
+        text: '$description\n\n',
+      ),
+    ]);
+
+    return result;
+  }
+
+  String get formattedName => isConstructor
+      ? 'constructor'
+      : isFallback
+          ? 'fallback'
+          : isReceive
+              ? 'receive'
+              : name;
 }
 
 class FunctionGridCard extends StatelessWidget {
@@ -186,6 +222,7 @@ class FunctionGridCard extends StatelessWidget {
         return GridCard(
           key: Key(data.id),
           isSelected: BlocProvider.of<CodeCubit>(context).isSelected(data.id),
+          isWarning: BlocProvider.of<CodeCubit>(context).isWarning(data.id),
           position: position ?? const MyPoint(0, 0),
           title: title,
           properties: [
@@ -453,7 +490,7 @@ class FunctionDetailsForm extends StatelessWidget {
                     fontFamily: 'monospace',
                     fontSize: 14,
                   ),
-                  theme: a11yDarkTheme,
+                  theme: getHighlightTheme(context),
                 ),
               ),
               TextFormField(

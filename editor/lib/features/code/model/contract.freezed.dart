@@ -22,6 +22,7 @@ Contract _$ContractFromJson(Map<String, dynamic> json) {
 mixin _$Contract {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   bool get isInterface => throw _privateConstructorUsedError;
   bool get isLibrary => throw _privateConstructorUsedError;
   List<Variable> get variables => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $ContractCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
+      String description,
       bool isInterface,
       bool isLibrary,
       List<Variable> variables,
@@ -74,6 +76,7 @@ class _$ContractCopyWithImpl<$Res, $Val extends Contract>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? isInterface = null,
     Object? isLibrary = null,
     Object? variables = null,
@@ -93,6 +96,10 @@ class _$ContractCopyWithImpl<$Res, $Val extends Contract>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       isInterface: null == isInterface
           ? _value.isInterface
@@ -149,6 +156,7 @@ abstract class _$$ContractImplCopyWith<$Res>
   $Res call(
       {String id,
       String name,
+      String description,
       bool isInterface,
       bool isLibrary,
       List<Variable> variables,
@@ -174,6 +182,7 @@ class __$$ContractImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? description = null,
     Object? isInterface = null,
     Object? isLibrary = null,
     Object? variables = null,
@@ -193,6 +202,10 @@ class __$$ContractImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
               as String,
       isInterface: null == isInterface
           ? _value.isInterface
@@ -244,6 +257,7 @@ class _$ContractImpl extends _Contract {
   const _$ContractImpl(
       {required this.id,
       required this.name,
+      required this.description,
       this.isInterface = false,
       this.isLibrary = false,
       final List<Variable> variables = const [],
@@ -271,6 +285,8 @@ class _$ContractImpl extends _Contract {
   final String id;
   @override
   final String name;
+  @override
+  final String description;
   @override
   @JsonKey()
   final bool isInterface;
@@ -351,7 +367,7 @@ class _$ContractImpl extends _Contract {
 
   @override
   String toString() {
-    return 'Contract(id: $id, name: $name, isInterface: $isInterface, isLibrary: $isLibrary, variables: $variables, functions: $functions, modifiers: $modifiers, events: $events, inheritance: $inheritance, enums: $enums, structs: $structs, errors: $errors)';
+    return 'Contract(id: $id, name: $name, description: $description, isInterface: $isInterface, isLibrary: $isLibrary, variables: $variables, functions: $functions, modifiers: $modifiers, events: $events, inheritance: $inheritance, enums: $enums, structs: $structs, errors: $errors)';
   }
 
   @override
@@ -361,6 +377,8 @@ class _$ContractImpl extends _Contract {
             other is _$ContractImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.isInterface, isInterface) ||
                 other.isInterface == isInterface) &&
             (identical(other.isLibrary, isLibrary) ||
@@ -385,6 +403,7 @@ class _$ContractImpl extends _Contract {
       runtimeType,
       id,
       name,
+      description,
       isInterface,
       isLibrary,
       const DeepCollectionEquality().hash(_variables),
@@ -414,6 +433,7 @@ abstract class _Contract extends Contract {
   const factory _Contract(
       {required final String id,
       required final String name,
+      required final String description,
       final bool isInterface,
       final bool isLibrary,
       final List<Variable> variables,
@@ -433,6 +453,8 @@ abstract class _Contract extends Contract {
   String get id;
   @override
   String get name;
+  @override
+  String get description;
   @override
   bool get isInterface;
   @override

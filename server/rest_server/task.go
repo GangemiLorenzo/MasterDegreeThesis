@@ -7,6 +7,7 @@ type Task struct {
 	ContractCode    string                 `json:"contractCode"`
 	Result          map[string]interface{} `json:"result"`
 	Links           map[string]interface{} `json:"links"`
+	Warnings        map[string]interface{} `json:"warnings"`
 	Vulnerabilities map[string]interface{} `json:"vulnerabilities"`
 	Progress        int                    `json:"progress"`
 }

@@ -82,6 +82,9 @@ class Pragma with _$Pragma implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       PragmaDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 /// Returns a widget that represents a [Pragma] element in a grid card.

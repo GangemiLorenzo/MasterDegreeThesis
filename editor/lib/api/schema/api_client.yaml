@@ -4,7 +4,7 @@ info:
   description: API for uploading a file, processing it asynchronously, and receiving progress updates and result
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api
+  - url: http://0.0.0.0:8080/api
 paths:
   /upload:
     post:
@@ -39,7 +39,7 @@ paths:
                   taskId:
                     type: string
                     description: Identifier for the uploaded task
-  /download/{taskId}:
+  /export/{taskId}:
     post:
       summary: Post the new Source unit into the task
       parameters:
@@ -114,6 +114,9 @@ paths:
                   links:
                     type: object
                     description: Contains the connections between elements (dynamic structure)
+                  warnings:
+                    type: object
+                    description: Contains the ids of functions which can be improved (dynamic structure)
                   progress:
                     type: integer
                     description: Percentage of completion of the task

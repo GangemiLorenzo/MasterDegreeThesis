@@ -111,6 +111,9 @@ class Struct with _$Struct implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       StructDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 /// Returns a widget that represents a [Struct] element in a grid card.

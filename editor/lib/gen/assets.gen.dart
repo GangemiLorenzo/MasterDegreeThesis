@@ -10,8 +10,9 @@
 class Assets {
   Assets._();
 
+  static const String aEnv = '.env';
   static const String mockResponse = 'assets/mock_response.json';
 
   /// List of all assets
-  static List<String> get values => [mockResponse];
+  static List<String> get values => [aEnv, mockResponse];
 }

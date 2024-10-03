@@ -11,6 +11,7 @@ class Task with _$Task {
     required String id,
     required SourceUnit sourceUnit,
     required List<Link> links,
+    required List<String> warnings,
     required List<Vulnerability> vulnerabilities,
   }) = _Task;
 }

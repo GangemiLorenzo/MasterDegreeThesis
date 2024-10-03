@@ -88,6 +88,9 @@ class Parameter with _$Parameter implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       ParameterDetailsForm(data: this);
+
+  @override
+  List<TextSpan> get toDescription => [];
 }
 
 /// Returns a widget that represents a [Struct] element in a grid card.

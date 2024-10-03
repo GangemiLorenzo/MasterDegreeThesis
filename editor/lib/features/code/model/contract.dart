@@ -21,6 +21,7 @@ class Contract with _$Contract implements VisualElement {
   const factory Contract({
     required String id,
     required String name,
+    required String description,
     @Default(false) bool isInterface,
     @Default(false) bool isLibrary,
     @Default([]) List<Variable> variables,
@@ -309,4 +310,41 @@ class Contract with _$Contract implements VisualElement {
     List<LinkPair> links = const [],
   }) =>
       Container();
+
+  @override
+  List<TextSpan> get toDescription {
+    final result = <TextSpan>[];
+
+    if (description.isNotEmpty) {
+      result.addAll([
+        const TextSpan(
+          text: 'Contract ',
+        ),
+        TextSpan(
+          text: '$name\n',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        TextSpan(
+          text: '$description\n\n',
+        ),
+      ]);
+    }
+
+    for (final f in functions) {
+      result.addAll(f.toDescription);
+    }
+
+    for (final e in events) {
+      result.addAll(e.toDescription);
+    }
+
+    for (final e in errors) {
+      result.addAll(e.toDescription);
+    }
+
+    return result;
+  }
 }

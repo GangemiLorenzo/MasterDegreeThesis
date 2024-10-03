@@ -63,25 +63,25 @@ extension $UploadPost$RequestBodyExtension on UploadPost$RequestBody {
 }
 
 @JsonSerializable(explicitToJson: true)
-class DownloadTaskIdPost$RequestBody {
-  const DownloadTaskIdPost$RequestBody({
+class ExportTaskIdPost$RequestBody {
+  const ExportTaskIdPost$RequestBody({
     this.sourceUnit,
   });
 
-  factory DownloadTaskIdPost$RequestBody.fromJson(Map<String, dynamic> json) =>
-      _$DownloadTaskIdPost$RequestBodyFromJson(json);
+  factory ExportTaskIdPost$RequestBody.fromJson(Map<String, dynamic> json) =>
+      _$ExportTaskIdPost$RequestBodyFromJson(json);
 
-  static const toJsonFactory = _$DownloadTaskIdPost$RequestBodyToJson;
-  Map<String, dynamic> toJson() => _$DownloadTaskIdPost$RequestBodyToJson(this);
+  static const toJsonFactory = _$ExportTaskIdPost$RequestBodyToJson;
+  Map<String, dynamic> toJson() => _$ExportTaskIdPost$RequestBodyToJson(this);
 
   @JsonKey(name: 'sourceUnit')
   final Object? sourceUnit;
-  static const fromJsonFactory = _$DownloadTaskIdPost$RequestBodyFromJson;
+  static const fromJsonFactory = _$ExportTaskIdPost$RequestBodyFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is DownloadTaskIdPost$RequestBody &&
+        (other is ExportTaskIdPost$RequestBody &&
             (identical(other.sourceUnit, sourceUnit) ||
                 const DeepCollectionEquality()
                     .equals(other.sourceUnit, sourceUnit)));
@@ -95,16 +95,15 @@ class DownloadTaskIdPost$RequestBody {
       const DeepCollectionEquality().hash(sourceUnit) ^ runtimeType.hashCode;
 }
 
-extension $DownloadTaskIdPost$RequestBodyExtension
-    on DownloadTaskIdPost$RequestBody {
-  DownloadTaskIdPost$RequestBody copyWith({Object? sourceUnit}) {
-    return DownloadTaskIdPost$RequestBody(
+extension $ExportTaskIdPost$RequestBodyExtension
+    on ExportTaskIdPost$RequestBody {
+  ExportTaskIdPost$RequestBody copyWith({Object? sourceUnit}) {
+    return ExportTaskIdPost$RequestBody(
         sourceUnit: sourceUnit ?? this.sourceUnit);
   }
 
-  DownloadTaskIdPost$RequestBody copyWithWrapped(
-      {Wrapped<Object?>? sourceUnit}) {
-    return DownloadTaskIdPost$RequestBody(
+  ExportTaskIdPost$RequestBody copyWithWrapped({Wrapped<Object?>? sourceUnit}) {
+    return ExportTaskIdPost$RequestBody(
         sourceUnit: (sourceUnit != null ? sourceUnit.value : this.sourceUnit));
   }
 }
@@ -198,25 +197,25 @@ extension $UploadPost$ResponseExtension on UploadPost$Response {
 }
 
 @JsonSerializable(explicitToJson: true)
-class DownloadTaskIdPost$Response {
-  const DownloadTaskIdPost$Response({
+class ExportTaskIdPost$Response {
+  const ExportTaskIdPost$Response({
     required this.contractCode,
   });
 
-  factory DownloadTaskIdPost$Response.fromJson(Map<String, dynamic> json) =>
-      _$DownloadTaskIdPost$ResponseFromJson(json);
+  factory ExportTaskIdPost$Response.fromJson(Map<String, dynamic> json) =>
+      _$ExportTaskIdPost$ResponseFromJson(json);
 
-  static const toJsonFactory = _$DownloadTaskIdPost$ResponseToJson;
-  Map<String, dynamic> toJson() => _$DownloadTaskIdPost$ResponseToJson(this);
+  static const toJsonFactory = _$ExportTaskIdPost$ResponseToJson;
+  Map<String, dynamic> toJson() => _$ExportTaskIdPost$ResponseToJson(this);
 
   @JsonKey(name: 'contractCode')
   final String contractCode;
-  static const fromJsonFactory = _$DownloadTaskIdPost$ResponseFromJson;
+  static const fromJsonFactory = _$ExportTaskIdPost$ResponseFromJson;
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other is DownloadTaskIdPost$Response &&
+        (other is ExportTaskIdPost$Response &&
             (identical(other.contractCode, contractCode) ||
                 const DeepCollectionEquality()
                     .equals(other.contractCode, contractCode)));
@@ -230,14 +229,14 @@ class DownloadTaskIdPost$Response {
       const DeepCollectionEquality().hash(contractCode) ^ runtimeType.hashCode;
 }
 
-extension $DownloadTaskIdPost$ResponseExtension on DownloadTaskIdPost$Response {
-  DownloadTaskIdPost$Response copyWith({String? contractCode}) {
-    return DownloadTaskIdPost$Response(
+extension $ExportTaskIdPost$ResponseExtension on ExportTaskIdPost$Response {
+  ExportTaskIdPost$Response copyWith({String? contractCode}) {
+    return ExportTaskIdPost$Response(
         contractCode: contractCode ?? this.contractCode);
   }
 
-  DownloadTaskIdPost$Response copyWithWrapped({Wrapped<String>? contractCode}) {
-    return DownloadTaskIdPost$Response(
+  ExportTaskIdPost$Response copyWithWrapped({Wrapped<String>? contractCode}) {
+    return ExportTaskIdPost$Response(
         contractCode:
             (contractCode != null ? contractCode.value : this.contractCode));
   }
@@ -251,6 +250,7 @@ class TasksTaskIdGet$Response {
     this.result,
     this.vulnerabilities,
     this.links,
+    this.warnings,
     required this.progress,
     required this.statusMessage,
   });
@@ -275,6 +275,8 @@ class TasksTaskIdGet$Response {
   final Object? vulnerabilities;
   @JsonKey(name: 'links')
   final Object? links;
+  @JsonKey(name: 'warnings')
+  final Object? warnings;
   @JsonKey(name: 'progress')
   final int progress;
   @JsonKey(name: 'statusMessage')
@@ -296,6 +298,9 @@ class TasksTaskIdGet$Response {
                     .equals(other.vulnerabilities, vulnerabilities)) &&
             (identical(other.links, links) ||
                 const DeepCollectionEquality().equals(other.links, links)) &&
+            (identical(other.warnings, warnings) ||
+                const DeepCollectionEquality()
+                    .equals(other.warnings, warnings)) &&
             (identical(other.progress, progress) ||
                 const DeepCollectionEquality()
                     .equals(other.progress, progress)) &&
@@ -314,6 +319,7 @@ class TasksTaskIdGet$Response {
       const DeepCollectionEquality().hash(result) ^
       const DeepCollectionEquality().hash(vulnerabilities) ^
       const DeepCollectionEquality().hash(links) ^
+      const DeepCollectionEquality().hash(warnings) ^
       const DeepCollectionEquality().hash(progress) ^
       const DeepCollectionEquality().hash(statusMessage) ^
       runtimeType.hashCode;
@@ -326,6 +332,7 @@ extension $TasksTaskIdGet$ResponseExtension on TasksTaskIdGet$Response {
       Object? result,
       Object? vulnerabilities,
       Object? links,
+      Object? warnings,
       int? progress,
       String? statusMessage}) {
     return TasksTaskIdGet$Response(
@@ -334,6 +341,7 @@ extension $TasksTaskIdGet$ResponseExtension on TasksTaskIdGet$Response {
         result: result ?? this.result,
         vulnerabilities: vulnerabilities ?? this.vulnerabilities,
         links: links ?? this.links,
+        warnings: warnings ?? this.warnings,
         progress: progress ?? this.progress,
         statusMessage: statusMessage ?? this.statusMessage);
   }
@@ -344,6 +352,7 @@ extension $TasksTaskIdGet$ResponseExtension on TasksTaskIdGet$Response {
       Wrapped<Object?>? result,
       Wrapped<Object?>? vulnerabilities,
       Wrapped<Object?>? links,
+      Wrapped<Object?>? warnings,
       Wrapped<int>? progress,
       Wrapped<String>? statusMessage}) {
     return TasksTaskIdGet$Response(
@@ -354,6 +363,7 @@ extension $TasksTaskIdGet$ResponseExtension on TasksTaskIdGet$Response {
             ? vulnerabilities.value
             : this.vulnerabilities),
         links: (links != null ? links.value : this.links),
+        warnings: (warnings != null ? warnings.value : this.warnings),
         progress: (progress != null ? progress.value : this.progress),
         statusMessage:
             (statusMessage != null ? statusMessage.value : this.statusMessage));

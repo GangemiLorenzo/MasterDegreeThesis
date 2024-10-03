@@ -20,14 +20,14 @@ Map<String, dynamic> _$UploadPost$RequestBodyToJson(
       'openAiKey': instance.openAiKey,
     };
 
-DownloadTaskIdPost$RequestBody _$DownloadTaskIdPost$RequestBodyFromJson(
+ExportTaskIdPost$RequestBody _$ExportTaskIdPost$RequestBodyFromJson(
         Map<String, dynamic> json) =>
-    DownloadTaskIdPost$RequestBody(
+    ExportTaskIdPost$RequestBody(
       sourceUnit: json['sourceUnit'],
     );
 
-Map<String, dynamic> _$DownloadTaskIdPost$RequestBodyToJson(
-        DownloadTaskIdPost$RequestBody instance) =>
+Map<String, dynamic> _$ExportTaskIdPost$RequestBodyToJson(
+        ExportTaskIdPost$RequestBody instance) =>
     <String, dynamic>{
       'sourceUnit': instance.sourceUnit,
     };
@@ -55,14 +55,14 @@ Map<String, dynamic> _$UploadPost$ResponseToJson(
       'taskId': instance.taskId,
     };
 
-DownloadTaskIdPost$Response _$DownloadTaskIdPost$ResponseFromJson(
+ExportTaskIdPost$Response _$ExportTaskIdPost$ResponseFromJson(
         Map<String, dynamic> json) =>
-    DownloadTaskIdPost$Response(
+    ExportTaskIdPost$Response(
       contractCode: json['contractCode'] as String,
     );
 
-Map<String, dynamic> _$DownloadTaskIdPost$ResponseToJson(
-        DownloadTaskIdPost$Response instance) =>
+Map<String, dynamic> _$ExportTaskIdPost$ResponseToJson(
+        ExportTaskIdPost$Response instance) =>
     <String, dynamic>{
       'contractCode': instance.contractCode,
     };
@@ -75,7 +75,8 @@ TasksTaskIdGet$Response _$TasksTaskIdGet$ResponseFromJson(
       result: json['result'],
       vulnerabilities: json['vulnerabilities'],
       links: json['links'],
-      progress: json['progress'] as int,
+      warnings: json['warnings'],
+      progress: (json['progress'] as num).toInt(),
       statusMessage: json['statusMessage'] as String,
     );
 
@@ -87,6 +88,7 @@ Map<String, dynamic> _$TasksTaskIdGet$ResponseToJson(
       'result': instance.result,
       'vulnerabilities': instance.vulnerabilities,
       'links': instance.links,
+      'warnings': instance.warnings,
       'progress': instance.progress,
       'statusMessage': instance.statusMessage,
     };
