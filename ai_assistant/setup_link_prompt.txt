@@ -26,38 +26,44 @@ Here are the steps you need to follow:
    - Solidity Code:
      ```
      // SPDX-License-Identifier: MIT
-     //
-     // https://cryptomarketpool.com/deposit-14-eth-game-in-a-solidity-smart-contract/
+    //
+    // https://cryptomarketpool.com/deposit-14-eth-game-in-a-solidity-smart-contract/
 
-     pragma solidity ^0.8.0;
+    pragma solidity ^0.8.0;
 
-     contract EthGame {
-         uint256 public targetAmount = 14 ether;
-         address public winner;
+    contract EthGame {
+        uint256 public targetAmount = 14 ether;
+        address public winner;
 
-         uint256 public balance;
+        uint256 public balance;
 
-         function deposit() public payable {
-             require(msg.value == 1 ether, \"You can only send 1 Ether\");
-             balance += msg.value;
-             require(balance <= targetAmount, \"Game is over\");
+        // Event declaration
+        event DepositMade(address indexed player, uint256 amount, uint256 totalBalance);
 
-             if (balance == targetAmount) {
-                 winner = msg.sender;
-             }
-         }
+        function deposit() public payable {
+            require(msg.value == 1 ether, "You can only send 1 Ether");
+            balance += msg.value;
+            require(balance <= targetAmount, "Game is over");
 
-         function claimReward() public {
-             require(msg.sender == winner, \"Not winner\");
+            // Emit the event
+            emit DepositMade(msg.sender, msg.value, balance);
 
-             (bool sent, ) = msg.sender.call{value: address(this).balance}(\"\");
-             require(sent, \"Failed to send Ether\");
-         }
+            if (balance == targetAmount) {
+                winner = msg.sender;
+            }
+        }
 
-         function getBalance() public view returns (uint256) {
-             return address(this).balance;
-         }
-     }
+        function claimReward() public {
+            require(msg.sender == winner, "Not winner");
+
+            (bool sent, ) = msg.sender.call{value: address(this).balance}("");
+            require(sent, "Failed to send Ether");
+        }
+
+        function getBalance() public view returns (uint256) {
+            return address(this).balance;
+        }
+    }
      ```
    - JSON Structure:
      ```
