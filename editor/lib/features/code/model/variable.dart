@@ -88,10 +88,7 @@ class Variable with _$Variable implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      VariableDetailsForm(
+  Widget toDetailsForm() => VariableDetailsForm(
         data: this,
       );
 

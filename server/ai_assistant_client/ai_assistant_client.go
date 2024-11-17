@@ -11,8 +11,9 @@ import (
 
 type AiAssistantClient interface {
 	ComputeComments(sourceUnitJson string, code string, openAiKey string) (string, error)
-	ComputeLinks(sourceUnitJson string, code string, openAiKey string) (string, error)
+	ComputeLinks(sourceUnitJson string, code string, openAiKey string) ([]*service.Link, error)
 	ComputeWarnings(sourceUnitJson string, code string, openAiKey string) (string, error)
+	ConvertLinks(links []*service.Link) map[string]interface{}
 }
 
 type aiAssistantClient struct {
@@ -40,7 +41,7 @@ func (c *aiAssistantClient) ComputeComments(sourceUnitJson string, code string, 
 	return resp.JsonStructure, nil
 }
 
-func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string, openAiKey string) (string, error) {
+func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string, openAiKey string) ([]*service.Link, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
 
@@ -50,9 +51,10 @@ func (c *aiAssistantClient) ComputeLinks(sourceUnitJson string, code string, ope
 		OpenAiKey:         openAiKey,
 	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return resp.Links, nil
+
 }
 
 func (c *aiAssistantClient) ComputeWarnings(sourceUnitJson string, code string, openAiKey string) (string, error) {
@@ -68,4 +70,19 @@ func (c *aiAssistantClient) ComputeWarnings(sourceUnitJson string, code string, 
 		return "", err
 	}
 	return resp.Warnings, nil
+}
+
+func (c *aiAssistantClient) ConvertLinks(links []*service.Link) map[string]interface{} {
+	res := make([]map[string]interface{}, len(links))
+	for i, l := range links {
+		res[i] = map[string]interface{}{
+			"Start":       l.Start,
+			"End":         l.End,
+			"Description": l.Description,
+			"Action":      l.Action,
+		}
+	}
+	return map[string]interface{}{
+		"links": res,
+	}
 }

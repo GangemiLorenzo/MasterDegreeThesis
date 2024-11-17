@@ -29,6 +29,7 @@ class PixabayBrowserMaterialApp extends StatelessWidget {
       title: 'Editor',
       theme: LocalTheme.lightTheme,
       darkTheme: LocalTheme.darkTheme,
+      debugShowCheckedModeBanner: false,
       themeMode: context.select<GlobalSettingCubit, ThemeMode>(
         (cubit) => cubit.state.themeMode,
       ),

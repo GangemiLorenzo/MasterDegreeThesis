@@ -61,7 +61,7 @@ func (s *aiAssistantServer) Comment(ctx context.Context, req *service.CommentReq
 }
 
 type LResult struct {
-	Links []ai_assistant_utils.LinkResult `json:"id"`
+	Links []service.Link `json:"id"`
 }
 
 func (s *aiAssistantServer) Link(ctx context.Context, req *service.LinkRequest) (*service.LinkResponse, error) {
@@ -92,15 +92,19 @@ func (s *aiAssistantServer) Link(ctx context.Context, req *service.LinkRequest) 
 		return nil, err
 	}
 
-	result := LResult{}
-	result.Links = append(result.Links, results...)
+	//result := LResult{}
+	//result.Links = append(result.Links, results...)
 
-	jsonResult, err := json.Marshal(result)
-	if err != nil {
-		return nil, fmt.Errorf("error marshalling result: %v", err)
+	// jsonResult, err := json.Marshal(result)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("error marshalling result: %v", err)
+	// }
+
+	links := make([]*service.Link, len(results))
+	for i := range results {
+		links[i] = &results[i]
 	}
-
-	return &service.LinkResponse{Links: string(jsonResult)}, nil
+	return &service.LinkResponse{Links: links}, nil
 }
 
 type WResult struct {

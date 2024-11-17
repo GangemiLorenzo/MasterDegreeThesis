@@ -10,6 +10,8 @@ import (
 
 	"github.com/sashabaranov/go-openai"
 	"github.com/sashabaranov/go-openai/jsonschema"
+
+	service "ai_assistant/ai_assistant_service"
 )
 
 type AiAssistantUtils struct {
@@ -37,6 +39,7 @@ type DescriptionResult struct {
 
 func (scu *AiAssistantUtils) SetupAssistantDialog() error {
 
+	// Define the schema for the description item
 	item := jsonschema.Definition{
 		Type: jsonschema.Object,
 		Properties: map[string]jsonschema.Definition{
@@ -52,6 +55,7 @@ func (scu *AiAssistantUtils) SetupAssistantDialog() error {
 		Required: []string{"id", "description"},
 	}
 
+	// Define the schema for the parameters
 	params := jsonschema.Definition{
 		Type: jsonschema.Object,
 		Properties: map[string]jsonschema.Definition{
@@ -62,11 +66,14 @@ func (scu *AiAssistantUtils) SetupAssistantDialog() error {
 		},
 	}
 
+	// Define the function for setting the description by ID
 	f := openai.FunctionDefinition{
 		Name:        "set_description_by_id",
 		Description: "Set the description to the element with the given ID.",
 		Parameters:  params,
 	}
+
+	// Define the tool that uses the function
 	t := openai.Tool{
 		Type:     openai.ToolTypeFunction,
 		Function: &f,
@@ -162,17 +169,11 @@ func (scu *AiAssistantUtils) RunCommentProcess(sourceUnitJson string, code strin
 }
 
 type LinkFCResult struct {
-	Items []LinkResult `json:"items"`
-}
-
-type LinkResult struct {
-	Start       string `json:"start"`
-	End         string `json:"end"`
-	Description string `json:"description"`
-	Action      string `json:"action"`
+	Items []service.Link `json:"items"`
 }
 
 func (scu *AiAssistantUtils) SetupLinkDialog() error {
+	// Define the schema for the link item
 	item := jsonschema.Definition{
 		Type: jsonschema.Object,
 		Properties: map[string]jsonschema.Definition{
@@ -190,12 +191,13 @@ func (scu *AiAssistantUtils) SetupLinkDialog() error {
 			},
 			"action": {
 				Type:        jsonschema.String,
-				Description: "The action that the link represents, e.g. \"modifies\", \"reads\", \"returns\" or others. For structural links just use \"relation\".",
+				Description: "The action that the link represents, e.g. \"modifies\", \"reads\", \"returns\" or others.",
 			},
 		},
 		Required: []string{"type", "source", "target", "action"},
 	}
 
+	// Define the schema for the parameters
 	params := jsonschema.Definition{
 		Type: jsonschema.Object,
 		Properties: map[string]jsonschema.Definition{
@@ -205,11 +207,15 @@ func (scu *AiAssistantUtils) SetupLinkDialog() error {
 			},
 		},
 	}
+
+	// Define the function for setting the relation
 	f := openai.FunctionDefinition{
 		Name:        "set_relation",
 		Description: "Creates a relation between two elements.",
 		Parameters:  params,
 	}
+
+	// Define the tool that uses the function
 	t := openai.Tool{
 		Type:     openai.ToolTypeFunction,
 		Function: &f,
@@ -246,7 +252,7 @@ func (scu *AiAssistantUtils) SetupLinkDialog() error {
 	return nil
 }
 
-func (scu *AiAssistantUtils) RunLinkProcess(sourceUnitJson string, code string) ([]LinkResult, error) {
+func (scu *AiAssistantUtils) RunLinkProcess(sourceUnitJson string, code string) ([]service.Link, error) {
 
 	instructions := readFileContent("input_link_prompt.txt")
 	instructions = strings.Replace(instructions, "<<SOLIDITY_CODE>>", code, -1)
@@ -287,7 +293,7 @@ func (scu *AiAssistantUtils) RunLinkProcess(sourceUnitJson string, code string) 
 	fmt.Printf("Received %v tool calls\n", len(msg.ToolCalls))
 
 	res := LinkFCResult{
-		Items: []LinkResult{},
+		Items: []service.Link{},
 	}
 	for _, toolCall := range msg.ToolCalls {
 		f := toolCall.Function

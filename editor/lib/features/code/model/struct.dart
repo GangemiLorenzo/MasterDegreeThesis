@@ -107,10 +107,7 @@ class Struct with _$Struct implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      StructDetailsForm(data: this);
+  Widget toDetailsForm() => StructDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription => [];

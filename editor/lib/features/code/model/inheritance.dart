@@ -78,10 +78,7 @@ class Inheritance with _$Inheritance implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      InheritanceDetailsForm(
+  Widget toDetailsForm() => InheritanceDetailsForm(
         data: this,
       );
 

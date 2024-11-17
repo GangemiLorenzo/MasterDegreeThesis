@@ -111,10 +111,7 @@ class Event with _$Event implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      EventDetailsForm(data: this);
+  Widget toDetailsForm() => EventDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription {

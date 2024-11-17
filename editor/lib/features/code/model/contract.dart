@@ -306,10 +306,7 @@ class Contract with _$Contract implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      Container();
+  Widget toDetailsForm() => Container();
 
   @override
   List<TextSpan> get toDescription {

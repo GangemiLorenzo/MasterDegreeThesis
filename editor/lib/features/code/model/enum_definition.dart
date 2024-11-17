@@ -75,10 +75,7 @@ class EnumDefinition with _$EnumDefinition implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      EnumDetailsForm(
+  Widget toDetailsForm() => EnumDetailsForm(
         data: this,
       );
 

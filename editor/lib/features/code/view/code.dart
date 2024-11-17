@@ -514,7 +514,7 @@ class ElementDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final connectionProvider = ConnectionProvider.of(context);
+    //final connectionProvider = ConnectionProvider.of(context);
     return BlocBuilder<CodeCubit, CodeState>(
       builder: (context, state) {
         return state.map(
@@ -534,10 +534,10 @@ class ElementDetails extends StatelessWidget {
                 child: Padding(
                   padding: allPadding16,
                   child: selectedElement.toDetailsForm(
-                    links: connectionProvider
-                            ?.getConnectionsFromId(selectedElement.id) ??
-                        [],
-                  ),
+                      // links: connectionProvider
+                      //         ?.getConnectionsFromId(selectedElement.id) ??
+                      //     [],
+                      ),
                 ),
               );
             }

@@ -10,10 +10,10 @@ class Link with _$Link {
   const Link._();
 
   const factory Link({
-    required String start,
-    required String end,
-    required String action,
-    required String description,
+    @JsonKey(name: 'Start') required String start,
+    @JsonKey(name: 'End') required String end,
+    @JsonKey(name: 'Action') required String action,
+    @JsonKey(name: 'Description') required String description,
   }) = _Link;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);

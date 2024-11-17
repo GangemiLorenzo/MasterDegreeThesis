@@ -84,10 +84,7 @@ class Parameter with _$Parameter implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      ParameterDetailsForm(data: this);
+  Widget toDetailsForm() => ParameterDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription => [];

@@ -48,9 +48,7 @@ abstract class VisualElement {
     Color? linkColor,
   });
 
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  });
+  Widget toDetailsForm();
 
   VisualElement? findById({
     required String id,

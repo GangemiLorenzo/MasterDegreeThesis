@@ -112,10 +112,7 @@ class CustomError with _$CustomError implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      CustomErrorDetailsForm(data: this);
+  Widget toDetailsForm() => CustomErrorDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription {

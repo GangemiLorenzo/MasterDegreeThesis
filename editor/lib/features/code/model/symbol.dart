@@ -78,10 +78,7 @@ class Symbol with _$Symbol implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      SymbolDetailsForm(data: this);
+  Widget toDetailsForm() => SymbolDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription => [];

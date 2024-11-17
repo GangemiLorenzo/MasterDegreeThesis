@@ -153,10 +153,7 @@ class FunctionDefinition with _$FunctionDefinition implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      FunctionDetailsForm(data: this);
+  Widget toDetailsForm() => FunctionDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription {

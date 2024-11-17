@@ -7,16 +7,16 @@ part of 'link.dart';
 // **************************************************************************
 
 _$LinkImpl _$$LinkImplFromJson(Map<String, dynamic> json) => _$LinkImpl(
-      start: json['start'] as String,
-      end: json['end'] as String,
-      action: json['action'] as String,
-      description: json['description'] as String,
+      start: json['Start'] as String,
+      end: json['End'] as String,
+      action: json['Action'] as String,
+      description: json['Description'] as String,
     );
 
 Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>
     <String, dynamic>{
-      'start': instance.start,
-      'end': instance.end,
-      'action': instance.action,
-      'description': instance.description,
+      'Start': instance.start,
+      'End': instance.end,
+      'Action': instance.action,
+      'Description': instance.description,
     };

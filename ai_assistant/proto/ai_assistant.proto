@@ -29,7 +29,14 @@ message LinkRequest {
 }
 
 message LinkResponse {
-  string Links = 1;  // The list of links found in the smart contract.
+  repeated Link links = 1;  // The list of links found in the smart contract.
+}
+
+message Link {
+  string start = 1;         // The Id of the element where the relationship starts.
+  string end = 2;           // The Id of the element where the relationship ends.
+  string description = 3;   // The description of the relationship.
+  string action = 4;        // The action that the relationship describes.
 }
 
 message WarningRequest {
@@ -41,3 +48,4 @@ message WarningRequest {
 message WarningResponse {
   string Warnings = 1;  // The list of warnings found in the smart contract
 }
+

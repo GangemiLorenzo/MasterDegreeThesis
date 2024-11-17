@@ -20,9 +20,13 @@ Link _$LinkFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Link {
+  @JsonKey(name: 'Start')
   String get start => throw _privateConstructorUsedError;
+  @JsonKey(name: 'End')
   String get end => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Action')
   String get action => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Description')
   String get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +39,11 @@ abstract class $LinkCopyWith<$Res> {
   factory $LinkCopyWith(Link value, $Res Function(Link) then) =
       _$LinkCopyWithImpl<$Res, Link>;
   @useResult
-  $Res call({String start, String end, String action, String description});
+  $Res call(
+      {@JsonKey(name: 'Start') String start,
+      @JsonKey(name: 'End') String end,
+      @JsonKey(name: 'Action') String action,
+      @JsonKey(name: 'Description') String description});
 }
 
 /// @nodoc
@@ -84,7 +92,11 @@ abstract class _$$LinkImplCopyWith<$Res> implements $LinkCopyWith<$Res> {
       __$$LinkImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String start, String end, String action, String description});
+  $Res call(
+      {@JsonKey(name: 'Start') String start,
+      @JsonKey(name: 'End') String end,
+      @JsonKey(name: 'Action') String action,
+      @JsonKey(name: 'Description') String description});
 }
 
 /// @nodoc
@@ -127,22 +139,26 @@ class __$$LinkImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$LinkImpl extends _Link {
   const _$LinkImpl(
-      {required this.start,
-      required this.end,
-      required this.action,
-      required this.description})
+      {@JsonKey(name: 'Start') required this.start,
+      @JsonKey(name: 'End') required this.end,
+      @JsonKey(name: 'Action') required this.action,
+      @JsonKey(name: 'Description') required this.description})
       : super._();
 
   factory _$LinkImpl.fromJson(Map<String, dynamic> json) =>
       _$$LinkImplFromJson(json);
 
   @override
+  @JsonKey(name: 'Start')
   final String start;
   @override
+  @JsonKey(name: 'End')
   final String end;
   @override
+  @JsonKey(name: 'Action')
   final String action;
   @override
+  @JsonKey(name: 'Description')
   final String description;
 
   @override
@@ -182,21 +198,26 @@ class _$LinkImpl extends _Link {
 
 abstract class _Link extends Link {
   const factory _Link(
-      {required final String start,
-      required final String end,
-      required final String action,
-      required final String description}) = _$LinkImpl;
+          {@JsonKey(name: 'Start') required final String start,
+          @JsonKey(name: 'End') required final String end,
+          @JsonKey(name: 'Action') required final String action,
+          @JsonKey(name: 'Description') required final String description}) =
+      _$LinkImpl;
   const _Link._() : super._();
 
   factory _Link.fromJson(Map<String, dynamic> json) = _$LinkImpl.fromJson;
 
   @override
+  @JsonKey(name: 'Start')
   String get start;
   @override
+  @JsonKey(name: 'End')
   String get end;
   @override
+  @JsonKey(name: 'Action')
   String get action;
   @override
+  @JsonKey(name: 'Description')
   String get description;
   @override
   @JsonKey(ignore: true)

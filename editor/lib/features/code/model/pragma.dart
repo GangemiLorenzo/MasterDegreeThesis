@@ -78,10 +78,7 @@ class Pragma with _$Pragma implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      PragmaDetailsForm(data: this);
+  Widget toDetailsForm() => PragmaDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription => [];

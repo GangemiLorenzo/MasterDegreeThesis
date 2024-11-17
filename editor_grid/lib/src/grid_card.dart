@@ -90,7 +90,7 @@ class GridCard extends StatelessWidget {
                     ? Theme.of(context).colorScheme.primary
                     : isWarning
                         ? Colors.amber
-                        : Colors.transparent,
+                        : Theme.of(context).colorScheme.outlineVariant,
                 width: 2,
               ),
             ),

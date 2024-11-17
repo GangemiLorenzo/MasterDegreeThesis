@@ -162,15 +162,7 @@ func (s *Server) processTask(task *Task, openAiKey string) {
 	}
 	log.Printf("Task %s: Linking completed", task.ID)
 
-	var linksJsonMap map[string]interface{}
-	err = json.Unmarshal([]byte(links), &linksJsonMap)
-	if err != nil {
-		log.Printf("Failed to unmarshal encoded data for task %s: %v", task.ID, err)
-		task.Status = Failed
-		return
-	}
-
-	task.Links = linksJsonMap
+	task.Links = s.AssistantClient.ConvertLinks(links)
 	task.StatusMessage = "Searching for improvements in contract code"
 	task.Progress = 65
 
@@ -270,7 +262,7 @@ func (s *Server) GetTaskStatusHandler(w http.ResponseWriter, r *http.Request) {
 		"result":          task.Result,
 		"vulnerabilities": task.Vulnerabilities,
 		"progress":        task.Progress,
-		"links":           task.Links["id"],
+		"links":           task.Links["links"],
 		"warnings":        task.Warnings["id"],
 		"statusMessage":   task.StatusMessage,
 	}

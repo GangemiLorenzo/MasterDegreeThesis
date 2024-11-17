@@ -112,10 +112,7 @@ class Modifier with _$Modifier implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      ModifierErrorDetailsForm(data: this);
+  Widget toDetailsForm() => ModifierErrorDetailsForm(data: this);
 
   @override
   List<TextSpan> get toDescription => [];

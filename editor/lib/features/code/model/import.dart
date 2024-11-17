@@ -107,10 +107,7 @@ class Import with _$Import implements VisualElement {
   }
 
   @override
-  Widget toDetailsForm({
-    List<LinkPair> links = const [],
-  }) =>
-      ImportDetailsForm(
+  Widget toDetailsForm() => ImportDetailsForm(
         data: this,
       );
 
