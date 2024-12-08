@@ -1,5 +1,6 @@
 
-# 301270 - Software Engineer - Thesis 
+## POLITECNICO DI TORINO -  Master’s Degree in SOFTWARE ENGINEERING 
+# Smart Contract Analysis and Visualization Software
 
 This project contains my Software Engineer Master's Thesis project.
 
