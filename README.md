@@ -16,6 +16,10 @@ Summary [301270_summary.pdf](301270_summary.pdf)
 
 Deployment procedure: [deployment_procedure.md](deployment/deployment_procedure.md)
 
+Presentation: [301270_presentation.pdf](301270_presentation.pdf) 
+
+Survey results: [survey_results](survey_results/) 
+
 ## Architecture
 
 ![Architecture structure from Figma](Architecture.png)
