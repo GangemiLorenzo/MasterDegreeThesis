@@ -2,11 +2,7 @@
 ## POLITECNICO DI TORINO -  Master’s Degree in SOFTWARE ENGINEERING 
 # Smart Contract Analysis and Visualization Software
 
-This project contains my Software Engineer Master's Thesis project.
-
-The result we wanted to obtain was to provide a tool that allows the user to read and modify the content of a Solidity smart contract.
-
-All of it while being supported by an LLM and receiving vulnerability warnings.
+The thesis presents the design and development of a software for simplifying the reading, editing and security analysis of smart contracts. The system is based on a combination of atomic microservices and a modern frontend. The tool provides an easy to use environment, error resistant and ready for people with limited skills in programming. The main part of the project is a network of 3 services, each one responsible for a specific function. The Codec takes care of transforming the smart contract code into a JSON structure, and vice versa. The Auditor executes a security analysis with Slither and returns critical information that can help the user to avoid common vulnerabilities. The Assistant relies on Large Language Models (LLMs), specifically through integration with ChatGPT APIs, to generate descriptions and highlight the functional relationships within the elements. The Backend For Frontend pattern was used for managing communication and data flow between services and the frontend. This one has been developed in Flutter for increasing cross platform and device compatibility. It takes care of visually representing the elaboration results inside a navigable grid of elements, where each of them can be investigated and edited. While the tool successfully demonstrates the potential for integrating multiple technologies to simplify smart contract development, it highlights areas for improvement. Particularly prone to this is the frontend, which can be further improved to fully abstract the code from the user. Overall, this thesis contributes to the field by showcasing integration of microservices, LLMs and visualization techniques in modern technologies.
 
 ## Documents
 
@@ -22,7 +18,9 @@ Survey results: [survey_results](survey_results/)
 
 ## Architecture
 
-![Architecture structure from Figma](Architecture.png)
+![Architecture structure](system_architecture.png)
+
+![Solidity parser result](solidity_parser_uml_highlight.png)
 
 ## License
 
